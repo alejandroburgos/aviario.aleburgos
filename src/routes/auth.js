@@ -8,4 +8,8 @@ router.post('/login', controller.login)
 // register
 router.post('/register', controller.register)
 
+// get user from params and response token
+router.get('/user/:user', controller.getUser)
+
+
 module.exports = router

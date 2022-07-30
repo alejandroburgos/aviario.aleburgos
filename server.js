@@ -2,6 +2,9 @@ const express = require('express')
 const initDB = require('./config/db')
 const bodyParser = require('body-parser')
 const app = express()
+var cors = require('cors')
+
+app.use(cors())
 
 const port = 3001
 

@@ -33,34 +33,33 @@ const generateToken = (user) => {
             },
             exp: expiration
         },
-        'llave-secreta-123'
+        'illo-el-sawe'
     )
 }
 
-// crear login
+// login user with password and generate token
 exports.login = async (req, res) => {
     const { user, password } = req.body
-    if (!user) {
-        return res.status(404).json({
+    const userDB = await findUser(user)
+
+    if (!userDB) {
+        return res.status(400).json({
+            ok: false,
             message: 'User not found'
         })
     }
-    bcrypt.compare(password, user.password, (error, result) => {
-        if (error) {
-            return res.status(500).json({
-                message: 'Error comparing passwords'
-            })
-        }
-        if (result) {
-            const token = generateToken(user._id)
-            return res.status(200).json({
-                message: 'Login successful',
-                token
-            })
-        }
-        return res.status(401).json({
-            message: 'Invalid credentials'
+
+    const passwordOk = await bcrypt.compare(password, userDB.password)
+
+    if (!passwordOk) {
+        return res.status(400).json({
+            ok: false,
+            message: 'Password incorrect'
         })
+    }
+
+    res.json({
+        ok: true,
     })
 }
 
@@ -79,16 +78,42 @@ exports.register = async (req, res) => {
         })
     }
     
-    // save user with password in database
-    const userWithPassword = {
-        user,
-        password: await hashPass({ password })
-    }
-    const newUser = new User(userWithPassword)
-    await newUser.save()
+    // create token 
+    const token = generateToken(user)
 
-    return res.status(201).json({
-        message: 'User created'
+    // save user with password and token in database
+    const userDB = new User({
+        user,
+        password: await hashPass({ password }),
+        token
     })
 
+    await userDB.save()
+
+    return res.status(201).json({
+        message: 'User created',        
+    })
+
+}
+
+// get user from params and response token
+exports.getUser = async (req, res) => {
+    const { user } = req.params
+    console.log(user)
+    const userDB = await findUser(user)
+
+    if (!userDB) {
+        return res.status(400).json({
+            ok: false,
+            message: 'User not found'
+        })
+    }
+
+    const token = generateToken(user)
+
+    return res.status(200).json({
+        ok: true,
+        user: userDB.user,
+        token: token
+    })
 }
