@@ -13,48 +13,62 @@ import { useNavigate } from "react-router";
 export const Login = () => {
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
+    const [token, setToken] = useState(null)
 
-    const token = localStorage.getItem("token");
     // useNavigate
     const navigate = useNavigate();
 
-    // post to login
-    const login = () => {
-        fetch("http://localhost:3001/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                user: user,
-                password: password,
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if(data.ok){
-                    // fetch get user for params
-                    fetch(`http://localhost:3001/user/${user}`, {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "x-access-token": data.token,
-                        },
-                    })
-                        .then((res) => res.json())
-                        .then((data) => {
-                            if(data.ok){
-                                localStorage.setItem("token", data.token);
-                                localStorage.setItem("user", data.user);
-                                navigate("/");
-                            }
-                        }
-                    )
+    useEffect( ()  => {
+        // fetch get user for params
+        const getUser = async () => {
+            const response = await fetch(`http://localhost:3001/user/${user}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                },
+            })
+            try {
+                const json = await response.json();
+                if(json.ok){
+                    setToken(json.token)
+                }else{
+                    setToken(null)
                 }
-                
-            });
-    };
+            } catch (error) {
+                console.log("error", error);
+            }
+        }
+        getUser()
+    }, [user])
     
+    console.log(token)
+    const login = async () => {
+
+        if(token){
+            await fetch("http://localhost:3001/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    user: user,
+                    password: password,
+                    token: token,
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if(data.ok){
+                        navigate("/");
+                        // set token to localStorage
+                        localStorage.setItem("token", data.token);
+                    }
+                });
+        }
+    }; 
+    
+
     const [checked1, setChecked1] = useState(true);
 
     const handleChange1 = (event) => {

@@ -13,15 +13,24 @@ import "./assets/base.scss";
 import { Home } from "./Components/Home.jsx";
 import { Login } from "./Components/login/Login";
 import HomeIcon from "@material-ui/icons/Home";
+import { useEffect } from "react";
+import { Header } from "./Components/header/Header";
 
 // dont appear nav if login dont have token
 export const App = () => {
   // get token localStorage
   const token = localStorage.getItem("token");
+  useEffect(() => {
+  // if token is null, navigate to login
+  if (!token) {
+    return <Navigate to="/login" />;
+  }
+  }, [token])
+  
   return (
     <>
-      {token && <Navigation token={token} />}
-
+      <Header />
+      <Outlet />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

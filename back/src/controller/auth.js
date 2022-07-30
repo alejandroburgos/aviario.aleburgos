@@ -41,7 +41,6 @@ const generateToken = (user) => {
 exports.login = async (req, res) => {
     const { user, password } = req.body
     const userDB = await findUser(user)
-
     if (!userDB) {
         return res.status(400).json({
             ok: false,
@@ -58,9 +57,12 @@ exports.login = async (req, res) => {
         })
     }
 
-    res.json({
-        ok: true,
-    })
+    if (userDB.token == req.body.token){
+        res.json({
+            ok: true,
+        })
+    }
+
 }
 
 // create register user with password and insert
@@ -78,7 +80,6 @@ exports.register = async (req, res) => {
         })
     }
     
-    // create token 
     const token = generateToken(user)
 
     // save user with password and token in database
@@ -99,7 +100,6 @@ exports.register = async (req, res) => {
 // get user from params and response token
 exports.getUser = async (req, res) => {
     const { user } = req.params
-    console.log(user)
     const userDB = await findUser(user)
 
     if (!userDB) {
@@ -109,11 +109,9 @@ exports.getUser = async (req, res) => {
         })
     }
 
-    const token = generateToken(user)
-
     return res.status(200).json({
         ok: true,
         user: userDB.user,
-        token: token
+        token: userDB.token
     })
 }
