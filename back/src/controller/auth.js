@@ -15,7 +15,6 @@ const hashPass = (password) => {
         })
 }
 
-
 const findUser = (user) => {
     return model.findOne({ user })
 }

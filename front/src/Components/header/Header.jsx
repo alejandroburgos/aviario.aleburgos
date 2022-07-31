@@ -46,7 +46,7 @@ export const Header = () => {
 
     return (
         <>
-            <div className="header-nav-wrapper header-nav-wrapper-lg rounded navbar-light">
+            <div className="header-nav-wrapper header-nav-wrapper-lg rounded navbar-light ml-4" style={{marginBottom: "100px"}}>
                 <div className="app-nav-logo flex-grow-0 app-nav-logo--dark mr-3">
                     <a
                         href="#/"
@@ -61,21 +61,19 @@ export const Header = () => {
                             />
                         </div>
                         <div className="app-nav-logo--text">
-                            <span>General</span>
+                            <span>Dashboard</span>
 
-                            <b>bamburgh</b>
+                            <b>SWR</b>
                         </div>
                     </a>
                 </div>
                 <div className="header-nav-menu flex-grow-0 ml-auto d-none d-lg-block">
                     <ul className="d-flex justify-content-center">
                         <li>
-                            <a
-                                className="font-size-sm text-uppercase font-weight-bold rounded-pill"
-                                href="#/"
-                                onClick={(e) => e.preventDefault()}
+                            <a className="font-size-sm text-uppercase font-weight-bold rounded-pill"
+                                onClick={(e) => navigate('/contador', { state: { user: userData } })}
                             >
-                                Pages
+                                Contador de Pasta
                             </a>
                         </li>
                         <li>

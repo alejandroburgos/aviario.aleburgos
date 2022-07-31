@@ -15,6 +15,7 @@ import { Login } from "./Components/login/Login";
 import HomeIcon from "@material-ui/icons/Home";
 import { useEffect } from "react";
 import { Header } from "./Components/header/Header";
+import { CountPage } from "./Components/Contador/CountPage";
 
 // dont appear nav if login dont have token
 export const App = () => {
@@ -30,15 +31,17 @@ export const App = () => {
   }
   }, [])
   
-console.log(location)
+  console.log(location)
+
   return (
     <>
     
-      {location.state && <Header />}
+      {location.state && userData && <Header />}
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/contador" element={<CountPage state={userData} />} />
       </Routes>
     </>
   );
