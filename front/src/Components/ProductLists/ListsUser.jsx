@@ -19,12 +19,10 @@ export const ListsUser = ({ wallapopProducts, index }) => {
             try {
                 const response = await fetch(url);
                 const json = await response.json();
-                console.log(json)
                 setUserLists(json);
                 setLoading(false);
             } catch (error) {
                 setLoading(true);
-                console.log("error", error);
             }
         };
         setInterval(() => { }, 30000);

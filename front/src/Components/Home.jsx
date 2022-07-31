@@ -105,7 +105,6 @@ export const Home = () => {
                   description.length
                 );
                 const descriptionFinal = `${descriptionMax}`;
-                console.log(wallapopNew);
                 return (
                   <>
                     <Grid item lg={4} className="p-1">

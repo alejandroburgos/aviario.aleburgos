@@ -8,12 +8,14 @@ import {
     Checkbox,
     FormControlLabel,
 } from "@material-ui/core";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
+import { Header } from "../header/Header";
 
 export const Login = () => {
+
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
-    const [token, setToken] = useState(null)
+    const [dataUser, setDataUser] = useState(null)
 
     // useNavigate
     const navigate = useNavigate();
@@ -31,9 +33,9 @@ export const Login = () => {
             try {
                 const json = await response.json();
                 if(json.ok){
-                    setToken(json.token)
+                    setDataUser(json)
                 }else{
-                    setToken(null)
+                    setDataUser(null)
                 }
             } catch (error) {
                 console.log("error", error);
@@ -42,10 +44,9 @@ export const Login = () => {
         getUser()
     }, [user])
     
-    console.log(token)
-    const login = async () => {
+        const login = async () => {
 
-        if(token){
+        if(dataUser){
             await fetch("http://localhost:3001/login", {
                 method: "POST",
                 headers: {
@@ -54,15 +55,15 @@ export const Login = () => {
                 body: JSON.stringify({
                     user: user,
                     password: password,
-                    token: token,
+                    token: dataUser.token,
                 }),
             })
                 .then((res) => res.json())
                 .then((data) => {
                     if(data.ok){
-                        navigate("/");
+                        navigate("/", { state: { user: dataUser } });
                         // set token to localStorage
-                        localStorage.setItem("token", data.token);
+                        localStorage.setItem("token", JSON.stringify(dataUser));
                     }
                 });
         }

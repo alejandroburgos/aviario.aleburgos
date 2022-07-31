@@ -20,17 +20,22 @@ import { Header } from "./Components/header/Header";
 export const App = () => {
   // get token localStorage
   const token = localStorage.getItem("token");
+  const userData = JSON.parse(token)
+  const location = useLocation();
+
   useEffect(() => {
   // if token is null, navigate to login
   if (!token) {
     return <Navigate to="/login" />;
   }
-  }, [token])
+  }, [])
   
+console.log(location)
   return (
     <>
-      <Header />
-      <Outlet />
+    
+      {location.state && <Header />}
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
