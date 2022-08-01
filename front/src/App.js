@@ -31,12 +31,10 @@ export const App = () => {
   }
   }, [])
   
-  console.log(location)
-
   return (
     <>
     
-      {location.state && userData && <Header />}
+      {location.state && <Header />}
 
       <Routes>
         <Route path="/" element={<Home />} />

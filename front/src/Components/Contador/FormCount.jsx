@@ -4,12 +4,15 @@ import {
     MoneyOff,
     AttachMoney
 } from "@material-ui/icons";
+import moment from 'moment';
 
 export const FormCount = (props) => {
     // post with withdrawal
+    const [withdrawal, setWithdrawal] = useState('')
+    const [revenue, setRevenue] = useState('')
 
-    const [withdrawal, setWithdrawal] = useState(0)
-    const [revenue, setRevenue] = useState(0)
+    console.log(withdrawal)
+    console.log(revenue)
 
     const postRevenue = async () => {
 
@@ -22,19 +25,22 @@ export const FormCount = (props) => {
                 body: JSON.stringify({
                     user: props.user,
                     money: revenue,
+                    date: moment().format("YYYY-MM-DD HH:mm:ss"),
+                    type: "revenue"
                 }),
             })
                 .then((res) => res.json())
                 .then((data) => {
                     if(data.ok){
-                        setRevenue(null)
+                        props.setArrRevenue(data)
+                        setRevenue('')
                     }
                 });
         }
     };                 
     const postWithdrawal = async () => {
 
-        if(revenue > 0) {
+        if(withdrawal > 0) {
             await fetch("http://localhost:3001/withdrawal", {
                 method: "POST",
                 headers: {
@@ -43,12 +49,15 @@ export const FormCount = (props) => {
                 body: JSON.stringify({
                     user: props.user,
                     money: withdrawal,
+                    date: moment().format("YYYY-MM-DD HH:mm:ss"),
+                    type: "withdrawal"
                 }),
             })
                 .then((res) => res.json())
                 .then((data) => {
                     if(data.ok){
-                        setWithdrawal(null)
+                        props.setArrWithdrawal(data)
+                        setWithdrawal('')
                     }
                 });
         }
@@ -64,12 +73,12 @@ export const FormCount = (props) => {
                         <MoneyOff className="display-4" />
                     </div>
                     <div className="font-weight-bold text-black display-3 mt-4 mb-1">
-                        <TextField placeholder='Añadir dinero' onChange={(e) => setWithdrawal(e.target.value)}/>
+                        <TextField placeholder='Añadir dinero' onChange={(e) => { setWithdrawal(e.target.value)}} value={withdrawal}/>
                     </div>
                     {/* <div className="font-size-lg text-dark opacity-8">Añadir dinero</div> */}
                     <div className="divider mx-4 my-4" />
                     <div className="text-center">
-                        <Button className="p-0 text-uppercase btn-link-danger font-weight-bold font-size-sm btn-link" variant="text" onClick={() => postWithdrawal()}>
+                        <Button className="p-0 text-uppercase btn-link-danger font-weight-bold font-size-sm btn-link" variant="text" onClick={(e) => {e.preventDefault(); postWithdrawal()}}>
                             <span>Añadir</span>
                         </Button>
                     </div>
@@ -83,12 +92,12 @@ export const FormCount = (props) => {
                         <AttachMoney className="display-4" />
                     </div>
                     <div className="font-weight-bold text-black display-3 mt-4 mb-1">
-                        <TextField placeholder='Retirar dinero' onChange={(e) => setRevenue(e.target.value)}/>
+                        <TextField placeholder='Retirar dinero' onChange={(e) => { setRevenue(e.target.value)}} value={revenue}/>
                     </div>
                     {/* <div className="font-size-lg text-dark opacity-8">Retirada</div> */}
                     <div className="divider mx-4 my-4" />
                     <div className="text-center">
-                        <Button className="p-0 text-uppercase btn-link-success font-weight-bold font-size-sm btn-link" variant="text" onClick={() => postRevenue()}>
+                        <Button className="p-0 text-uppercase btn-link-success font-weight-bold font-size-sm btn-link" variant="text" onClick={(e) => {e.preventDefault(); postRevenue()}}>
                             <span>Retirar</span>
                         </Button>
                     </div>

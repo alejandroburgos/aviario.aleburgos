@@ -8,6 +8,12 @@ const UserScheme = new mongoose.Schema(
         },
         money: {
             type: Number
+        },
+        type: {
+            type: String
+        },
+        date: {
+            type: Date
         }
     },
     {

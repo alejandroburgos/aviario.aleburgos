@@ -23,4 +23,8 @@ router.post('/withdrawal', withdrawal.withdrawal)
 router.get('/revenue/:user', revenue.getAllRevenue)
 router.get('/withdrawal/:user', withdrawal.getAllWithdrawal)
 
+// getMonthlyReport
+router.get('/revenueMonthly/:user', revenue.getMonthlyReport)
+router.get('/withdrawalMonthly/:user', withdrawal.getMonthlyReport)
+
 module.exports = router
