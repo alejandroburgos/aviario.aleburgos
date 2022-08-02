@@ -4,20 +4,13 @@ const bodyParser = require('body-parser')
 const app = express()
 const cors = require('cors')
 
-const http = require('http');
-let server = http.Server(app);
+const https = require('http');
+let server = https.Server(app);
 
 const path = require('path');
 
 app.use(cors())
 app.options('*', cors()) // include before other routes
-
-var corsOptions = {
-    origin: ['http://localhost:3001', 'https://swr-dashboard.herokuapp.com/'],
-    credentials: true,
-};
-
-app.use(cors(corsOptions))
 
 const passport = require('passport')
 
@@ -48,12 +41,12 @@ app.use(require('./src/routes/auth.js'))
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(('/app/front/build')));
-    app.get('*', (req, res) => {
-        res.sendFile(path.join('/app/front/build/index.html'));
-    });
-}
+// if (process.env.NODE_ENV === 'production') {
+//     app.use(express.static(('/app/front/build')));
+//     app.get('*', (req, res) => {
+//         res.sendFile(path.join('/app/front/build/index.html'));
+//     });
+// }
 
 server.listen(port, () => {
     console.log('La aplicacion esta en linea!');
