@@ -7,8 +7,6 @@ const path = require('path');
 
 app.use(cors())
 
-const port = 3001
-
 const passport = require('passport')
 
 // for parsing json
@@ -40,8 +38,8 @@ if (port == null || port == "") {
 port = 5000;
 }
 
-app.listen(port, () => {
-    console.log('La aplicacion esta en linea!');
+app.listen(port, function(){
+    console.log("servidor de express funcionado");
 })
 
 initDB()

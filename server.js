@@ -7,8 +7,6 @@ const path = require('path');
 
 app.use(cors())
 
-const port = 3001
-
 const passport = require('passport')
 
 // for parsing json
@@ -36,12 +34,11 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
-if (port == null || port == "") {
-port = 5000;
-}
+// cambio de puerto en heroku
+app.set('port', process.env.PORT || 3001);
 
-app.listen(port, () => {
-    console.log('La aplicacion esta en linea!');
-})
+app.listen(app.get('port'), () => {
+    console.log(`Server on port ${app.get('port')}`);
+});
 
 initDB()
