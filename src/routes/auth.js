@@ -7,24 +7,24 @@ const withdrawal = require('../controller/withdrawal.js')
 const router = express.Router()
 
 // crear ruta login
-router.post('/login', auth.login)
+router.post('/api/login', auth.login)
 
 // register
-router.post('/register', auth.register)
+router.post('/api/register', auth.register)
 
 // get user from params and response token
-router.get('/user/:user', auth.getUser)
+router.get('/api/user/:user', auth.getUser)
 
 // post revenue of money 
-router.post('/revenue', revenue.revenue)
-router.post('/withdrawal', withdrawal.withdrawal)
+router.post('/api/revenue', revenue.revenue)
+router.post('/api/withdrawal', withdrawal.withdrawal)
 
 //  getAll revenue of user
-router.get('/revenue/:user', revenue.getAllRevenue)
-router.get('/withdrawal/:user', withdrawal.getAllWithdrawal)
+router.get('/api/revenue/:user', revenue.getAllRevenue)
+router.get('/api/withdrawal/:user', withdrawal.getAllWithdrawal)
 
 // getMonthlyReport
-router.get('/revenueMonthly/:user', revenue.getMonthlyReport)
-router.get('/withdrawalMonthly/:user', withdrawal.getMonthlyReport)
+router.get('/api/revenueMonthly/:user', revenue.getMonthlyReport)
+router.get('/api/withdrawalMonthly/:user', withdrawal.getMonthlyReport)
 
 module.exports = router
