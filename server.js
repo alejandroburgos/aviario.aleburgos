@@ -37,12 +37,11 @@ app.use(require('./src/routes/auth.js'))
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '/frontend/build')));
+    app.use(express.static(path.join(__dirname, '/front/build')));
     app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+        res.sendFile(path.resolve(__dirname, 'front', 'build', 'index.html'));
     });
-}
+
 
 app.listen(port, () => {
     console.log('La aplicacion esta en linea!');
