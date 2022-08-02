@@ -64,6 +64,8 @@ export const Login = () => {
                     // set token to localStorage
                     localStorage.setItem("token", JSON.stringify(json));
                     navigate("/contador", { state: { user: json } });
+                }else{
+                    setError(response.statusText + " " + response.status + " " + JSON.stringify(json))
                 }
             } catch (error) {
                 console.log("error", error);
