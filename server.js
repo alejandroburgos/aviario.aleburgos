@@ -26,7 +26,7 @@ app.use(
 app.use(passport.initialize())
 
 app.use(require('./src/routes/auth.js'))
-
+console.log(process.env)
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'front/build')))
     app.get('*', (req, res) => {
@@ -35,7 +35,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // cambio de puerto en heroku
-app.set('port', process.env.PORT || 3001);
+let port = process.env.PORT;
+if (port == null || port == "") {
+port = 3001;
+}
 
 app.listen(app.get('port'), () => {
     console.log(`Server on port ${app.get('port')}`);
