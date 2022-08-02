@@ -23,13 +23,6 @@ export const App = () => {
   const token = localStorage.getItem("token");
   const userData = JSON.parse(token)
   const location = useLocation();
-
-  useEffect(() => {
-  // if token is null, navigate to login
-  if (!token) {
-    return <Navigate to="/login" />;
-  }
-  }, [])
   
   return (
     <>
@@ -37,39 +30,10 @@ export const App = () => {
       {location.state && <Header />}
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/contador" element={<CountPage state={userData} />} />
       </Routes>
     </>
-  );
-};
-
-const Navigation = ({token}) => {
-  return (
-    <nav className="sidebar-navigation">
-      <ul>
-        <li className="active">
-          <HomeIcon />
-          <span className="tooltip">Home</span>
-        </li>
-        {/* <li>
-        <i className="fa fa-hdd-o"></i>
-        <span className="tooltip">Devices</span>
-      </li>
-      <li>
-        <i className="fa fa-newspaper-o"></i>
-        <span className="tooltip">Contacts</span>
-      </li>
-      <li>
-        <i className="fa fa-print"></i>
-        <span className="tooltip">Fax</span>
-      </li>
-      <li>
-        <i className="fa fa-sliders"></i>
-        <span className="tooltip">Settings</span>
-      </li> */}
-      </ul>
-    </nav>
   );
 };

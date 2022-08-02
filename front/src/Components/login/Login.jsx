@@ -20,34 +20,33 @@ export const Login = () => {
     // useNavigate
     const navigate = useNavigate();
 
-    useEffect( ()  => {
-        // fetch get user for params
-        const getUser = async () => {
-            const response = await fetch(`http://localhost:3001/user/${user}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*"
-                },
-            })
-            try {
-                const json = await response.json();
-                if(json.ok){
-                    setDataUser(json)
-                }else{
-                    setDataUser(null)
-                }
-            } catch (error) {
-                console.log("error", error);
-            }
-        }
-        getUser()
-    }, [user])
+    // useEffect( ()  => {
+    //     // fetch get user for params
+    //     const getUser = async () => {
+    //         const response = await fetch(`http://localhost:3001/user/${user}`, {
+    //             method: "GET",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 "Access-Control-Allow-Origin": "*"
+    //             },
+    //         })
+    //         try {
+    //             const json = await response.json();
+    //             if(json.ok){
+    //                 setDataUser(json)
+    //             }else{
+    //                 setDataUser(null)
+    //             }
+    //         } catch (error) {
+    //             console.log("error", error);
+    //         }
+    //     }
+    //     getUser()
+    // }, [user])
     
         const login = async () => {
 
-        if(dataUser){
-            await fetch("http://localhost:3001/login", {
+            const response = await fetch("http://localhost:3001/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -55,18 +54,22 @@ export const Login = () => {
                 body: JSON.stringify({
                     user: user,
                     password: password,
-                    token: dataUser.token,
+                    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6InNhd2VyIn0sImV4cCI6MTY1OTIyMDYzMiwiaWF0IjoxNjU5MjIwMDMyfQ.8L9FfWEBSHkgus7wid0Eqp3BPivi-xdr-CaM3gTma1s',
                 }),
             })
-                .then((res) => res.json())
-                .then((data) => {
-                    if(data.ok){
-                        navigate("/", { state: { user: dataUser } });
-                        // set token to localStorage
-                        localStorage.setItem("token", JSON.stringify(dataUser));
-                    }
-                });
-        }
+            const json = await response.json()
+
+            try {
+                if(response.ok){
+                    // set token to localStorage
+                    localStorage.setItem("token", JSON.stringify(json));
+                    navigate("/contador", { state: { user: json } });
+                }
+            } catch (error) {
+                console.log("error", error);
+            }
+
+        
     }; 
     
 

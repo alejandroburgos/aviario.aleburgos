@@ -16,6 +16,7 @@ export const CountPage = (props) => {
 
     const [dataMoney, setDataMoney] = useState([])
 
+    console.log(props)
     useEffect(() => {
         const url = `http://localhost:3001/withdrawal/${props.state.user}`;
         setLoading(true);
@@ -52,7 +53,7 @@ export const CountPage = (props) => {
     useEffect(() => {
       // concat y sort by moment date asc
       setDataMoney(revenue.revenue?.concat(withdrawal.withdrawal).sort((a, b) => moment(a.date).isBefore(moment(b.date)) ? 1 : -1));
-      
+
     }, [revenue, withdrawal])
 
 
@@ -60,8 +61,8 @@ export const CountPage = (props) => {
     <div className="pr-4 pl-4">
         <FormCount user={props.state.user} revenue={revenue} setArrRevenue={setRevenue} withdrawal={withdrawal} setArrWithdrawal={setWithdrawal}/>
         {modeCard === 'chart' ? 
-          <ResumeChart user={props.state.user} revenue={revenue} withdrawal={withdrawal} dataMoney={dataMoney} modeCard={modeCard} setModeCard={setModeCard}/> : 
-          <ResumeTable user={props.state.user} revenue={revenue} withdrawal={withdrawal} dataMoney={dataMoney} modeCard={modeCard} setModeCard={setModeCard}/>
+            <ResumeChart user={props.state.user} revenue={revenue} withdrawal={withdrawal} dataMoney={dataMoney} modeCard={modeCard} setModeCard={setModeCard}/> : 
+            <ResumeTable user={props.state.user} revenue={revenue} withdrawal={withdrawal} dataMoney={dataMoney} modeCard={modeCard} setModeCard={setModeCard}/>
         }
     </div>
   )

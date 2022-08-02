@@ -8,8 +8,8 @@ import moment from 'moment';
 
 export const FormCount = (props) => {
     // post with withdrawal
-    const [withdrawal, setWithdrawal] = useState('')
-    const [revenue, setRevenue] = useState('')
+    const [withdrawal, setWithdrawal] = useState('0')
+    const [revenue, setRevenue] = useState('0')
 
     console.log(withdrawal)
     console.log(revenue)

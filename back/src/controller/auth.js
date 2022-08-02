@@ -59,6 +59,16 @@ exports.login = async (req, res) => {
     if (userDB.token == req.body.token){
         res.json({
             ok: true,
+            // get user
+            user: userDB.user,
+            // get token
+            token: userDB.token
+            
+        })
+    } else {
+        res.status(400).json({
+            ok: false,
+            message: 'Token incorrect'
         })
     }
 

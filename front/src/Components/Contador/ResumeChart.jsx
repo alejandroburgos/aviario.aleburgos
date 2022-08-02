@@ -12,11 +12,15 @@ export const ResumeChart = (props) => {
     let sumWithdrawal = 0;
     
     const [loading, setLoading] = useState(false)
-    const [getWithdrawalMonthly, setGetWithdrawalMonthly] = useState()
-    const [getRevenueMonthly, setGetRevenueMonthly] = useState()
+    const [getWithdrawalMonthly, setGetWithdrawalMonthly] = useState({monthlyReport: [0]})
+    const [getRevenueMonthly, setGetRevenueMonthly] = useState({monthlyReport: [0]})
+    // get localStorage
+    const token = localStorage.getItem("token");
+    const userData = JSON.parse(token)
 
+    console.log(props)
     useEffect(() => {
-        const url = `http://localhost:3001/withdrawalMonthly/${props.user}`;
+        const url = `http://localhost:3001/withdrawalMonthly/${userData.user}`;
         setLoading(true);
         const fetchData = async () => {
             try {
@@ -29,10 +33,10 @@ export const ResumeChart = (props) => {
             }
         };
         fetchData();
-    }, [props.withdrawal]);
+    }, [token, props.withdrawal]);
 
     useEffect(() => {
-        const url = `http://localhost:3001/revenueMonthly/${props.user}`;
+        const url = `http://localhost:3001/revenueMonthly/${userData.user}`;
         setLoading(true);
         const fetchData = async () => {
             try {
@@ -45,9 +49,7 @@ export const ResumeChart = (props) => {
             }
         };
         fetchData();
-    }, [props.revenue]);
-
-    console.log(getRevenueMonthly)
+    }, [token, props.revenue]);
 
     if(props.revenue.revenue?.length > 0 && props.withdrawal.withdrawal?.length > 0){
         props.revenue.revenue.forEach(element => {
@@ -110,14 +112,18 @@ export const ResumeChart = (props) => {
             min: 0
         }
     }
+
+    console.log(getWithdrawalMonthly)
+    console.log(getRevenueMonthly)
+    
     const chartDashboardMonitoring3AData = [
         {
             name: 'Ingresos',
-            data: getWithdrawalMonthly?.monthlyReport
+            data: !loading && getWithdrawalMonthly && getWithdrawalMonthly?.monthlyReport
         },
         {
             name: 'Retiradas',
-            data: getRevenueMonthly?.monthlyReport
+            data: !loading && getRevenueMonthly && getRevenueMonthly?.monthlyReport
         }
     ]
 
