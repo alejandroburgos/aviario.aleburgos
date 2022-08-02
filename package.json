@@ -4,8 +4,6 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon back/server.js --ignore front",
-    "build": "npm run build --prefix front",
     "start": "node back/server.js"
   },
   "author": "",
