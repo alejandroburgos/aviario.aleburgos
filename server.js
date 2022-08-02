@@ -26,12 +26,21 @@ app.use(
 app.use(passport.initialize())
 
 app.use(require('./src/routes/auth.js'))
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '/front/build')))
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, '/front/build/index.html'));
-    })
-}
+
+app.use((req, res, next) => {
+    const error = new Error("Not founddddd");
+    error.status = 404;
+    next(error);
+  });
+
+if (process.env.NODE_ENV === "production") {
+    // Serve any static files
+    app.use(express.static(path.join(__dirname, "front/build")));
+    // Handle React routing, return all requests to React app
+    app.get("*", function (req, res) {
+      res.sendFile(path.join(__dirname, "front/build", "index.html"));
+    });
+  }
 
 
 // cambio de puerto en heroku
