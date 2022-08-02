@@ -39,9 +39,8 @@ let port = process.env.PORT;
 if (port == null || port == "") {
 port = 3001;
 }
-
-app.listen(app.get('port'), () => {
-    console.log(`Server on port ${app.get('port')}`);
-});
+app.listen(port, function(){
+    console.log("servidor de express funcionado");
+})
 
 initDB()
