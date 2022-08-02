@@ -6,8 +6,6 @@
   "scripts": {
     "start": "node server.js",
     "test": "nodemon server.js",
-    "postinstall": "ng build --aot --prod",
-    "heroku-postbuild": "ng build --prod"
   },
   "author": "",
   "license": "ISC",
