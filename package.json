@@ -2,10 +2,12 @@
   "name": "dashboard",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "server.js",  
   "scripts": {
-    "dev": "nodemon back/server.js --ignore front",
-    "build": "npm run build --prefix front",
+    "server:dev": "nodemon back/server.js --ignore front",
+    "build": "webpack -p",
+    "dev": "webpack-dev-server --open",
+    "postinstall": "npm run build",
     "start": "node back/server.js"
   },
   "author": "",
