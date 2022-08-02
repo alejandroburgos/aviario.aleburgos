@@ -23,7 +23,7 @@ export const Login = () => {
     // useEffect( ()  => {
     //     // fetch get user for params
     //     const getUser = async () => {
-    //         const response = await fetch(`http://localhost:3001/api/user/${user}`, {
+    //         const response = await fetch(`https://swr-dashboard.herokuapp.com/api/user/${user}`, {
     //             method: "GET",
     //             headers: {
     //                 "Content-Type": "application/json",
@@ -46,7 +46,7 @@ export const Login = () => {
     
         const login = async () => {
             setPrueba("ILLOOOOOOOOOOOOOOOOO")
-            const response = await fetch("http://localhost:3001/api/login", {
+            const response = await fetch("https://swr-dashboard.herokuapp.com/api/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

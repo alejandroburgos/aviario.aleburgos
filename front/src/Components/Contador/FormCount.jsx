@@ -17,7 +17,7 @@ export const FormCount = (props) => {
     const postRevenue = async () => {
 
         if(revenue > 0) {
-            await fetch("http://localhost:3001/api/revenue", {
+            await fetch("https://swr-dashboard.herokuapp.com/api/revenue", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export const FormCount = (props) => {
     const postWithdrawal = async () => {
 
         if(withdrawal > 0) {
-            await fetch("http://localhost:3001/api/withdrawal", {
+            await fetch("https://swr-dashboard.herokuapp.com/api/withdrawal", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

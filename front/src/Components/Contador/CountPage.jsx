@@ -18,7 +18,7 @@ export const CountPage = (props) => {
 
     console.log(props)
     useEffect(() => {
-        const url = `http://localhost:3001/api/withdrawal/${props.state.user}`;
+        const url = `https://swr-dashboard.herokuapp.com/api/withdrawal/${props.state.user}`;
         setLoading(true);
         const fetchData = async () => {
             try {
@@ -34,7 +34,7 @@ export const CountPage = (props) => {
     }, [props]);
 
     useEffect(() => {
-        const url = `http://localhost:3001/api/revenue/${props.state.user}`;
+        const url = `https://swr-dashboard.herokuapp.com/api/revenue/${props.state.user}`;
         setLoading(true);
         const fetchData = async () => {
             try {

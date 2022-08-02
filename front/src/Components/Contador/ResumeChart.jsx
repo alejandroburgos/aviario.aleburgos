@@ -20,7 +20,7 @@ export const ResumeChart = (props) => {
 
     console.log(props)
     useEffect(() => {
-        const url = `http://localhost:3001/api/withdrawalMonthly/${userData.user}`;
+        const url = `https://swr-dashboard.herokuapp.com/api/withdrawalMonthly/${userData.user}`;
         setLoading(true);
         const fetchData = async () => {
             try {
@@ -36,7 +36,7 @@ export const ResumeChart = (props) => {
     }, [token, props.withdrawal]);
 
     useEffect(() => {
-        const url = `http://localhost:3001/api/revenueMonthly/${userData.user}`;
+        const url = `https://swr-dashboard.herokuapp.com/api/revenueMonthly/${userData.user}`;
         setLoading(true);
         const fetchData = async () => {
             try {
