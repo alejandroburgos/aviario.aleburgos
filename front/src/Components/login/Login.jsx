@@ -16,7 +16,7 @@ export const Login = () => {
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState()
-
+    const [prueba, setPrueba] = useState("aaaaaaa")
     // useNavigate
     const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ export const Login = () => {
     // }, [user])
     
         const login = async () => {
-
+            setPrueba("ILLOOOOOOOOOOOOOOOOO")
             const response = await fetch("http://localhost:3001/api/login", {
                 method: "POST",
                 headers: {
@@ -159,11 +159,11 @@ export const Login = () => {
                                             <div className="text-center py-4">
                                                 <Button
                                                     className="btn-second font-weight-bold w-50 my-2"
-                                                    onClick={(e) => login()}
+                                                    onClick={login}
                                                 >
                                                     Sign in
                                                 </Button>
-                                        {error ? <div className="text-center text-black-50 mt-3 text-danger">{error}</div> : <div className="text-danger">SIN ERRORES</div>}
+                                        {error ? <div className="text-center text-black-50 mt-3 text-danger">{error} {prueba}</div> : <div className="text-danger">SIN ERRORES , {prueba}</div>}
                                             </div>
                                             <div className="text-center text-black-50 mt-3">
                                                 Don't have an account?{" "}
