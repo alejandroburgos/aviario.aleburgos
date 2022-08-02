@@ -7,11 +7,8 @@ const cors = require('cors')
 const path = require('path');
 
 app.use(cors())
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header( "Access-Control-Allow-Headers", "Origen, X-Requested-With, Content-Type, Accept");
-    next();
-});
+app.options('*', cors()) // include before other routes
+
 const passport = require('passport')
 
 // cambio de puerto en heroku
