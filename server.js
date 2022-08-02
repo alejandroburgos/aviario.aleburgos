@@ -28,9 +28,9 @@ app.use(passport.initialize())
 app.use(require('./src/routes/auth.js'))
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('front/build'))
+    app.use(express.static(path.join(__dirname, 'front/build')))
     app.get('*', (req, res) => {
-        res.sendFile( 'front/build/index.html');
+        res.sendFile(path.join(__dirname, 'front/build/index.html'));
     })
 }
 
