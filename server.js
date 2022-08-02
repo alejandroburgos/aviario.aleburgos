@@ -39,14 +39,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(('/app/front/build')));
+    console.log("hola")
     app.get('*', (req, res) => {
         res.sendFile(path.join('/app/front/build/index.html'));
     });
 }
-
-
-console.log(__dirname +'/front/build')
-console.log(__dirname + '/front/build/index.html')
 
 app.listen(port, () => {
     console.log('La aplicacion esta en linea!');
