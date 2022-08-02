@@ -37,10 +37,13 @@ app.use(require('./src/routes/auth.js'))
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+if (process.env.NODE_ENV === 'production') {
     app.use(express.static((__dirname + '/front/build')));
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname + '/front/build/index.html'));
     });
+}
+
 
 console.log(__dirname +'/front/build')
 console.log(__dirname + '/front/build/index.html')
