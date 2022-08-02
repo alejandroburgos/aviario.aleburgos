@@ -29,7 +29,10 @@ app.use(passport.initialize())
 
 app.use(require('./src/routes/auth.js'))
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('front/build'))
+app.get('*', (req, res) => {
+    res.sendFile( '/front/build/index.html');
+})
 
 app.listen(port, () => {
     console.log('La aplicacion esta en linea!');
