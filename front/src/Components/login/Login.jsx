@@ -9,71 +9,72 @@ import {
     FormControlLabel,
 } from "@material-ui/core";
 import { useNavigate, useLocation } from "react-router";
-import { Header } from "../header/Header";
+import { constants } from '../../Constants';
 
 export const Login = () => {
 
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
+    const [dataUser, setDataUser] = useState()
     const [error, setError] = useState()
-    const [prueba, setPrueba] = useState("aaaaaaa")
+
     // useNavigate
     const navigate = useNavigate();
 
-    // useEffect( ()  => {
-    //     // fetch get user for params
-    //     const getUser = async () => {
-    //         const response = await fetch(`https://swr-dashboard.herokuapp.com/api/user/${user}`, {
-    //             method: "GET",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //                 "Access-Control-Allow-Origin": "*"
-    //             },
-    //         })
-    //         try {
-    //             const json = await response.json();
-    //             if(json.ok){
-    //                 setDataUser(json)
-    //             }else{
-    //                 setDataUser(null)
-    //             }
-    //         } catch (error) {
-    //             console.log("error", error);
-    //         }
-    //     }
-    //     getUser()
-    // }, [user])
-    
-        const login = async () => {
-            setPrueba("ILLOOOOOOOOOOOOOOOOO")
-            const response = await fetch("https://swr-dashboard.herokuapp.com/api/login", {
-                method: "POST",
+    useEffect( ()  => {
+        // fetch get user for params
+        const getUser = async () => {
+            const response = await fetch(`${constants.urlLocal}user/${user}`, {
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
                 },
-                body: JSON.stringify({
-                    user: user,
-                    password: password,
-                    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6InNhd2VyIn0sImV4cCI6MTY1OTIyMDYzMiwiaWF0IjoxNjU5MjIwMDMyfQ.8L9FfWEBSHkgus7wid0Eqp3BPivi-xdr-CaM3gTma1s',
-                }),
             })
-            const json = await response.json()
-
             try {
-                if(response.ok){
-                    // set token to localStorage
-                    localStorage.setItem("token", JSON.stringify(json));
-                    navigate("/contador", { state: { user: json } });
+                const json = await response.json();
+                console.log(json)
+                if(json.ok){
+                    setDataUser(json)
                 }else{
-                    setError(response.statusText + " " + response.status + " " + JSON.stringify(json))
+                    setDataUser(null)
                 }
             } catch (error) {
                 console.log("error", error);
-                setError(error)
             }
+        }
+        getUser()
+    }, [user])
 
-        
-    }; 
+    const login = async () => {
+        const response = await fetch(`${constants.urlLocal}login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                user: user,
+                password: password,
+                token: dataUser.token
+            }),
+        })
+        const json = await response.json()
+
+        try {
+            if(response.ok){
+                setError("")
+                // set token to localStorage
+                localStorage.setItem("token", JSON.stringify(json));
+                navigate("/contador", { state: { user: json } });
+
+            }else{
+                setError(JSON.stringify(json.message))
+            }
+        } catch (error) {
+            console.log("error", error);
+            setError(error)
+        }
+}; 
     
 
     const [checked1, setChecked1] = useState(true);
@@ -163,7 +164,7 @@ export const Login = () => {
                                                 >
                                                     Sign in
                                                 </Button>
-                                        {error ? <div className="text-center text-black-50 mt-3 text-danger">{error} {prueba}</div> : <div className="text-danger">SIN ERRORES , {prueba}</div>}
+                                        {error && <div className="text-center mt-3 text-danger">{error}</div>}
                                             </div>
                                             <div className="text-center text-black-50 mt-3">
                                                 Don't have an account?{" "}

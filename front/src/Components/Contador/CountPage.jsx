@@ -4,6 +4,8 @@ import { FormCount } from './FormCount'
 import { ResumeChart } from './ResumeChart'
 import { ResumeTable } from './ResumeTable';
 
+import { constants } from '../../Constants';
+
 export const CountPage = (props) => {
 
     const [modeCard, setModeCard] = useState("chart");
@@ -16,9 +18,8 @@ export const CountPage = (props) => {
 
     const [dataMoney, setDataMoney] = useState([])
 
-    console.log(props)
     useEffect(() => {
-        const url = `https://swr-dashboard.herokuapp.com/api/withdrawal/${props.state.user}`;
+        const url = `${constants.urlLocal}withdrawal/${props.state.user}`;
         setLoading(true);
         const fetchData = async () => {
             try {
@@ -34,7 +35,7 @@ export const CountPage = (props) => {
     }, [props]);
 
     useEffect(() => {
-        const url = `https://swr-dashboard.herokuapp.com/api/revenue/${props.state.user}`;
+        const url = `${constants.urlLocal}revenue/${props.state.user}`;
         setLoading(true);
         const fetchData = async () => {
             try {
@@ -52,8 +53,7 @@ export const CountPage = (props) => {
     // concat revenue.revenue and withdrawal.withdrawal and add revenue.type or withdrawal.type to each element
     useEffect(() => {
       // concat y sort by moment date asc
-      setDataMoney(revenue.revenue?.concat(withdrawal.withdrawal).sort((a, b) => moment(a.date).isBefore(moment(b.date)) ? 1 : -1));
-
+        setDataMoney(revenue.revenue?.concat(withdrawal.withdrawal).sort((a, b) => moment(a.date).isBefore(moment(b.date)) ? 1 : -1));
     }, [revenue, withdrawal])
 
 
@@ -62,7 +62,7 @@ export const CountPage = (props) => {
         <FormCount user={props.state.user} revenue={revenue} setArrRevenue={setRevenue} withdrawal={withdrawal} setArrWithdrawal={setWithdrawal}/>
         {modeCard === 'chart' ? 
             <ResumeChart user={props.state.user} revenue={revenue} withdrawal={withdrawal} dataMoney={dataMoney} modeCard={modeCard} setModeCard={setModeCard}/> : 
-            <ResumeTable user={props.state.user} revenue={revenue} withdrawal={withdrawal} dataMoney={dataMoney} modeCard={modeCard} setModeCard={setModeCard}/>
+            <ResumeTable user={props.state.user} revenue={revenue} setRevenue={setRevenue} withdrawal={withdrawal} setWithdrawal={setWithdrawal} dataMoney={dataMoney} modeCard={modeCard} setModeCard={setModeCard}/>
         }
     </div>
   )

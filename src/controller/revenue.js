@@ -95,3 +95,30 @@ exports.getMonthlyReport = async (req, res) => {
         monthlyReport
     })
 }
+
+// deleteRevenue with id and return all revenue of user
+exports.deleteRevenue = async (req, res) => {
+    const { id, user} = req.body
+    const userDB = await User.findOne({ user })
+    if (!userDB) {
+        return res.status(400).json({
+            ok: false,
+            message: 'User not found'
+        })
+    }
+
+    const revenue = await model.findByIdAndDelete(id)
+    if (!revenue) {
+        return res.status(400).json({
+            ok: false,
+            message: 'Revenue not found'
+        })
+    }
+
+    return res.status(200).json({
+        ok: true,
+        revenue: await model.find({ user }),
+        message: 'Revenue deleted',
+        type: "revenue"
+    })
+}

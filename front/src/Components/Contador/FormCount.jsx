@@ -5,19 +5,17 @@ import {
     AttachMoney
 } from "@material-ui/icons";
 import moment from 'moment';
+import { constants } from '../../Constants';
 
 export const FormCount = (props) => {
     // post with withdrawal
     const [withdrawal, setWithdrawal] = useState('0')
     const [revenue, setRevenue] = useState('0')
 
-    console.log(withdrawal)
-    console.log(revenue)
-
     const postRevenue = async () => {
 
         if(revenue > 0) {
-            await fetch("https://swr-dashboard.herokuapp.com/api/revenue", {
+            await fetch(`${constants.urlLocal}revenue`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -41,7 +39,7 @@ export const FormCount = (props) => {
     const postWithdrawal = async () => {
 
         if(withdrawal > 0) {
-            await fetch("https://swr-dashboard.herokuapp.com/api/withdrawal", {
+            await fetch(`${constants.urlLocal}withdrawal`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -94,3 +94,29 @@ exports.getMonthlyReport = async (req, res) => {
         monthlyReport
     })
 }
+
+exports.deleteWithdrawal = async (req, res) => {
+    const { id, user} = req.body
+    const userDB = await User.findOne({ user })
+    if (!userDB) {
+        return res.status(400).json({
+            ok: false,
+            message: 'User not found'
+        })
+    }
+
+    const withdrawal = await model.findByIdAndDelete(id)
+    if (!withdrawal) {
+        return res.status(400).json({
+            ok: false,
+            message: 'Revenue not found'
+        })
+    }
+
+    return res.status(200).json({
+        ok: true,
+        withdrawal: await model.find({ user }),
+        message: 'Revenue deleted',
+        type: "withdrawal"
+    })
+}

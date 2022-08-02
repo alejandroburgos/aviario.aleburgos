@@ -5,6 +5,8 @@ import hero2 from './../../assets/images/hero-bg/hero-2.jpg';
 import { Grid, Card, Menu, Button, Box, List, ListItem } from "@material-ui/core";
 import { Toc } from '@material-ui/icons';
 import moment from 'moment';
+import { constants } from '../../Constants';
+
 
 export const ResumeChart = (props) => {
 
@@ -18,9 +20,8 @@ export const ResumeChart = (props) => {
     const token = localStorage.getItem("token");
     const userData = JSON.parse(token)
 
-    console.log(props)
     useEffect(() => {
-        const url = `https://swr-dashboard.herokuapp.com/api/withdrawalMonthly/${userData.user}`;
+        const url = `${constants.urlLocal}withdrawalMonthly/${userData.user}`;
         setLoading(true);
         const fetchData = async () => {
             try {
@@ -36,7 +37,7 @@ export const ResumeChart = (props) => {
     }, [token, props.withdrawal]);
 
     useEffect(() => {
-        const url = `https://swr-dashboard.herokuapp.com/api/revenueMonthly/${userData.user}`;
+        const url = `${constants.urlLocal}revenueMonthly/${userData.user}`;
         setLoading(true);
         const fetchData = async () => {
             try {
@@ -112,9 +113,6 @@ export const ResumeChart = (props) => {
             min: 0
         }
     }
-
-    console.log(getWithdrawalMonthly)
-    console.log(getRevenueMonthly)
     
     const chartDashboardMonitoring3AData = [
         {

@@ -27,4 +27,8 @@ router.get('/api/withdrawal/:user', withdrawal.getAllWithdrawal)
 router.get('/api/revenueMonthly/:user', revenue.getMonthlyReport)
 router.get('/api/withdrawalMonthly/:user', withdrawal.getMonthlyReport)
 
+// delete revenue
+router.delete('/api/revenue/:id', revenue.deleteRevenue)
+router.delete('/api/withdrawal/:id', withdrawal.deleteWithdrawal)
+
 module.exports = router
