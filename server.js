@@ -12,9 +12,8 @@ app.use(cors())
 app.options('*', cors()) // include before other routes
 
 var corsOptions = {
-    origin: ['http://localhost:3001'],
+    origin: ['http://localhost:3001', 'https://swr-dashboard.herokuapp.com/'],
     credentials: true,
-    methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'] 
 };
 
 app.use(cors(corsOptions))
@@ -50,7 +49,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(('/app/front/build')));
-    console.log("hola")
     app.get('*', (req, res) => {
         res.sendFile(path.join('/app/front/build/index.html'));
     });
