@@ -5,6 +5,7 @@ const app = express()
 const cors = require('cors')
 
 const http = require('http');
+let server = http.Server(app);
 
 const path = require('path');
 
@@ -54,7 +55,7 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log('La aplicacion esta en linea!');
 })
 
