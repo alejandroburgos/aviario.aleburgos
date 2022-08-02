@@ -94,30 +94,6 @@ export const Login = () => {
                                                 Fill in the fields below to login to your account
                                             </p>
                                         </div>
-                                        <div className="text-center py-4 rounded bg-secondary my-4">
-                                            <Button
-                                                className="m-2 btn-pill px-4 font-weight-bold btn-google"
-                                                size="small"
-                                            >
-                                                <span className="btn-wrapper--icon">
-                                                    {/* <FontAwesomeIcon icon={["fab", "google"]} /> */}
-                                                </span>
-                                                <span className="btn-wrapper--label">
-                                                    Login with Google
-                                                </span>
-                                            </Button>
-                                            <Button
-                                                className="m-2 btn-pill px-4 font-weight-bold btn-facebook"
-                                                size="small"
-                                            >
-                                                <span className="btn-wrapper--icon">
-                                                    {/* <FontAwesomeIcon icon={["fab", "facebook"]} /> */}
-                                                </span>
-                                                <span className="btn-wrapper--label">
-                                                    Login with Facebook
-                                                </span>
-                                            </Button>
-                                        </div>
                                         <div className="text-center text-black-50 mb-4">
                                             or sign in with credentials
                                         </div>
@@ -180,10 +156,7 @@ export const Login = () => {
                                             <div className="text-center py-4">
                                                 <Button
                                                     className="btn-second font-weight-bold w-50 my-2"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        login();
-                                                    }}
+                                                    onClick={(e) => login()}
                                                 >
                                                     Sign in
                                                 </Button>
