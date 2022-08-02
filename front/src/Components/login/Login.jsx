@@ -15,7 +15,7 @@ export const Login = () => {
 
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
-    const [dataUser, setDataUser] = useState(null)
+    const [error, setError] = useState()
 
     // useNavigate
     const navigate = useNavigate();
@@ -67,6 +67,7 @@ export const Login = () => {
                 }
             } catch (error) {
                 console.log("error", error);
+                setError(error)
             }
 
         
@@ -160,6 +161,7 @@ export const Login = () => {
                                                 >
                                                     Sign in
                                                 </Button>
+                                        {error ? <div className="text-center text-black-50 mt-3 text-danger">{error}</div> : <div className="text-danger">SIN ERRORES</div>}
                                             </div>
                                             <div className="text-center text-black-50 mt-3">
                                                 Don't have an account?{" "}
