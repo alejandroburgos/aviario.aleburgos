@@ -172,7 +172,7 @@ export const ResumeChartWeekly = (props) => {
                     <Grid item sm={12} md={12} xl={12}>
                         <div className="font-weight-bold font-size-lg mt-4 mb-2 text-black">
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <Button className="btn-outline-primary" onClick={handleClickMenu1}>
+                            <Button className="m-2 btn-transparent btn-link " onClick={handleClickMenu1}>
                                 {moment(start).format('DD-MM-YYYY') + ' || ' + moment(end).format('DD-MM-YYYY')}
                             </Button>
                             <Menu
