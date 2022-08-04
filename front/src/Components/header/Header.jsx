@@ -8,6 +8,7 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import {useLocation, useNavigate} from "react-router-dom";
 
 import clsx from "clsx";
+import { CloseOutlined } from "@material-ui/icons";
 
 export const Header = () => {
     // get current location
@@ -20,8 +21,6 @@ export const Header = () => {
         setUserData(location.state.user);
     }, [location])
     
-
-
     //sing out 
     const singOut = () => {
         localStorage.removeItem("token");
@@ -70,13 +69,13 @@ export const Header = () => {
                 <div className="header-nav-menu flex-grow-0 ml-auto d-none d-lg-block">
                     <ul className="d-flex justify-content-center">
                         <li>
-                            <a className="font-size-sm text-uppercase font-weight-bold rounded-pill"
+                            <span className="font-size-sm text-uppercase font-weight-bold rounded-pill"
                                 onClick={(e) => navigate('/contador', { state: { user: userData } })}
                             >
                                 Contador de Pasta
-                            </a>
+                            </span>
                         </li>
-                        <li>
+                        {/* <li>
                             <a
                                 href="#/"
                                 onClick={(e) => e.preventDefault()}
@@ -84,10 +83,9 @@ export const Header = () => {
                             >
                                 Landings
                                 <span className="opacity-5 dropdown-arrow">
-                                    {/* <FontAwesomeIcon icon={['fas', 'angle-down']}/> */}
                                 </span>
                             </a>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
                 <div className="header-nav-actions ml-auto ml-xl-4 flex-grow-0">
@@ -129,13 +127,13 @@ export const Header = () => {
                         in={collapse}
                         className="nav-collapsed-wrapper bg-second shadow-xxl navbar-collapse"
                     >
-                        <div className="nav-inner-wrapper">
+                        <div>
                             <Button
                                 onClick={toggle}
                                 className="btn-danger btn-icon d-40 shadow-sm hover-scale-lg btn-animated-icon-sm nav-toggle-inner-btn p-0"
                             >
                                 <span className="btn-wrapper--icon">
-                                    {/* <FontAwesomeIcon icon={['fas', 'times']}/> */}
+                                    <CloseOutlined />
                                 </span>
                             </Button>
 
@@ -146,22 +144,17 @@ export const Header = () => {
                                 <ListItem
                                     component="a"
                                     button
-                                    href="#/"
-                                    onClick={(e) => e.preventDefault()}
+                                    href="/login"
+                                    onClick={singOut}
                                     className="px-4 d-flex align-items-center text-white-50"
                                 >
-                                    <span>Courses</span>
-                                    {/* <FontAwesomeIcon icon={['fas', 'angle-right']} className="opacity-6 ml-auto"/> */}
+                                    <span>Salir</span>
                                 </ListItem>
                             </List>
                         </div>
                     </Collapse>
                 </div>
             </div>
-            <div
-                className={clsx("collapse-page-trigger", { "is-active": collapse })}
-                onClick={toggle}
-            />
         </>
     );
 };

@@ -28,8 +28,6 @@ export const ResumeTable = (props) => {
         setModal2(!modal2)
     };
 
-    console.log(props)
-
     let [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(12);
 
@@ -69,7 +67,7 @@ export const ResumeTable = (props) => {
                         {props.dataMoney && props.dataMoney.map((data, i) => {
                             return (
                                 <>
-                                    <tr key={data?._id}>
+                                    <tr key={i}>
                                         <td className="px-4">
                                             <div className="d-flex align-items-center">
                                                 <div className={`d-30 text-white d-flex align-items-center justify-content-center rounded-pill mr-3 ${data?.type === 'revenue' ? 'bg-success' : 'bg-danger'}`}>

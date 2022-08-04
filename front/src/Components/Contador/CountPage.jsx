@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React, {useState, useEffect} from 'react'
 import { FormCount } from './FormCount'
-import { ResumeChart } from './ResumeChart'
+import { ResumeChart } from './ResumeChart/ResumeChart.jsx'
 import { ResumeTable } from './ResumeTable';
 
 import { constants } from '../../Constants';

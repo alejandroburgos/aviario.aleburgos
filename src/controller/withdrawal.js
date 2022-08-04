@@ -95,6 +95,95 @@ exports.getMonthlyReport = async (req, res) => {
     })
 }
 
+// get daily results by month and year of user
+exports.getDailyReport = async (req, res) => {
+    const { user, date } = req.params
+    const userDB = await User.findOne({ user })
+    if (!userDB) {
+        return res.status(400).json({
+            ok: false,
+            message: 'User not found'
+        })
+    }
+
+    const withdrawal = await model.find({ user })
+    if (!withdrawal) {
+        return res.status(400).json({
+            ok: false,
+            message: 'withdrawal not found'
+        })
+    }
+
+    // get all days of month
+    const year = moment(date).format('YYYY')
+    const month = moment(date).format('MM')
+
+    // get all days depend on month and year
+    const days = Array.apply(0, Array(moment(`${date}`, 'MM-YYYY').daysInMonth())).map(function(_,i){return moment(`${date}`, 'MM-YYYY').date(i+1).format('DD')})
+
+    // sum of money of each day of month and check year
+    const data = days.map(day => {
+        const sum = withdrawal.reduce((acc, cur) => {
+            if (moment(cur.date).format('DD') === day && moment(cur.date).format('MM') === month && moment(cur.date).format('YYYY') === year) {
+                return acc + cur.money
+            }
+            return acc
+        }
+        , 0)
+        return sum
+    }
+    )
+
+    return res.status(200).json({
+        ok: true,
+        days,
+        data
+    })
+}
+
+// get the daily revenue filtered by month with parameters user and month
+exports.getDayReport = async (req, res) => {
+    const { user, month } = req.params
+    const userDB = await User.findOne({ user })
+    if (!userDB) {
+        return res.status(400).json({
+            ok: false,
+            message: 'User not found'
+        })
+    }
+
+    const withdrawal = await model.find({ user })
+    if (!withdrawal) {
+        return res.status(400).json({
+            ok: false,
+            message: 'Revenue not found'
+        })
+    }
+
+    // get all days of month
+    const year = moment().format('YYYY')
+    const days = Array.apply(0, Array(moment(`${month}/01/${year}`, 'MM/DD/YYYY').daysInMonth())).map(function(_,i){return moment(`${month}/01/${year}`, 'MM/DD/YYYY').add(i, 'days').format('DD')})
+
+    // sum of money of each day
+    const data = days.map(day => {
+        const sum = withdrawal.reduce((acc, cur) => {
+            if (moment(cur.date).format('DD') === day && moment(cur.date).format('MM') === month) {
+                return acc + cur.money
+            }
+            return acc
+        }
+        , 0)
+        return sum
+    }
+    )
+    return res.status(200).json({
+        ok: true,
+        days,
+        data
+    })
+}
+
+
 exports.deleteWithdrawal = async (req, res) => {
     const { id, user} = req.body
     const userDB = await User.findOne({ user })

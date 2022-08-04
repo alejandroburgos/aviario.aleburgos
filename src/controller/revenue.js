@@ -96,6 +96,53 @@ exports.getMonthlyReport = async (req, res) => {
     })
 }
 
+// get daily results by month and year of user
+exports.getDailyReport = async (req, res) => {
+    const { user, date } = req.params
+    const userDB = await User.findOne({ user })
+    if (!userDB) {
+        return res.status(400).json({
+            ok: false,
+            message: 'User not found'
+        })
+    }
+
+    const revenue = await model.find({ user })
+    if (!revenue) {
+        return res.status(400).json({
+            ok: false,
+            message: 'Revenue not found'
+        })
+    }
+
+    // get all days of month
+    const year = moment(date).format('YYYY')
+    const month = moment(date).format('MM')
+
+    // get all days depend on month and year
+    const days = Array.apply(0, Array(moment(`${date}`, 'MM-YYYY').daysInMonth())).map(function(_,i){return moment(`${date}`, 'MM-YYYY').date(i+1).format('DD')})
+
+    // sum of money of each day of month and check year
+    const data = days.map(day => {
+        const sum = revenue.reduce((acc, cur) => {
+            if (moment(cur.date).format('DD') === day && moment(cur.date).format('MM') === month && moment(cur.date).format('YYYY') === year) {
+                return acc + cur.money
+            }
+            return acc
+        }
+        , 0)
+        return sum
+    }
+    )
+
+    return res.status(200).json({
+        ok: true,
+        days,
+        data
+    })
+}
+
+
 // deleteRevenue with id and return all revenue of user
 exports.deleteRevenue = async (req, res) => {
     const { id, user} = req.body
@@ -122,3 +169,4 @@ exports.deleteRevenue = async (req, res) => {
         type: "revenue"
     })
 }
+

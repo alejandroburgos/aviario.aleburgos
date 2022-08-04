@@ -12,7 +12,19 @@ export const FormCount = (props) => {
     const [withdrawal, setWithdrawal] = useState('0')
     const [revenue, setRevenue] = useState('0')
 
+    const [selectedDateRevenue, setSelectedDateRevenue] = useState(moment().format('yyyy-MM-DD'));
+    const [selectedDateWithdrawal, setSelectedDateWithdrawal] = useState(moment().format('yyyy-MM-DD'));
+
+    const handleDateChangeRevenue = date => {
+        setSelectedDateRevenue(date);
+    };
+    
+    const handleDateChangeWithdrawal = date => {
+        setSelectedDateWithdrawal(date);
+    };
+
     const postRevenue = async () => {
+        setSelectedDateRevenue(moment(selectedDateRevenue).format('DD-MM-YYYY'));
 
         if(revenue > 0) {
             await fetch(`${constants.urlLocal}revenue`, {
@@ -23,7 +35,7 @@ export const FormCount = (props) => {
                 body: JSON.stringify({
                     user: props.user,
                     money: revenue,
-                    date: moment().format("YYYY-MM-DD HH:mm:ss"),
+                    date: selectedDateRevenue,
                     type: "revenue"
                 }),
             })
@@ -32,12 +44,13 @@ export const FormCount = (props) => {
                     if(data.ok){
                         props.setArrRevenue(data)
                         setRevenue('')
+                        setSelectedDateRevenue(moment().format('yyyy-MM-DD'))
                     }
                 });
         }
     };                 
     const postWithdrawal = async () => {
-
+        setSelectedDateWithdrawal(moment(selectedDateWithdrawal).format('DD-MM-YYYY'));
         if(withdrawal > 0) {
             await fetch(`${constants.urlLocal}withdrawal`, {
                 method: "POST",
@@ -47,7 +60,7 @@ export const FormCount = (props) => {
                 body: JSON.stringify({
                     user: props.user,
                     money: withdrawal,
-                    date: moment().format("YYYY-MM-DD HH:mm:ss"),
+                    date: selectedDateWithdrawal,
                     type: "withdrawal"
                 }),
             })
@@ -56,11 +69,13 @@ export const FormCount = (props) => {
                     if(data.ok){
                         props.setArrWithdrawal(data)
                         setWithdrawal('')
+                        setSelectedDateWithdrawal(moment().format('yyyy-MM-DD'))
                     }
                 });
         }
-    };   
-  return (
+    };  
+    
+    return (
     <>
     <div className="mb-spacing-6 mt-4">
         <Grid container spacing={6} className="justify-content-center">
@@ -73,10 +88,14 @@ export const FormCount = (props) => {
                     <div className="font-weight-bold text-black display-3 mt-4 mb-1">
                         <TextField placeholder='Añadir dinero' onChange={(e) => { setWithdrawal(e.target.value)}} value={withdrawal}/>
                     </div>
+                    <div className="font-weight-bold text-black display-3 mt-1 mb-1">
+                        <TextField type='date' onChange={(e) => { handleDateChangeWithdrawal(e.target.value)}} value={selectedDateWithdrawal}
+                            InputProps={{inputProps: { max: moment().format('YYYY-MM-DD')} }}/>
+                    </div>
                     {/* <div className="font-size-lg text-dark opacity-8">Añadir dinero</div> */}
                     <div className="divider mx-4 my-4" />
                     <div className="text-center">
-                        <Button className="p-0 text-uppercase btn-link-danger font-weight-bold font-size-sm btn-link" variant="text" onClick={(e) => {e.preventDefault(); postWithdrawal()}}>
+                        <Button className="m-2 text-uppercase btn-neutral-danger font-weight-bold font-size-sm" onClick={(e) => {e.preventDefault(); postWithdrawal()}}>
                             <span>Añadir</span>
                         </Button>
                     </div>
@@ -92,10 +111,14 @@ export const FormCount = (props) => {
                     <div className="font-weight-bold text-black display-3 mt-4 mb-1">
                         <TextField placeholder='Retirar dinero' onChange={(e) => { setRevenue(e.target.value)}} value={revenue}/>
                     </div>
-                    {/* <div className="font-size-lg text-dark opacity-8">Retirada</div> */}
+                    <div className="font-weight-bold text-black display-3 mt-1 mb-1">
+                        <TextField type='date' onChange={(e) => { handleDateChangeRevenue(e.target.value)}} value={selectedDateRevenue}
+                            InputProps={{inputProps: { max: moment().format('YYYY-MM-DD')} }}
+                        />     
+                    </div>                    
                     <div className="divider mx-4 my-4" />
                     <div className="text-center">
-                        <Button className="p-0 text-uppercase btn-link-success font-weight-bold font-size-sm btn-link" variant="text" onClick={(e) => {e.preventDefault(); postRevenue()}}>
+                        <Button className="m-2 text-uppercase btn-neutral-success font-weight-bold font-size-sm" onClick={(e) => {e.preventDefault(); postRevenue()}}>
                             <span>Retirar</span>
                         </Button>
                     </div>
