@@ -142,7 +142,6 @@ exports.getDailyReport = async (req, res) => {
     })
 }
 
-
 // deleteRevenue with id and return all revenue of user
 exports.deleteRevenue = async (req, res) => {
     const { id, user} = req.body
@@ -170,3 +169,55 @@ exports.deleteRevenue = async (req, res) => {
     })
 }
 
+// get range of revenue with two dates and return all revenue of user
+exports.getWeeklyReport = async (req, res) => {
+    const { user, startDate, endDate } = req.params
+    const userDB = await User.findOne({ user })
+    if (!userDB) {
+        return res.status(400).json({
+            ok: false,
+            message: 'User not found'
+        })
+    }
+
+    const revenue = await model.find({ user })
+    if (!revenue) {
+        return res.status(400).json({
+            ok: false,
+            message: 'Revenue not found'
+        })
+    }
+
+    // get range of start and end date
+    var enumerateDaysBetweenDates = function(startDate, endDate) {
+        var now = startDate, dates = [];
+        while (now.isSameOrBefore(endDate)) {
+                dates.push(now.format('MM/DD/YYYY'));
+                now.add(1, 'days');
+            }
+            return dates;
+    };
+    
+    var fromDate = moment(startDate);
+    var toDate   = moment(endDate);
+    var range = enumerateDaysBetweenDates(fromDate, toDate);
+
+    // weekly report of user from fromDate to toDate
+    const weeklyReport = range.map(day => {
+        const sum = revenue.reduce((acc, cur) => {
+            if (moment(cur.date).format('MM/DD/YYYY') === day) {
+                return acc + cur.money
+            }
+            return acc
+        }
+        , 0)
+        return sum
+    }
+    )
+
+    return res.status(200).json({
+        ok: true,
+        range,
+        data: weeklyReport
+    })
+}

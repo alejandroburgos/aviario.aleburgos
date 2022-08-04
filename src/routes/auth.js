@@ -30,6 +30,9 @@ router.get('/api/withdrawalMonthly/:user', withdrawal.getMonthlyReport)
 router.get('/api/revenueDay/:user/:date', revenue.getDailyReport)
 router.get('/api/withdrawalDay/:user/:date', withdrawal.getDailyReport)
 
+router.get('/api/revenueWeekly/:user/:startDate&&:endDate', revenue.getWeeklyReport)
+router.get('/api/withdrawalWeekly/:user/:startDate&&:endDate', withdrawal.getWeeklyReport)
+
 // delete revenue
 router.delete('/api/revenue/:id', revenue.deleteRevenue)
 router.delete('/api/withdrawal/:id', withdrawal.deleteWithdrawal)

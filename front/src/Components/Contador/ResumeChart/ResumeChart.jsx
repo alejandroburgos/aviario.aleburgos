@@ -10,6 +10,7 @@ import { Toc } from '@material-ui/icons';
 import moment from 'moment';
 import { constants } from '../../../Constants';
 import { ResumeChartMonthly } from './ResumeChartMonthly';
+import { ResumeChartWeekly } from './ResumeChartWeekly';
 
 
 export const ResumeChart = (props) => {
@@ -66,7 +67,7 @@ export const ResumeChart = (props) => {
                         €
                     </h3>
                     <div className="divider my-4" />
-                    <Grid container spacing={6}>
+                    {/* <Grid container spacing={6}>
                         <Grid item xs={6}>
                             <span className="opacity-6 pb-2">Current month</span>
                             <div className="d-flex align-items-center justify-content-center">
@@ -87,7 +88,7 @@ export const ResumeChart = (props) => {
                                 <div className="badge badge-neutral-success text-success ml-2">+13%</div>
                             </div>
                         </Grid>
-                    </Grid>
+                    </Grid> */}
                     <div className="text-center">
                             <FormControl variant="outlined" style={{width: '10em'}}>
                                 <InputLabel id="demo-simple-select-outlined-label">Rango</InputLabel>
@@ -106,6 +107,8 @@ export const ResumeChart = (props) => {
                     </div>
                     { selectRange === 'year' ? 
                     <ResumeChartYears user={props.user} revenue={props.revenue} withdrawal={props.withdrawal} dataMoney={props.dataMoney} modeCard={props.modeCard} setModeCard={props.setModeCard}/>
+                    : selectRange === 'weekly' ? 
+                    <ResumeChartWeekly user={props.user} revenue={props.revenue} withdrawal={props.withdrawal} dataMoney={props.dataMoney} modeCard={props.modeCard} setModeCard={props.setModeCard}/>
                     : <ResumeChartMonthly user={props.user} revenue={props.revenue} withdrawal={props.withdrawal} dataMoney={props.dataMoney} modeCard={props.modeCard} setModeCard={props.setModeCard}/>}
                 </Card>
             </Grid>
