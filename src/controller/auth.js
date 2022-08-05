@@ -124,3 +124,31 @@ exports.getUser = async (req, res) => {
         token: userDB.token
     })
 }
+
+// recover password of user with two password in body
+exports.recover = async (req, res) => {
+    const { user, password, newPassword } = req.body
+    const userDB = await findUser(user)
+
+    if (!userDB) {
+        return res.status(400).json({
+            ok: false,
+            message: 'User not found'
+        })
+    }
+
+    if (password !== newPassword) {
+        return res.status(400).json({
+            ok: false,
+            message: 'Password dont match'
+        })
+    }
+    const newPasswordHash = await hashPass({ password: newPassword })
+    userDB.password = newPasswordHash
+    await userDB.save()
+
+    return res.status(200).json({
+        ok: true,
+        message: 'Password changed'
+    })
+}

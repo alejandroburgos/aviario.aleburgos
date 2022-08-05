@@ -12,6 +12,9 @@ router.post('/api/login', auth.login)
 // register
 router.post('/api/register', auth.register)
 
+// recover password
+router.post('/api/recover', auth.recover)
+
 // get user from params and response token
 router.get('/api/user/:user', auth.getUser)
 
