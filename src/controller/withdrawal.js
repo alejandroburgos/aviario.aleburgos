@@ -4,7 +4,7 @@ var moment = require('moment');
 
 // post money and user information
 exports.withdrawal = async (req, res) => {
-    const { user, money, type, date} = req.body
+    const { user, money, type, date, description} = req.body
     const userDB = await User.findOne({ user })
     if (!userDB) {
         return res.status(400).json({
@@ -19,7 +19,8 @@ exports.withdrawal = async (req, res) => {
             user,
             money,
             type,
-            date
+            date,
+            description
         })
         await withdrawal.save()
         return res.status(201).json({

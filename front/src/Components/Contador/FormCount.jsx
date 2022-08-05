@@ -15,6 +15,9 @@ export const FormCount = (props) => {
     const [selectedDateRevenue, setSelectedDateRevenue] = useState(moment().format('yyyy-MM-DD'));
     const [selectedDateWithdrawal, setSelectedDateWithdrawal] = useState(moment().format('yyyy-MM-DD'));
 
+    const [descriptionRevenue, setDescriptionRevenue] = useState('')
+    const [descriptionWithdrawal, setDescriptionWithdrawal] = useState('')
+
     const handleDateChangeRevenue = date => {
         setSelectedDateRevenue(date);
     };
@@ -36,7 +39,8 @@ export const FormCount = (props) => {
                     user: props.user,
                     money: revenue,
                     date: selectedDateRevenue,
-                    type: "revenue"
+                    type: "revenue",
+                    description: descriptionRevenue
                 }),
             })
                 .then((res) => res.json())
@@ -44,6 +48,7 @@ export const FormCount = (props) => {
                     if(data.ok){
                         props.setArrRevenue(data)
                         setRevenue('')
+                        setDescriptionRevenue('')
                         setSelectedDateRevenue(moment().format('yyyy-MM-DD'))
                     }
                 });
@@ -61,7 +66,8 @@ export const FormCount = (props) => {
                     user: props.user,
                     money: withdrawal,
                     date: selectedDateWithdrawal,
-                    type: "withdrawal"
+                    type: "withdrawal",
+                    description: descriptionWithdrawal
                 }),
             })
                 .then((res) => res.json())
@@ -69,6 +75,7 @@ export const FormCount = (props) => {
                     if(data.ok){
                         props.setArrWithdrawal(data)
                         setWithdrawal('')
+                        setDescriptionWithdrawal('')
                         setSelectedDateWithdrawal(moment().format('yyyy-MM-DD'))
                     }
                 });
@@ -85,8 +92,11 @@ export const FormCount = (props) => {
                     <div className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-danger text-white btn-icon mx-auto text-center shadow-danger">
                         <MoneyOff className="display-4" />
                     </div>
-                    <div className="font-weight-bold text-black display-3 mt-4 mb-1">
-                        <TextField placeholder='Añadir dinero' onChange={(e) => { setWithdrawal(e.target.value)}} value={withdrawal}/>
+                    <div className="font-weight-bold text-black display-3 mt-4 mb-1 ">
+                        <TextField type="number" min={0} onChange={(e) => { setWithdrawal(e.target.value) }} value={withdrawal} style={{width: '4em'}}/>
+                    </div>
+                    <div>
+                        <TextField placeholder='Concepto' onChange={(e) => { setDescriptionWithdrawal(e.target.value)}} value={descriptionWithdrawal}/>
                     </div>
                     <div className="font-weight-bold text-black display-3 mt-1 mb-1">
                         <TextField type='date' onChange={(e) => { handleDateChangeWithdrawal(e.target.value)}} value={selectedDateWithdrawal}
@@ -109,7 +119,10 @@ export const FormCount = (props) => {
                         <AttachMoney className="display-4" />
                     </div>
                     <div className="font-weight-bold text-black display-3 mt-4 mb-1">
-                        <TextField placeholder='Retirar dinero' onChange={(e) => { setRevenue(e.target.value)}} value={revenue}/>
+                        <TextField style={{width: '4em'}} onChange={(e) => { setRevenue(e.target.value)}} value={revenue}/>
+                    </div>
+                    <div>
+                        <TextField className="mt-1" placeholder='Concepto' onChange={(e) => { setDescriptionRevenue(e.target.value)}} value={descriptionRevenue}/>
                     </div>
                     <div className="font-weight-bold text-black display-3 mt-1 mb-1">
                         <TextField type='date' onChange={(e) => { handleDateChangeRevenue(e.target.value)}} value={selectedDateRevenue}

@@ -65,6 +65,7 @@ export const ResumeTable = (props) => {
                         </thead>
                         <tbody>
                         {props.dataMoney && props.dataMoney.map((data, i) => {
+                            console.log(data)
                             return (
                                 <>
                                     <tr key={i}>
@@ -76,7 +77,7 @@ export const ResumeTable = (props) => {
                                                 <div>
                                                 <div className={`px-4 py-1 h-auto border-1 
                                                     ${data?.type === 'revenue' ? 'text-success border-success badge badge-neutral-success' : 'text-danger border-danger badge badge-neutral-danger'}`
-                                                    }>{data?.type === 'revenue' ? 'Retirada a banco' : 'Ingresos'}</div>
+                                                    }>{data?.type === 'revenue' ? data.description : data.description}</div>
                                                 </div>
                                             </div>
                                         </td>
