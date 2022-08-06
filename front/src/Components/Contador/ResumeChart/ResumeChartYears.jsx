@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Chart from 'react-apexcharts';
-import hero2 from './../../../assets/images/hero-bg/hero-2.jpg';
 
 import { Grid, Card, Menu, Button, Box, List, ListItem } from "@material-ui/core";
 import { Toc } from '@material-ui/icons';
@@ -9,28 +8,22 @@ import { constants } from '../../../Constants';
 
 
 export const ResumeChartYears = (props) => {
-
-    let sumRevenue = 0;
-    let sumWithdrawal = 0;
     
-    const [loading, setLoading] = useState(false)
-    const [getWithdrawalMonthly, setGetWithdrawalMonthly] = useState({monthlyReport: [0]})
-    const [getRevenueMonthly, setGetRevenueMonthly] = useState({monthlyReport: [0]})
     // get localStorage
     const token = localStorage.getItem("token");
     const userData = JSON.parse(token)
 
     useEffect(() => {
         const url = `${constants.urlLocal}withdrawalMonthly/${userData.user}`;
-        setLoading(true);
+        props.setLoading(true);
         const fetchData = async () => {
             try {
                 const response = await fetch(url);
                 const json = await response.json();
-                setGetWithdrawalMonthly(json);
-                setLoading(false);
+                props.setArrChartWithdrawal(json);
+                props.setLoading(false);
             } catch (error) {
-                setLoading(true);
+                props.setLoading(true);
             }
         };
         fetchData();
@@ -38,15 +31,15 @@ export const ResumeChartYears = (props) => {
 
     useEffect(() => {
         const url = `${constants.urlLocal}revenueMonthly/${userData.user}`;
-        setLoading(true);
+        props.setLoading(true);
         const fetchData = async () => {
             try {
                 const response = await fetch(url);
                 const json = await response.json();
-                setGetRevenueMonthly(json);
-                setLoading(false);
+                props.setArrChartRevenue(json);
+                props.setLoading(false);
             } catch (error) {
-                setLoading(true);
+                props.setLoading(true);
             }
         };
         fetchData();
@@ -97,11 +90,11 @@ export const ResumeChartYears = (props) => {
     const chartDashboardMonitoring3AData = [
         {
             name: 'Ingresos',
-            data: !loading && getWithdrawalMonthly && getWithdrawalMonthly?.monthlyReport
+            data: props.arrChartWithdrawal && props.arrChartWithdrawal?.data
         },
         {
             name: 'Retiradas',
-            data: !loading && getRevenueMonthly && getRevenueMonthly?.monthlyReport
+            data: props.arrChartRevenue && props.arrChartRevenue?.data
         }
     ]
 
