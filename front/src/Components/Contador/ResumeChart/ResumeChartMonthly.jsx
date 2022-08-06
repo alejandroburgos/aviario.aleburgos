@@ -15,9 +15,6 @@ import { parseISO } from 'date-fns';
 
 export const ResumeChartMonthly = (props) => {
 
-    const [loading, setLoading] = useState(false)
-    const [getWithdrawalMonthly, setGetWithdrawalMonthly] = useState({monthlyReport: [0]})
-    const [getRevenueMonthly, setGetRevenueMonthly] = useState({monthlyReport: [0]})
     // get localStorage
     const token = localStorage.getItem("token");
     const userData = JSON.parse(token)
@@ -26,15 +23,15 @@ export const ResumeChartMonthly = (props) => {
 
     useEffect(() => {
         const url = `${constants.urlLocal}withdrawalDay/${userData.user}/${moment(date).format('MM-DD-YYYY')}`;
-        setLoading(true);
+        props.setLoading(true);
         const fetchData = async () => {
             try {
                 const response = await fetch(url);
                 const json = await response.json();
-                setGetWithdrawalMonthly(json);
-                setLoading(false);
+                props.setArrChartWithdrawal(json);
+                props.setLoading(false);
             } catch (error) {
-                setLoading(true);
+                props.setLoading(true);
             }
         };
         fetchData();
@@ -42,21 +39,19 @@ export const ResumeChartMonthly = (props) => {
 
     useEffect(() => {
         const url = `${constants.urlLocal}revenueDay/${userData.user}/${moment(date).format('MM-DD-YYYY')}`;
-        setLoading(true);
+        props.setLoading(true);
         const fetchData = async () => {
             try {
                 const response = await fetch(url);
                 const json = await response.json();
-                setGetRevenueMonthly(json);
-                setLoading(false);
+                props.setArrChartRevenue(json);
+                props.setLoading(false);
             } catch (error) {
-                setLoading(true);
+                props.setLoading(true);
             }
         };
         fetchData();
     }, [date, props.revenue]);
-
-
 
     const chartDashboardMonitoring3AOptions = {
         chart: {
@@ -75,7 +70,7 @@ export const ResumeChartMonthly = (props) => {
             width: 2,
             colors: ['transparent']
         },
-        labels: getWithdrawalMonthly.days,
+        labels: props.arrChartWithdrawal.days,
         fill: {
             opacity: 0.85,
             colors: ['#ac0616', '#16a136']
@@ -101,11 +96,11 @@ export const ResumeChartMonthly = (props) => {
     const chartDashboardMonitoring3AData = [
         {
             name: 'Ingresos',
-            data: !loading && getWithdrawalMonthly && getWithdrawalMonthly?.data
+            data: props.arrChartWithdrawal && props.arrChartWithdrawal?.data
         },
         {
             name: 'Retiradas',
-            data: !loading && getRevenueMonthly && getRevenueMonthly?.data
+            data: props.arrChartRevenue && props.arrChartRevenue?.data
         }
     ]
 

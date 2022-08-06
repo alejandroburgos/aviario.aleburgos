@@ -11,12 +11,12 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { parseISO } from 'date-fns';
 import endOfWeek from 'date-fns/endOfWeek';
 import isSameDay from 'date-fns/isSameDay';
 import isWithinInterval from 'date-fns/isWithinInterval';
 import startOfWeek from 'date-fns/startOfWeek';
+import { ArrowRightAltOutlined, CalendarTodayOutlined, DateRange, DateRangeOutlined } from '@material-ui/icons';
 
 const CustomPickersDay = styled(PickersDay, {
     shouldForwardProp: (prop) =>
@@ -42,9 +42,6 @@ const CustomPickersDay = styled(PickersDay, {
 
 export const ResumeChartWeekly = (props) => {
 
-    const [loading, setLoading] = useState(false)
-    const [getWithdrawalMonthly, setGetWithdrawalMonthly] = useState({monthlyReport: [0]})
-    const [getRevenueMonthly, setGetRevenueMonthly] = useState({monthlyReport: [0]})
     // get localStorage
     const token = localStorage.getItem("token");
     const userData = JSON.parse(token)
@@ -60,15 +57,15 @@ export const ResumeChartWeekly = (props) => {
 
     useEffect(() => {
         const url = `${constants.urlLocal}withdrawalWeekly/${userData.user}/${moment(start).format('MM-DD-YYYY')}&&${moment(end).format('MM-DD-YYYY')}`;
-        setLoading(true);
+        props.setLoading(true);
         const fetchData = async () => {
             try {
                 const response = await fetch(url);
                 const json = await response.json();
-                setGetWithdrawalMonthly(json);
-                setLoading(false);
+                props.setArrChartWithdrawal(json);
+                props.setLoading(false);
             } catch (error) {
-                setLoading(true);
+                props.setLoading(true);
             }
         };
         fetchData();
@@ -76,15 +73,15 @@ export const ResumeChartWeekly = (props) => {
 
     useEffect(() => {
         const url = `${constants.urlLocal}revenueWeekly/${userData.user}/${moment(start).format('MM-DD-YYYY')}&&${moment(end).format('MM-DD-YYYY')}`;
-        setLoading(true);
+        props.setLoading(true);
         const fetchData = async () => {
             try {
                 const response = await fetch(url);
                 const json = await response.json();
-                setGetRevenueMonthly(json);
-                setLoading(false);
+                props.setArrChartRevenue(json);
+                props.setLoading(false);
             } catch (error) {
-                setLoading(true);
+                props.setLoading(true);
             }
         };
         fetchData();
@@ -130,7 +127,7 @@ export const ResumeChartWeekly = (props) => {
             width: 2,
             colors: ['transparent']
         },
-        labels: getWithdrawalMonthly.range,
+        labels: props.arrChartWithdrawal.range,
         fill: {
             opacity: 0.85,
             colors: ['#ac0616', '#16a136']
@@ -156,11 +153,11 @@ export const ResumeChartWeekly = (props) => {
     const chartDashboardMonitoring3AData = [
         {
             name: 'Ingresos',
-            data: !loading && getWithdrawalMonthly && getWithdrawalMonthly?.data
+            data: props.arrChartWithdrawal && props.arrChartWithdrawal?.data
         },
         {
             name: 'Retiradas',
-            data: !loading && getRevenueMonthly && getRevenueMonthly?.data
+            data: props.arrChartRevenue && props.arrChartRevenue?.data
         }
     ]
 
@@ -172,8 +169,9 @@ export const ResumeChartWeekly = (props) => {
                     <Grid item sm={12} md={12} xl={12}>
                         <div className="font-weight-bold font-size-lg mt-4 mb-2 text-black">
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <Button className="m-2 btn-transparent btn-link " onClick={handleClickMenu1}>
-                                {moment(start).format('DD-MM-YYYY') + ' || ' + moment(end).format('DD-MM-YYYY')}
+                            <Button className="m-2" onClick={handleClickMenu1} style={{borderBottom: '1px solid #898887'}}>
+                                {moment(start).format('DD-MM-YYYY')} <ArrowRightAltOutlined /> {moment(end).format('DD-MM-YYYY')}
+                                <CalendarTodayOutlined className="ml-2" style={{fontSize: '20', color:"#898887"}}/>
                             </Button>
                             <Menu
                                 anchorEl={anchorElMenu1}

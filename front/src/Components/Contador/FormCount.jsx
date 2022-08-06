@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Grid, Card, Menu, Button, Box, List, ListItem, TextField } from "@material-ui/core";
+import { Grid, Card, Menu, Button, Box, List, ListItem, TextField, InputAdornment, FormControl, InputLabel, FilledInput, Input, FormHelperText } from "@material-ui/core";
 import {
     MoneyOff,
     AttachMoney
@@ -93,20 +93,34 @@ export const FormCount = (props) => {
                         <MoneyOff className="display-4" />
                     </div>
                     <div className="font-weight-bold text-black display-3 mt-4 mb-1 ">
-                        <TextField type="number" min={0} onChange={(e) => { setWithdrawal(e.target.value) }} value={withdrawal} style={{width: '4em'}}/>
+                        {/* <TextField type="number" min={0} onChange={(e) => { setWithdrawal(e.target.value) }} value={withdrawal} style={{width: '4em'}}/> */}
+                        <FormControl style={{width: '2em'}}>
+                            <Input
+                                type="number"
+                                id="standard-adornment-weight"
+                                value={withdrawal}
+                                onChange={(e) => { setWithdrawal(e.target.value) }}
+                                endAdornment={<InputAdornment position="end">€</InputAdornment>}
+                                aria-describedby="standard-weight-helper-text"
+                                inputProps={{
+                                    'aria-label': 'Gasto',
+                                }}
+                            />
+                            <FormHelperText id="standard-weight-helper-text">Gasto</FormHelperText>
+                        </FormControl>
                     </div>
-                    <div>
-                        <TextField placeholder='Concepto' onChange={(e) => { setDescriptionWithdrawal(e.target.value)}} value={descriptionWithdrawal}/>
-                    </div>
-                    <div className="font-weight-bold text-black display-3 mt-1 mb-1">
+                    <div className="font-weight-bold text-black display-3 mt-3 mb-1">
                         <TextField type='date' onChange={(e) => { handleDateChangeWithdrawal(e.target.value)}} value={selectedDateWithdrawal}
                             InputProps={{inputProps: { max: moment().format('YYYY-MM-DD')} }}/>
+                    </div>
+                    <div>
+                        <TextField multiline rowsMax="4" className="mt-1" placeholder='Concepto' style={{width: '80%'}} onChange={(e) => { setDescriptionWithdrawal(e.target.value)}} value={descriptionWithdrawal}/>
                     </div>
                     {/* <div className="font-size-lg text-dark opacity-8">Añadir dinero</div> */}
                     <div className="divider mx-4 my-4" />
                     <div className="text-center">
                         <Button className="m-2 text-uppercase btn-neutral-danger font-weight-bold font-size-sm" onClick={(e) => {e.preventDefault(); postWithdrawal()}}>
-                            <span>Añadir</span>
+                            <span>Añadir gasto</span>
                         </Button>
                     </div>
                 </div>
@@ -119,20 +133,32 @@ export const FormCount = (props) => {
                         <AttachMoney className="display-4" />
                     </div>
                     <div className="font-weight-bold text-black display-3 mt-4 mb-1">
-                        <TextField style={{width: '4em'}} onChange={(e) => { setRevenue(e.target.value)}} value={revenue}/>
-                    </div>
-                    <div>
-                        <TextField className="mt-1" placeholder='Concepto' onChange={(e) => { setDescriptionRevenue(e.target.value)}} value={descriptionRevenue}/>
-                    </div>
-                    <div className="font-weight-bold text-black display-3 mt-1 mb-1">
+                    <FormControl style={{width: '2em'}}>
+                            <Input
+                                type="number"
+                                id="standard-adornment-weight"
+                                value={revenue}
+                                onChange={(e) => { setRevenue(e.target.value) }}
+                                endAdornment={<InputAdornment position="end">€</InputAdornment>}
+                                aria-describedby="standard-weight-helper-text"
+                                inputProps={{
+                                    'aria-label': 'Beneficio',
+                                }}
+                            />
+                            <FormHelperText id="standard-weight-helper-text">Beneficio</FormHelperText>
+                        </FormControl>                    </div>
+                    <div className="font-weight-bold text-black display-3 mt-3 mb-1">
                         <TextField type='date' onChange={(e) => { handleDateChangeRevenue(e.target.value)}} value={selectedDateRevenue}
                             InputProps={{inputProps: { max: moment().format('YYYY-MM-DD')} }}
                         />     
                     </div>                    
+                    <div>
+                        <TextField multiline rowsMax="4" className="mt-1" placeholder='Concepto' style={{width: '80%'}} onChange={(e) => { setDescriptionRevenue(e.target.value)}} value={descriptionWithdrawal}/>
+                    </div>
                     <div className="divider mx-4 my-4" />
                     <div className="text-center">
                         <Button className="m-2 text-uppercase btn-neutral-success font-weight-bold font-size-sm" onClick={(e) => {e.preventDefault(); postRevenue()}}>
-                            <span>Retirar</span>
+                            <span>Añadir beneficio</span>
                         </Button>
                     </div>
                 </div>
