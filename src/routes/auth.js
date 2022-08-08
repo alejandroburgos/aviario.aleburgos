@@ -3,6 +3,7 @@ const express = require('express')
 const auth = require('../controller/auth.js')
 const revenue = require('../controller/revenue.js')
 const withdrawal = require('../controller/withdrawal.js')
+const pair = require('../controller/pair.js')
 
 const router = express.Router()
 
@@ -39,5 +40,12 @@ router.get('/api/withdrawalWeekly/:user/:startDate&&:endDate', withdrawal.getWee
 // delete revenue
 router.delete('/api/revenue/:id', revenue.deleteRevenue)
 router.delete('/api/withdrawal/:id', withdrawal.deleteWithdrawal)
+
+// new pair of user
+router.post('/api/newPair', pair.newPair)
+// get pair of user
+router.get('/api/pair/:user', pair.getPair)
+// delete pair
+router.delete('/api/pair/:id', pair.deletePair)
 
 module.exports = router

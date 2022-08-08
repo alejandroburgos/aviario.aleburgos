@@ -39,7 +39,6 @@ export const ResumeChart = (props) => {
     setSelectRange(event.target.value);
   };
 
-console.log(loading)
   return (
     <div>
       <Grid container spacing={0}>

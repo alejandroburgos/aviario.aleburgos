@@ -9,13 +9,13 @@ import {
   Outlet,
 } from "react-router-dom";
 import "./assets/base.scss";
+import "./assets/index.scss";
 
 import { Home } from "./Components/Home.jsx";
 import { Login } from "./Components/login/Login";
-import HomeIcon from "@material-ui/icons/Home";
-import { useEffect } from "react";
 import { Header } from "./Components/header/Header";
 import { CountPage } from "./Components/Contador/CountPage";
+import { Birds } from "./Components/Birds/Birds";
 
 // dont appear nav if login dont have token
 export const App = () => {
@@ -33,6 +33,7 @@ export const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/contador" element={<CountPage state={userData} />} />
+        <Route path="/crianza-de-pajaros" element={<Birds state={userData}/>} />
       </Routes>
     </>
   );

@@ -71,8 +71,17 @@ export const Header = () => {
                         <li>
                             <span className="font-size-sm text-uppercase font-weight-bold rounded-pill"
                                 onClick={(e) => navigate('/contador', { state: { user: userData } })}
+                                style={{width: "20em"}}
                             >
                                 Contador de Pasta
+                            </span>
+                        </li>
+                        <li>
+                            <span className="font-size-sm text-uppercase font-weight-bold rounded-pill"
+                                onClick={(e) => navigate('/crianza-de-pajaros', { state: { user: userData } })}
+                                style={{width: "20em"}}
+                            >
+                                Crianza de pájaros
                             </span>
                         </li>
                         {/* <li>
@@ -103,9 +112,9 @@ export const Header = () => {
 
                         >
                             <div className="p-3">
-                            <MenuItem className="pr-5 px-3 text-dark" onClick={handleClose}>Profile</MenuItem>
-                            <MenuItem className="pr-5 px-3 text-dark" onClick={handleClose}>My account</MenuItem>
-                            <MenuItem className="pr-5 px-3 text-danger" onClick={singOut}>Logout</MenuItem>
+                                {/* <MenuItem className="pr-5 px-3 text-dark" onClick={handleClose}>Profile</MenuItem>
+                                <MenuItem className="pr-5 px-3 text-dark" onClick={handleClose}>My account</MenuItem> */}
+                                <MenuItem className="pr-5 px-3 text-danger" onClick={singOut}>Logout</MenuItem>
                             </div>
                         </Menu>
                     </span>
@@ -141,6 +150,28 @@ export const Header = () => {
                                 component="div"
                                 className="nav-pills nav-transparent nav-lg flex-column p-3"
                             >
+                                <ListItem
+                                    component="a"
+                                    button
+                                    onClick={(e) => {
+                                        navigate('/contador', { state: { user: userData } }); 
+                                        toggle()
+                                    }}
+                                    className="px-4 d-flex align-items-center text-white-50"
+                                >
+                                    <span>Contador de pasta</span>
+                                </ListItem>
+                                <ListItem
+                                    component="a"
+                                    button
+                                    onClick={(e) => {
+                                        navigate('/crianza-de-pajaros', { state: { user: userData } }); 
+                                        toggle()
+                                    }}
+                                    className="px-4 d-flex align-items-center text-white-50"
+                                >
+                                    <span>Crianza de pájaros</span>
+                                </ListItem>
                                 <ListItem
                                     component="a"
                                     button
