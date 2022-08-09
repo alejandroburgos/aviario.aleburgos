@@ -17,6 +17,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ModalColor } from "./ModalColor";
 import moment from "moment";
+import { Add, Delete } from "@material-ui/icons";
 
 
 
@@ -37,7 +38,17 @@ export const NewPair = (props) => {
 
     const [generalNotes, setGeneralNotes] = useState("");
 
-    const [puestas, setPuestas] = useState()
+    // random id
+    const [objPuestasPareja, setObjPuestasPareja] = useState({
+            id: Math.random().toString(36),
+        },
+    )
+    const [arrPuestasPareja, setArrPuestasPareja] = useState([{
+        id: Math.random().toString(36),
+    }])
+
+    console.log(arrPuestasPareja)
+
     const [numHuevos, setNumHuevos] = useState()
     const [iniIncubacion, setIniIncubacion] = useState()
     const [huevosClaros, setHuevosClaros] = useState()
@@ -82,13 +93,13 @@ export const NewPair = (props) => {
             procedencyFemale,
             notesFemale,
             generalNotes,
-            puestas,
             numHuevos,
             iniIncubacion,
             huevosClaros,
             fechNacimiento,
             numAnillas,
             observaciones,
+            arrPuestasPareja
         };
         // send data to server
         fetch("http://localhost:3001/api/newPair", {
@@ -101,7 +112,7 @@ export const NewPair = (props) => {
             .then((res) => res.json())
             .then((data) => {
                 props.setPairs(data.pair);
-                console.log(data);
+                props.setOpen(false)
             }
             // if error
             ).catch((err) => {
@@ -286,6 +297,7 @@ export const NewPair = (props) => {
                                 </Grid>
                             </Grid>
                             <div className="divider my-3" />
+
                             <TextField
                                 className="mt-4"
                                 variant="outlined"
@@ -299,9 +311,29 @@ export const NewPair = (props) => {
                             />
                             <div className="divider my-3" />
                         </Grid>
-                            <Table className="table table-alternate-spaced">
+                        <Card className="card-box mb-spacing-6-x2" style={{width: '100%'}}>
+                        <div className="card-header">
+                            <div className="card-header--title font-size-lg">
+                                Nueva puesta
+                            </div>
+                            <div className="card-header--actions">
+                                <Tooltip title="Nuevo">
+                                    <Button size="small" className="btn-link px-1" 
+                                            onClick={(e) => {
+                                                // set new id
+                                                setObjPuestasPareja({id: Math.random().toString(36)})
+                                                setArrPuestasPareja((prevState) => [...prevState, objPuestasPareja])
+                                                }}>
+                                        <Add />
+                                    </Button>
+                                </Tooltip>
+                            </div>
+                        </div>
+                        <div className="table-responsive-md">
+                            <Table className="table table-alternate-spaced mt-4">
                             <thead>
                                 <tr>
+                                    <th scope="col">#</th>
                                     <th scope="col">Puestas</th>
                                     <th scope="col">Nº huevos</th>
                                     <th scope="col">Inicio incubación</th>
@@ -313,41 +345,59 @@ export const NewPair = (props) => {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td className="text-center text-black-50">
-                                        <TextField type="number" placeholder="Puestas" style={{width: '5em'}} value={puestas} onChange={(e) => setPuestas(e.target.value) } />
-                                    </td>
-                                    <td>
-                                        <TextField type="number" placeholder="Número de huevos" style={{width: '5em'}} value={numHuevos} onChange={(e) => setNumHuevos(e.target.value) } />
-                                    </td>
-                                    <td>
-                                        <TextField type="date" onChange={(e) => setIniIncubacion(e.target.value)} defaultValue={iniIncubacion} />
-                                    </td>
-                                    <td className="font-size-lg font-weight-bold">
-                                        <TextField type="number" placeholder="Huevos claros" style={{width: '5em'}} value={huevosClaros} onChange={(e) => setHuevosClaros(e.target.value) } />
-                                    </td>
-                                    <td className="text-warning">
-                                        <TextField type="date" onChange={(e) => setFechNacimiento(e.target.value)} defaultValue={fechNacimiento} />
-                                    </td>
-                                    <td className="text-warning">
-                                        <TextField type="number" placeholder="Anillas puestas" style={{width: '8em'}} value={numAnillas} onChange={(e) => setNumAnillas(e.target.value) } />
-                                    </td>
-                                    <td className="text-warning">
-                                        <TextField
-                                        fullWidth
-                                        id="standard-multiline-flexible"
-                                        multiline
-                                        placeholder="observaciones"
-                                        maxRows="4"
-                                        value={observaciones}
-                                        onChange={(e) => setObservaciones(e.target.value)}
-                                    />
-                                    </td>
-                                   
-                                </tr>
+                                {arrPuestasPareja && arrPuestasPareja.map((puesta, i) => {
+                                    return (
+                                        <>
+                                        <tr key={i}>
+                                            <td className="text-center text-black-50">
+                                                <span>{i+1}</span>
+                                            </td>
+                                            <td className="text-center text-black-50">
+                                                <TextField type="number" placeholder="Puestas" style={{width: '5em'}} value={puesta.puestas} onChange={(e) => puesta.puestas = e.target.value } />
+                                            </td>
+                                            <td>
+                                                <TextField type="number" placeholder="Número de huevos" style={{width: '5em'}} value={puesta.numHuevos} onChange={(e) => puesta.numHuevos = e.target.value } />
+                                            </td>
+                                            <td>
+                                                <TextField type="date" onChange={(e) => puesta.iniIncubacion = e.target.value} defaultValue={puesta.iniIncubacion} />
+                                            </td>
+                                            <td className="font-size-lg font-weight-bold">
+                                                <TextField type="number" placeholder="Huevos claros" style={{width: '5em'}} value={puesta.huevosClaros} onChange={(e) => puesta.huevosClaros = e.target.value } />
+                                            </td>
+                                            <td className="text-warning">
+                                                <TextField type="date" onChange={(e) => puesta.fechNacimiento = e.target.value} defaultValue={puesta.fechNacimiento} />
+                                            </td>
+                                            <td className="text-warning">
+                                                <TextField type="number" placeholder="Anillas puestas" style={{width: '8em'}} value={puesta.numAnillas} onChange={(e) => puesta.numAnillas = e.target.value } />
+                                            </td>
+                                            <td className="text-warning">
+                                                <TextField
+                                                fullWidth
+                                                id="standard-multiline-flexible"
+                                                multiline
+                                                placeholder="observaciones"
+                                                maxRows="4"
+                                                value={observaciones}
+                                                onChange={(e) => puesta.observaciones = e.target.value}
+                                            />
+                                            </td>
+                                            <td className="text-center">
+                                                <Button size="small" className="btn-link d-30 p-0 btn-icon btn-animated-icon" 
+                                                        onClick={() => { 
+                                                            setArrPuestasPareja(arrPuestasPareja.filter((item) => item.id !== puesta.id))
+                                                        }}>
+                                                    <Delete />
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                        </>
+                                    )
+                                }) }
                                 <tr className="divider"></tr>
                                 </tbody>
                             </Table>
+                        </div>
+                    </Card>
                     </Grid>
                 <DialogActions>
                     <Button

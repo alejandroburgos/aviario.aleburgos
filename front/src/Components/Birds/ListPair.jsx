@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, LinearProgress, Table, Tooltip } from "@material-ui/core";
-import { Add, Close, Delete, DeleteSharp, PlusOneOutlined, SearchSharp } from "@material-ui/icons";
+import { Add, Close, Delete, DeleteSharp, Edit, PlusOneOutlined, SearchSharp } from "@material-ui/icons";
 import { NewPair } from "./NewPair";
 import { constants } from "../../Constants";
 import moment from "moment";
 import 'moment/locale/es';
+import { ModalDeletePair } from "./Modal/ModalDeletePair";
 
 export const ListPair = (props) => {
 
@@ -13,6 +14,11 @@ export const ListPair = (props) => {
     const handleClickOpen = () => {
       setOpen(true);
     };
+
+    const [modalDelete, setModalDelete] = useState(false)
+    const toggleModalDelete = () => {
+        setModalDelete(!modalDelete)
+    }
   
     // fetch getPair
     const [pairs, setPairs] = useState([]);
@@ -31,22 +37,6 @@ export const ListPair = (props) => {
         }
         fetchData();
     }, []);
-
-    // detele pair
-    const deletePair = async (id) => {
-        try {
-            const result = await fetch(`${constants.urlLocal}pair/${id}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-            const data = await result.json();
-            setPairs(data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     // compare iniIncubacion with today and get a number
     const getDays = (iniIncubacion) => {
@@ -96,8 +86,6 @@ export const ListPair = (props) => {
                             let dynamicMaxValue = 20;
                             let rule = parseInt(getDays(pairs.iniIncubacion) * parseInt(100)) / parseInt(dynamicMaxValue)
 
-                            console.log(rule)
-
                             return (
                                 <>
                                     <tr>
@@ -117,7 +105,11 @@ export const ListPair = (props) => {
                                             <Button size="small" className="btn-link d-30 p-0 btn-icon btn-animated-icon">
                                                 <SearchSharp />
                                             </Button>
-                                            <Button size="small" className="btn-link d-30 p-0 btn-icon btn-animated-icon" onClick={()=> deletePair(pairs._id)}>
+                                            <Button size="small" className="btn-link d-30 p-0 btn-icon btn-animated-icon">
+                                                <Edit />
+                                            </Button>
+                                            <Button size="small" className="btn-link d-30 p-0 btn-icon btn-animated-icon" onClick={toggleModalDelete}>
+                                                <ModalDeletePair setPairs={setPairs} toggle={toggleModalDelete} modal={modalDelete} user={props.user} id={pairs._id} />
                                                 <Delete  />
                                             </Button>
                                         </td>

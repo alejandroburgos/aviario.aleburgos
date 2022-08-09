@@ -45,7 +45,7 @@ export const Header = () => {
 
     return (
         <>
-            <div className="header-nav-wrapper header-nav-wrapper-lg rounded navbar-light ml-4" style={{marginBottom: "100px"}}>
+            <div className="header-nav-wrapper header-nav-wrapper-lg rounded navbar-light ml-4" style={{marginBottom: "50px"}}>
                 <div className="app-nav-logo flex-grow-0 app-nav-logo--dark mr-3">
                     <a
                         href="#/"

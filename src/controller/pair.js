@@ -51,10 +51,14 @@ exports.getPair = async (req, res) => {
 
 // delete pair from id
 exports.deletePair = async (req, res) => {
-    const { id } = req.params
+    const { id, user} = req.params
     try {
         await model.findByIdAndDelete(id)
-        res.json({ message: 'Pair deleted' })
+        res.json({ 
+            message: 'Pair deleted',
+            // get all pairs from the user
+            pair: await model.find({ user })
+         })
     } catch (error) {
         res.status(500).json({ message: error })
     }

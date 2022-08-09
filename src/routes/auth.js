@@ -46,6 +46,6 @@ router.post('/api/newPair', pair.newPair)
 // get pair of user
 router.get('/api/pair/:user', pair.getPair)
 // delete pair
-router.delete('/api/pair/:id', pair.deletePair)
+router.delete('/api/pair/:id/:user', pair.deletePair)
 
 module.exports = router

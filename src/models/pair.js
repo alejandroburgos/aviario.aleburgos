@@ -44,26 +44,8 @@ const UserScheme = new mongoose.Schema(
         generalNotes: {
             type: String,
         }, 
-        puestas: {
-            type: String,
-        },
-        numHuevos: {
-            type: String,
-        },
-        iniIncubacion: {
-            type: String,
-        },
-        huevosClaros: {
-            type: String,
-        },
-        fechNacimiento: {
-            type: String,
-        },
-        numAnillas: {
-            type: String,
-        },
-        observaciones: {
-            type: String,
+        arrPuestasParejas: {
+            type: Array,
         }
     },
     {

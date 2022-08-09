@@ -77,7 +77,6 @@ exports.login = async (req, res) => {
 // create register user with password and insert
 exports.register = async (req, res) => {
     const { user, password } = req.body
-    console.log(req.body)
     const userExists = await findUser(user)
     if (userExists) {
         return res.status(400).json({
