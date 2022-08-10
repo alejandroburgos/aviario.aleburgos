@@ -11,7 +11,7 @@ const UserScheme = new mongoose.Schema(
             type: String,
         },
         numberPair: {
-            type: Number,
+            type: String,
             required: true
         },
         anillaMale: {

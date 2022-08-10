@@ -18,11 +18,10 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ModalColor } from "./ModalColor";
 import moment from "moment";
 import { Add, Delete } from "@material-ui/icons";
-
-
+import { ModalDeleteNewPuesta } from "./Modal/ModalDeleteNewPuesta";
 
 export const NewPair = (props) => {
-    const [numberPair, setNumberPair] = useState();
+    const [numberPair, setNumberPair] = useState('');
 
     const [anillaMale, setAnillaMale] = useState("");
     const [yearMale, setYearMale] = useState(moment().format("DD/MM/YYYY"));
@@ -67,12 +66,16 @@ export const NewPair = (props) => {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const [modal2, setModal2] = useState(false);
+    const toggle2 = () => setModal2(!modal2);
+    const [deleteNewIdPuesta, setDeleteNewIdPuesta] = useState()
     // create fetch post newPair
     const createPair = () => {
         // create object to send
         const data = {
             user: props.user,
-            numberPair,
+            numberPair: numberPair.toString(),
             anillaMale,
             yearMale,
             colorMale,
@@ -238,7 +241,7 @@ export const NewPair = (props) => {
                                                 onClick={() => {
                                                     handleOpen();
                                                     setType("female");
-                                                }}                                                //   label="Color"
+                                                }}
                                                 variant="outlined"
                                                 value={
                                                     colorFemale.length > 0
@@ -247,7 +250,7 @@ export const NewPair = (props) => {
                                                 }
                                                 style={{ width: "11em" }}
                                             />
-                                           {type === "female" ? 
+                                            {type === "female" ? 
                                                 <ModalColor
                                                     color={colorFemale}
                                                     setColor={setColorFemale}
@@ -339,22 +342,22 @@ export const NewPair = (props) => {
                                                 <span>{i+1}</span>
                                             </td>
                                             <td className="text-center text-black-50">
-                                                <TextField type="number" placeholder="Puestas" style={{width: '5em'}} value={puesta.puestas} onChange={(e) => puesta.puestas = e.target.value } />
+                                                <TextField type="number" placeholder="Puestas" style={{width: '5em'}} value={puesta.puestas} onChange={(e) => setObjPuestasPareja({puestas: e.target.value}) } />
                                             </td>
                                             <td>
-                                                <TextField type="number" placeholder="Número de huevos" style={{width: '5em'}} value={puesta.numHuevos} onChange={(e) => puesta.numHuevos = e.target.value } />
+                                                <TextField type="number" placeholder="Número de huevos" style={{width: '5em'}} value={puesta.numHuevos} onChange={(e) => setObjPuestasPareja({numHuevos: e.target.value}) } />
+                                            </td>
+                                            <td className="display-3">
+                                                <TextField className="mt-2" type="date" onChange={(e) =>setObjPuestasPareja({iniIncubacion: e.target.value})} defaultValue={puesta.iniIncubacion} />
                                             </td>
                                             <td>
-                                                <TextField type="date" onChange={(e) => puesta.iniIncubacion = e.target.value} defaultValue={puesta.iniIncubacion} />
+                                                <TextField type="number" placeholder="Huevos claros" style={{width: '8em'}} value={puesta.huevosClaros} onChange={(e) => setObjPuestasPareja({huevosClaros: e.target.value}) } />
                                             </td>
-                                            <td className="font-size-lg font-weight-bold">
-                                                <TextField type="number" placeholder="Huevos claros" style={{width: '5em'}} value={puesta.huevosClaros} onChange={(e) => puesta.huevosClaros = e.target.value } />
+                                            <td className="display-3">
+                                                <TextField className="mt-2" type="date" onChange={(e) =>setObjPuestasPareja({fechNacimiento: e.target.value})} defaultValue={puesta.fechNacimiento} />
                                             </td>
-                                            <td className="text-warning">
-                                                <TextField type="date" onChange={(e) => puesta.fechNacimiento = e.target.value} defaultValue={puesta.fechNacimiento} />
-                                            </td>
-                                            <td className="text-warning">
-                                                <TextField type="number" placeholder="Anillas puestas" style={{width: '8em'}} value={puesta.numAnillas} onChange={(e) => puesta.numAnillas = e.target.value } />
+                                            <td >
+                                                <TextField type="number" placeholder="Anillas puestas" style={{width: '8em'}} value={puesta.numAnillas} onChange={(e) => setObjPuestasPareja({numAnillas: e.target.value})} />
                                             </td>
                                             <td className="text-warning">
                                                 <TextField
@@ -364,13 +367,14 @@ export const NewPair = (props) => {
                                                 placeholder="observaciones"
                                                 maxRows="4"
                                                 value={puesta.observaciones}
-                                                onChange={(e) => puesta.observaciones = e.target.value}
+                                                onChange={(e) => setObjPuestasPareja({observaciones: e.target.value})}
                                             />
                                             </td>
                                             <td className="text-center">
                                                 <Button size="small" className="btn-link d-30 p-0 btn-icon btn-animated-icon" 
                                                         onClick={() => { 
-                                                            setArrPuestasPareja(arrPuestasPareja.filter((item) => item.id !== puesta.id))
+                                                            toggle2()
+                                                            setDeleteNewIdPuesta(puesta.id)
                                                         }}>
                                                     <Delete />
                                                 </Button>
@@ -378,7 +382,8 @@ export const NewPair = (props) => {
                                         </tr>
                                         </>
                                     )
-                                }) }
+                                })}
+                                <ModalDeleteNewPuesta id={deleteNewIdPuesta} modal={modal2} toggle={toggle2} arrPuestasPareja={arrPuestasPareja} setArrPuestasPareja={setArrPuestasPareja}/>
                                 <tr className="divider"></tr>
                                 </tbody>
                             </Table>
@@ -395,6 +400,7 @@ export const NewPair = (props) => {
                     </Button>
                     <Button
                         onClick={createPair}
+                        disabled={numberPair === ''}
                         variant="contained"
                         className="m-2 btn-success"
                     >

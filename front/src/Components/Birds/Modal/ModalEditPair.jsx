@@ -108,32 +108,32 @@ export const ModalEditPair = (props) => {
 
     // fetch data from server
     useEffect(() => {
-        fetch(`http://localhost:3001/api/pairById/${props.id}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setNumberPair(data.pair.numberPair);
-                setAnillaMale(data.pair.anillaMale);
-                setYearMale(data.pair.yearMale);
-                setColorMale(data.pair.colorMale);
-                setProcedencyMale(data.pair.procedencyMale);
-                setNotesMale(data.pair.notesMale);
-                setAnillaFemale(data.pair.anillaFemale);
-                setYearFemale(data.pair.yearFemale);
-                setColorFemale(data.pair.colorFemale);
-                setProcedencyFemale(data.pair.procedencyFemale);
-                setNotesFemale(data.pair.notesFemale);
-                setGeneralNotes(data.pair.generalNotes);
-                setArrPuestasPareja(data.pair.arrPuestasParejas);
-            }
-            // if error
-            ).catch((err) => {
-                console.log(err);
-            }
-            // if success
-            );
+        if (!props.id){
+            fetch(`http://localhost:3001/api/pairById/${props.id}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    setNumberPair(data.pair.numberPair);
+                    setAnillaMale(data.pair.anillaMale);
+                    setYearMale(data.pair.yearMale);
+                    setColorMale(data.pair.colorMale);
+                    setProcedencyMale(data.pair.procedencyMale);
+                    setNotesMale(data.pair.notesMale);
+                    setAnillaFemale(data.pair.anillaFemale);
+                    setYearFemale(data.pair.yearFemale);
+                    setColorFemale(data.pair.colorFemale);
+                    setProcedencyFemale(data.pair.procedencyFemale);
+                    setNotesFemale(data.pair.notesFemale);
+                    setGeneralNotes(data.pair.generalNotes);
+                    setArrPuestasPareja(data.pair.arrPuestasParejas);
+                }
+                // if error
+                ).catch((err) => {
+                    console.log(err);
+                }
+                // if success
+                );
+        }
     },[props.id]);
-
-    console.log(arrPuestasPareja)
 
     return (
         <>

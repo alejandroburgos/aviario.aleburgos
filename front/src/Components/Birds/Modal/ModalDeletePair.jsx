@@ -14,6 +14,7 @@ export const ModalDeletePair = (props) => {
             });
             const data = await result.json();
             props.setPairs(data.pair);
+            props.toggle();
         } catch (error) {
             console.log(error);
         }
