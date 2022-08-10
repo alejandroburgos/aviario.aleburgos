@@ -45,7 +45,11 @@ router.delete('/api/withdrawal/:id', withdrawal.deleteWithdrawal)
 router.post('/api/newPair', pair.newPair)
 // get pair of user
 router.get('/api/pair/:user', pair.getPair)
+// edit pair
+router.put('/api/editPair/:id', pair.editPair)
 // delete pair
 router.delete('/api/pair/:id/:user', pair.deletePair)
+// get pair from id
+router.get('/api/pairById/:id', pair.getPairById)
 
 module.exports = router

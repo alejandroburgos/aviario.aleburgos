@@ -47,15 +47,6 @@ export const NewPair = (props) => {
         id: Math.random().toString(36),
     }])
 
-    console.log(arrPuestasPareja)
-
-    const [numHuevos, setNumHuevos] = useState()
-    const [iniIncubacion, setIniIncubacion] = useState()
-    const [huevosClaros, setHuevosClaros] = useState()
-    const [fechNacimiento, setFechNacimiento] = useState()
-    const [numAnillas, setNumAnillas] = useState()
-    const [observaciones, setObservaciones] = useState()
-
     const handleChangeMaleColor = (color) => {
         // set array of color hex
         setColorMale((prevState) => [...prevState, color.hex]);
@@ -93,13 +84,8 @@ export const NewPair = (props) => {
             procedencyFemale,
             notesFemale,
             generalNotes,
-            numHuevos,
-            iniIncubacion,
-            huevosClaros,
-            fechNacimiento,
-            numAnillas,
-            observaciones,
-            arrPuestasPareja
+
+            arrPuestasParejas: arrPuestasPareja
         };
         // send data to server
         fetch("http://localhost:3001/api/newPair", {
@@ -377,7 +363,7 @@ export const NewPair = (props) => {
                                                 multiline
                                                 placeholder="observaciones"
                                                 maxRows="4"
-                                                value={observaciones}
+                                                value={puesta.observaciones}
                                                 onChange={(e) => puesta.observaciones = e.target.value}
                                             />
                                             </td>

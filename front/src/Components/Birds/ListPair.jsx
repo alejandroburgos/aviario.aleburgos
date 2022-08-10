@@ -6,17 +6,27 @@ import { constants } from "../../Constants";
 import moment from "moment";
 import 'moment/locale/es';
 import { ModalDeletePair } from "./Modal/ModalDeletePair";
+import { ModalEditPair } from "./Modal/ModalEditPair";
 
 export const ListPair = (props) => {
 
     const [open, setOpen] = React.useState(false);
-
+    const [openEdit, setOpenEdit] = React.useState(false);
+    const [idForEdit, setIdForEdit] = useState()
     const handleClickOpen = () => {
       setOpen(true);
     };
 
+    const handleClickOpenEdit = (id) => {
+        setOpenEdit(true);
+        setIdForEdit(id);
+      };
+
+      
     const [modalDelete, setModalDelete] = useState(false)
-    const toggleModalDelete = () => {
+    const [idForDelete, setIdForDelete] = useState()
+    const toggleModalDelete = (id) => {
+        setIdForDelete(id)
         setModalDelete(!modalDelete)
     }
   
@@ -38,16 +48,6 @@ export const ListPair = (props) => {
         fetchData();
     }, []);
 
-    // compare iniIncubacion with today and get a number
-    const getDays = (iniIncubacion) => {
-        const today = new Date();
-        const date1 = new Date(iniIncubacion);
-        const date2 = new Date(today);
-        const timeDiff = Math.abs(date2.getTime() - date1.getTime());
-        const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        return diffDays;
-    }
-
     return (
         <>
 
@@ -63,11 +63,6 @@ export const ListPair = (props) => {
                             </Button>
                         </Tooltip>
                         <NewPair open={open} setOpen={setOpen} user={props.user} setPairs={setPairs} />
-                        <Tooltip title="Close">
-                            <Button size="small" className="btn-link px-1">
-                                <Close />
-                            </Button>
-                        </Tooltip>
                     </div>
                 </div>
                 <div className="table-responsive-md p-4" >
@@ -75,17 +70,14 @@ export const ListPair = (props) => {
                         <thead>
                         <tr>
                             <th className="text-left" style={{ width: 180 }}>Número de pareja</th>
-                            <th className="text-center">Fecha incubacion</th>
+                            <th className="text-center">Inicio incubacion</th>
                             <th className="text-center">Fecha nacimiento</th>
                             <th className="text-center">Observaciones</th>
                             <th className="text-center"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        {pairs.length > 0 && pairs.map((pairs) => {
-                            let dynamicMaxValue = 20;
-                            let rule = parseInt(getDays(pairs.iniIncubacion) * parseInt(100)) / parseInt(dynamicMaxValue)
-
+                        {pairs.length > 0 && pairs.map((pairs, i) => {
                             return (
                                 <>
                                     <tr>
@@ -93,23 +85,19 @@ export const ListPair = (props) => {
                                             {pairs.numberPair}
                                         </td>
                                         <td className="text-center">
-                                            {moment(pairs.iniIncubacion).format('DD/MM/YYYY')}
+                                            {pairs.arrPuestasParejas.length > 0 && moment(pairs.arrPuestasParejas[0]?.iniIncubacion).format('DD/MM/YYYY')}
                                         </td>
                                         <td className="text-center" style={{width: "20em"}}>
-                                            {pairs.fechNacimiento}
+                                        {pairs.arrPuestasParejas.length > 0 && moment(pairs.arrPuestasParejas[0]?.iniIncubacion).format('DD/MM/YYYY')}
                                         </td>
                                         <td className="text-center">
                                             {pairs.observaciones}
                                         </td>
                                         <td className="text-center">
-                                            <Button size="small" className="btn-link d-30 p-0 btn-icon btn-animated-icon">
-                                                <SearchSharp />
-                                            </Button>
-                                            <Button size="small" className="btn-link d-30 p-0 btn-icon btn-animated-icon">
+                                            <Button size="small" className="btn-link d-30 p-0 btn-icon btn-animated-icon" onClick={() => handleClickOpenEdit(pairs._id)}>
                                                 <Edit />
                                             </Button>
-                                            <Button size="small" className="btn-link d-30 p-0 btn-icon btn-animated-icon" onClick={toggleModalDelete}>
-                                                <ModalDeletePair setPairs={setPairs} toggle={toggleModalDelete} modal={modalDelete} user={props.user} id={pairs._id} />
+                                            <Button size="small" className="btn-link d-30 p-0 btn-icon btn-animated-icon" onClick={() => toggleModalDelete(pairs._id)}>
                                                 <Delete  />
                                             </Button>
                                         </td>
@@ -117,6 +105,8 @@ export const ListPair = (props) => {
                                 </>
                             )
                         })}
+                        <ModalDeletePair setPairs={setPairs} toggle={toggleModalDelete} modal={modalDelete} user={props.user} id={idForDelete} />
+                        <ModalEditPair setPairs={setPairs} open={openEdit} setOpen={setOpenEdit} user={props.user} id={idForEdit} />
                         </tbody>
                     </Table>
                 </div>

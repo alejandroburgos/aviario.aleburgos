@@ -2,7 +2,7 @@ const model = require('../models/pair.js')
 
 // new pair with model
 exports.newPair = async (req, res) => {
-    const { user, numberPair, anillaMale, yearMale, colorMale, procedencyMale, notesMale, anillaFemale, yearFemale, colorFemale, procedencyFemale, notesFemale, generalNotes, puestas, numHuevos, iniIncubacion, huevosClaros, fechNacimiento, numAnillas, observaciones } = req.body
+    const { user, numberPair, anillaMale, yearMale, colorMale, procedencyMale, notesMale, anillaFemale, yearFemale, colorFemale, procedencyFemale, notesFemale, generalNotes, arrPuestasParejas } = req.body
     const pair = new model({
         user,
         numberPair,
@@ -17,13 +17,7 @@ exports.newPair = async (req, res) => {
         procedencyFemale,
         notesFemale,
         generalNotes,
-        puestas,
-        numHuevos,
-        iniIncubacion,
-        huevosClaros,
-        fechNacimiento,
-        numAnillas,
-        observaciones
+        arrPuestasParejas
     })
     try {
         await pair.save()
@@ -49,6 +43,8 @@ exports.getPair = async (req, res) => {
     }
 }
 
+
+
 // delete pair from id
 exports.deletePair = async (req, res) => {
     const { id, user} = req.params
@@ -58,7 +54,52 @@ exports.deletePair = async (req, res) => {
             message: 'Pair deleted',
             // get all pairs from the user
             pair: await model.find({ user })
-         })
+        })
+    } catch (error) {
+        res.status(500).json({ message: error })
+    }
+}
+
+// getPairById with status
+exports.getPairById = async (req, res) => {
+    const { id } = req.params
+    try {
+        const pair = await model.findById(id)
+        res.json({
+            message: 'Pair found',
+            pair: pair
+        })
+    } catch (error) {
+        res.status(500).json({ message: error })
+    }
+}
+
+// editPair id
+exports.editPair = async (req, res) => {
+    const { id } = req.params
+    const { user, numberPair, anillaMale, yearMale, colorMale, procedencyMale, notesMale, anillaFemale, yearFemale, colorFemale, procedencyFemale, notesFemale, generalNotes, arrPuestasParejas } = req.body
+    try {
+        const pair = await model.findByIdAndUpdate(id, {
+            user,
+            numberPair,
+            anillaMale,
+            yearMale,
+            colorMale,
+            procedencyMale,
+            notesMale,
+            anillaFemale,
+            yearFemale,
+            colorFemale,
+            procedencyFemale,
+            notesFemale,
+            generalNotes,
+            arrPuestasParejas
+        }, { new: true })
+        res.json({
+            message: 'Pair updated',
+            // get all pairs from the user
+            pair: await model.find({ user })
+        })
     } catch (error) {
         res.status(500).json({ message: error })
     }

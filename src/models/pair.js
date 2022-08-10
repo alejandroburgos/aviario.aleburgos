@@ -7,6 +7,9 @@ const UserScheme = new mongoose.Schema(
             type: String,
             required: true
         },  
+        id: {
+            type: String,
+        },
         numberPair: {
             type: Number,
             required: true
