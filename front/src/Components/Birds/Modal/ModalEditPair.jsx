@@ -108,7 +108,6 @@ export const ModalEditPair = (props) => {
 
     // fetch data from server
     useEffect(() => {
-        if (!props.id){
             fetch(`http://localhost:3001/api/pairById/${props.id}`)
                 .then((res) => res.json())
                 .then((data) => {
@@ -132,7 +131,7 @@ export const ModalEditPair = (props) => {
                 }
                 // if success
                 );
-        }
+        
     },[props.id]);
 
     return (

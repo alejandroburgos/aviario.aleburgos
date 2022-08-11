@@ -133,7 +133,7 @@ export const FormCount = (props) => {
                         <AttachMoney className="display-4" />
                     </div>
                     <div className="font-weight-bold text-black display-3 mt-4 mb-1">
-                    <FormControl style={{width: '2em'}}>
+                        <FormControl style={{width: '2em'}}>
                             <Input
                                 type="number"
                                 id="standard-adornment-weight"
@@ -146,7 +146,8 @@ export const FormCount = (props) => {
                                 }}
                             />
                             <FormHelperText id="standard-weight-helper-text">Beneficio</FormHelperText>
-                        </FormControl>                    </div>
+                        </FormControl>                    
+                    </div>
                     <div className="font-weight-bold text-black display-3 mt-3 mb-1">
                         <TextField type='date' onChange={(e) => { handleDateChangeRevenue(e.target.value)}} value={selectedDateRevenue}
                             InputProps={{inputProps: { max: moment().format('YYYY-MM-DD')} }}
