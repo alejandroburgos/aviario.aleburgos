@@ -21,6 +21,7 @@ import moment from "moment";
 import { Add, Delete } from "@material-ui/icons";
 import { ModalDeleteNewPuesta } from "./Modal/ModalDeleteNewPuesta";
 import { parseISO } from "date-fns";
+import { constants } from "../../Constants";
 
 export const NewPair = (props) => {
     const [numberPair, setNumberPair] = useState('');
@@ -99,7 +100,7 @@ export const NewPair = (props) => {
             arrPuestasParejas: arrPuestasPareja
         };
         // send data to server
-        fetch("http://localhost:3001/api/newPair", {
+        fetch(`${constants.urlLocal}newPair`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -428,14 +429,14 @@ export const NewPair = (props) => {
                     >
                         Cerrar
                     </Button>
-                    <button
+                    <Button
                         onClick={(e) => {e.preventDefault(); createPair()}}
                         disabled={numberPair === ''}
                         variant="contained"
-                        className="p-2 m-2 btn-success"
+                        className="m-2 btn-success"
                     >
                         Guardar
-                    </button>
+                    </Button>
                 </DialogActions>
             </Dialog>
         </>

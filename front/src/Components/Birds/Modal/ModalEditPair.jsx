@@ -21,6 +21,7 @@ import moment from "moment";
 import { Add, Delete } from "@material-ui/icons";
 import { parseISO } from "date-fns";
 import { ModalDeleteNewPuesta } from "./ModalDeleteNewPuesta";
+import { constants } from "../../../Constants";
 
 export const ModalEditPair = (props) => {
     const [numberPair, setNumberPair] = useState();
@@ -89,7 +90,8 @@ export const ModalEditPair = (props) => {
             arrPuestasParejas: arrPuestasPareja
         };
         // send data to server
-        fetch(`http://localhost:3001/api/editPair/${props.id}`, {
+        fetch(`${constants.urlLocal}editPair/${props.id}`, {
+            
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -121,7 +123,7 @@ export const ModalEditPair = (props) => {
     }
     // fetch data from server
     useEffect(() => {
-            fetch(`http://localhost:3001/api/pairById/${props.id}`)
+            fetch(`${constants.urlLocal}pairById/${props.id}`)
                 .then((res) => res.json())
                 .then((data) => {
                     setNumberPair(data.pair.numberPair);
