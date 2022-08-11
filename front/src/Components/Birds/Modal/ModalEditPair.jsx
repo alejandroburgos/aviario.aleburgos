@@ -457,7 +457,7 @@ export const ModalEditPair = (props) => {
                         Cerrar
                     </Button>
                     <Button
-                        onClick={editPair}
+                        onClick={(e) => {e.preventDefault(); editPair()}}
                         variant="contained"
                         className="m-2 btn-warning"
                     >

@@ -429,7 +429,7 @@ export const NewPair = (props) => {
                         Cerrar
                     </Button>
                     <Button
-                        onClick={createPair}
+                        onClick={(e) => {e.preventDefault(); createPair()}}
                         disabled={numberPair === ''}
                         variant="contained"
                         className="m-2 btn-success"
