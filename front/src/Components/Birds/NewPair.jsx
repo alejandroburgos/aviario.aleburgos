@@ -428,14 +428,14 @@ export const NewPair = (props) => {
                     >
                         Cerrar
                     </Button>
-                    <Button
+                    <button
                         onClick={(e) => {e.preventDefault(); createPair()}}
                         disabled={numberPair === ''}
                         variant="contained"
-                        className="m-2 btn-success"
+                        className="p-2 m-2 btn-success"
                     >
                         Guardar
-                    </Button>
+                    </button>
                 </DialogActions>
             </Dialog>
         </>
