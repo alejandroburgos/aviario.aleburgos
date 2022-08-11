@@ -51,7 +51,6 @@ export const NewPair = (props) => {
         const newDoc = [...arrPuestasPareja];
         setObjPuestasPareja({id: index + Math.random().toString(36)})
         newDoc[index][e.target.name] = e.target.value;
-        console.log("newDoc", newDoc);
         setArrPuestasPareja(newDoc);
     }
 

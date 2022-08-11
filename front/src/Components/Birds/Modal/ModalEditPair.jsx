@@ -14,10 +14,13 @@ import {
 } from "@material-ui/core";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import es from "date-fns/locale/es";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ModalColor } from "../ModalColor";
 import moment from "moment";
 import { Add, Delete } from "@material-ui/icons";
+import { parseISO } from "date-fns";
+import { ModalDeleteNewPuesta } from "./ModalDeleteNewPuesta";
 
 export const ModalEditPair = (props) => {
     const [numberPair, setNumberPair] = useState();
@@ -106,6 +109,16 @@ export const ModalEditPair = (props) => {
             );
     }
 
+    const [modal2, setModal2] = useState(false);
+    const toggle2 = () => setModal2(!modal2);
+    const [deleteNewIdPuesta, setDeleteNewIdPuesta] = useState()
+
+    const handleChangePuestas = (e, index) => {
+        const newDoc = [...arrPuestasPareja];
+        setObjPuestasPareja({id: index + Math.random().toString(36)})
+        newDoc[index][e.target.name] = e.target.value;
+        setArrPuestasPareja(newDoc);
+    }
     // fetch data from server
     useEffect(() => {
             fetch(`http://localhost:3001/api/pairById/${props.id}`)
@@ -166,6 +179,8 @@ export const ModalEditPair = (props) => {
                                                     views={["year"]}
                                                     label="Año"
                                                     value={yearMale}
+                                                    minDate={parseISO(moment().subtract(8, 'year').format('YYYY-MM-DD'))}
+                                                    maxDate={parseISO(moment().format('YYYY-MM-DD'))}
                                                     onChange={(newValue) => {
                                                         setYearMale(newValue);
                                                     }}
@@ -236,6 +251,8 @@ export const ModalEditPair = (props) => {
                                                     views={["year"]}
                                                     label="Año"
                                                     value={yearFemale}
+                                                    minDate={parseISO(moment().subtract(8, 'year').format('YYYY-MM-DD'))}
+                                                    maxDate={parseISO(moment().format('YYYY-MM-DD'))}
                                                     onChange={(newValue) => {
                                                         setYearFemale(newValue);
                                                     }}
@@ -364,38 +381,58 @@ export const ModalEditPair = (props) => {
                                                 <span>{i+1}</span>
                                             </td>
                                             <td className="text-center text-black-50">
-                                                <TextField type="number" placeholder="Puestas" style={{width: '5em'}} value={puesta.puestas} onChange={(e) => puesta.puestas = e.target.value } />
+                                                <TextField name="puestas" placeholder="Puestas" style={{width: '5em'}} value={puesta.puestas} onChange={(e) => handleChangePuestas(e, i) } />
                                             </td>
                                             <td>
-                                                <TextField type="number" placeholder="Número de huevos" style={{width: '5em'}} value={puesta.numHuevos} onChange={(e) => puesta.numHuevos = e.target.value } />
+                                                <TextField name="numHuevos" placeholder="Número de huevos" style={{width: '5em'}} value={puesta.numHuevos} onChange={(e) => handleChangePuestas(e, i) } />
                                             </td>
                                             <td>
-                                                <TextField type="date" onChange={(e) => puesta.iniIncubacion = e.target.value} defaultValue={puesta.iniIncubacion} />
+                                                {/* <TextField className="mt-2" type="date" style={{width: '3em'}} onChange={(e) =>setObjPuestasPareja({iniIncubacion: e.target.value})} value={iniIncubacion} /> */}
+                                                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
+                                                    <DatePicker
+                                                        value={puesta.iniIncubacion}
+                                                        name="iniIncubacion"
+                                                        onChange={(e) => handleChangePuestas(
+                                                            {target: {name: 'iniIncubacion', value: e}}, i)} 
+                                                        renderInput={(params) => <TextField {...params} />}
+                                                    />
+                                                </LocalizationProvider>
                                             </td>
-                                            <td className="font-size-lg font-weight-bold">
-                                                <TextField type="number" placeholder="Huevos claros" style={{width: '5em'}} value={puesta.huevosClaros} onChange={(e) => puesta.huevosClaros = e.target.value } />
+                                            <td>
+                                                <TextField name="huevosClaros" placeholder="Huevos claros" style={{width: '8em'}} value={puesta.huevosClaros} onChange={(e) => handleChangePuestas(e, i) } />
                                             </td>
-                                            <td className="text-warning">
-                                                <TextField type="date" onChange={(e) => puesta.fechNacimiento = e.target.value} defaultValue={puesta.fechNacimiento} />
+                                            <td>
+                                                {/* <TextField className="mt-2" type="date" style={{width: '3em'}} onChange={(e) =>setObjPuestasPareja({fechNacimiento: e.target.value})} value={fechNacimiento} /> */}
+                                                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
+                                                    <DatePicker
+                                                        value={puesta.fechNacimiento}
+                                                        name="fechNacimiento"
+                                                        onChange={(e) => handleChangePuestas(
+                                                            {target: {name: 'fechNacimiento', value: e}}, i)} 
+                                                        renderInput={(params) => <TextField {...params} />}
+                                                    />
+                                                </LocalizationProvider>
                                             </td>
-                                            <td className="text-warning">
-                                                <TextField type="number" placeholder="Anillas puestas" style={{width: '8em'}} value={puesta.numAnillas} onChange={(e) => puesta.numAnillas = e.target.value } />
+                                            <td >
+                                                <TextField name="numAnillas" placeholder="Anillas puestas" style={{width: '8em'}} value={puesta.numAnillas} onChange={(e) => handleChangePuestas(e, i)} />
                                             </td>
                                             <td className="text-warning">
                                                 <TextField
-                                                fullWidth
-                                                id="standard-multiline-flexible"
-                                                multiline
-                                                placeholder="observaciones"
-                                                maxRows="4"
-                                                value={puesta.observaciones}
-                                                onChange={(e) => puesta.observaciones = e.target.value}
+                                                    fullWidth
+                                                    id="standard-multiline-flexible"
+                                                    multiline
+                                                    placeholder="observaciones"
+                                                    maxRows="4"
+                                                    name="observaciones"
+                                                    value={puesta.observaciones}
+                                                    onChange={(e) => handleChangePuestas(e, i)}
                                             />
                                             </td>
                                             <td className="text-center">
                                                 <Button size="small" className="btn-link d-30 p-0 btn-icon btn-animated-icon" 
                                                         onClick={() => { 
-                                                            setArrPuestasPareja(arrPuestasPareja.filter((item) => item.id !== puesta.id))
+                                                            toggle2()
+                                                            setDeleteNewIdPuesta(puesta.id)
                                                         }}>
                                                     <Delete />
                                                 </Button>
@@ -404,6 +441,7 @@ export const ModalEditPair = (props) => {
                                         </>
                                     )
                                 }) }
+                                <ModalDeleteNewPuesta id={deleteNewIdPuesta} modal={modal2} toggle={toggle2} arrPuestasPareja={arrPuestasPareja} setArrPuestasPareja={setArrPuestasPareja}/>
                                 <tr className="divider"></tr>
                                 </tbody>
                             </Table>
