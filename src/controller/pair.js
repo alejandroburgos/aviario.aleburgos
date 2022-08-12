@@ -2,9 +2,10 @@ const model = require('../models/pair.js')
 
 // new pair with model
 exports.newPair = async (req, res) => {
-    const { user, numberPair, anillaMale, yearMale, colorMale, procedencyMale, notesMale, anillaFemale, yearFemale, colorFemale, procedencyFemale, notesFemale, generalNotes, arrPuestasParejas } = req.body
+    const { user, numberPair, image, anillaMale, yearMale, colorMale, procedencyMale, notesMale, anillaFemale, yearFemale, colorFemale, procedencyFemale, notesFemale, generalNotes, arrPuestasParejas } = req.body
     const pair = new model({
         user,
+        image,
         numberPair,
         anillaMale,
         yearMale,
@@ -43,8 +44,6 @@ exports.getPair = async (req, res) => {
     }
 }
 
-
-
 // delete pair from id
 exports.deletePair = async (req, res) => {
     const { id, user} = req.params
@@ -77,11 +76,12 @@ exports.getPairById = async (req, res) => {
 // editPair id
 exports.editPair = async (req, res) => {
     const { id } = req.params
-    const { user, numberPair, anillaMale, yearMale, colorMale, procedencyMale, notesMale, anillaFemale, yearFemale, colorFemale, procedencyFemale, notesFemale, generalNotes, arrPuestasParejas } = req.body
+    const { user, image, numberPair, anillaMale, yearMale, colorMale, procedencyMale, notesMale, anillaFemale, yearFemale, colorFemale, procedencyFemale, notesFemale, generalNotes, arrPuestasParejas } = req.body
     try {
         const pair = await model.findByIdAndUpdate(id, {
             user,
             numberPair,
+            image,
             anillaMale,
             yearMale,
             colorMale,

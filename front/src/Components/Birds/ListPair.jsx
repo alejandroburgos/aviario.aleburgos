@@ -135,7 +135,7 @@ export const ListPair = (props) => {
                                             {pairs.arrPuestasParejas.length > 0 && moment(pairs.arrPuestasParejas[0]?.iniIncubacion).format('DD/MM/YYYY')}
                                         </td>
                                         <td className="text-center" style={{width: "20em"}}>
-                                        {pairs.arrPuestasParejas.length > 0 && moment(pairs.arrPuestasParejas[0]?.iniIncubacion).format('DD/MM/YYYY')}
+                                            {pairs.arrPuestasParejas.length > 0 && moment(pairs.arrPuestasParejas[0]?.fechNacimiento).format('DD/MM/YYYY')}
                                         </td>
                                         <td className="text-center">
                                             {pairs.observaciones}

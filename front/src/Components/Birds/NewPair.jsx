@@ -5,12 +5,15 @@ import {
     Dialog,
     DialogActions,
     Divider,
+    Fade,
     Grid,
     ListItem,
     Slide,
+    Switch,
     Table,
     TextField,
     Tooltip,
+    Zoom,
 } from "@material-ui/core";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -22,6 +25,7 @@ import { Add, Delete } from "@material-ui/icons";
 import { ModalDeleteNewPuesta } from "./Modal/ModalDeleteNewPuesta";
 import { parseISO } from "date-fns";
 import { constants } from "../../Constants";
+import { UploadPhoto } from "./Components/UploadPhoto";
 
 export const NewPair = (props) => {
     const [numberPair, setNumberPair] = useState('');
@@ -85,6 +89,7 @@ export const NewPair = (props) => {
         const data = {
             user: props.user,
             numberPair: numberPair.toString(),
+            image,
             anillaMale,
             yearMale,
             colorMale,
@@ -119,20 +124,36 @@ export const NewPair = (props) => {
             // if success
             );
     }
+    const [state, setState] = useState(false);
+    const [image, setImage] = useState('')
 
+    const handleChangeSwitch = (event) => {
+        setState(!state);
+    };
     return (
         <>
             <Dialog open={props.open} onClose={() => props.setOpen(false)} maxWidth={'lg'}>
                 <div className="p-3 font-size-xl font-weight-bold">Nueva pareja</div>
                 <hr />
-                    <div style={{ textAlign: "center" }}>
-                        <TextField
-                            label="Pareja número"
-                            variant="standard"
-                            value={numberPair}
-                            onChange={(e) => setNumberPair(e.target.value)}
-                        />
-                    </div>
+                    <Grid container style={{ textAlign: "center" }}>
+                        <Grid item md={6} xl={6}>
+                            <TextField
+                                label="Nº de pareja"
+                                variant="outlined"
+                                value={numberPair}
+                                onChange={(e) => setNumberPair(e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item md={6} xl={6}>
+                            <div className="m-2 mt-4">
+                                <Switch onChange={handleChangeSwitch} checked={state} className="switch-medium toggle-switch-success"/>
+                                <span className="ml-4">Añadir imagen</span>
+                            </div>
+                        </Grid>
+                        <Grid item md={12} xl={12}>
+                            {state && <UploadPhoto image={image} setImage={setImage}/>}
+                        </Grid>
+                    </Grid>
                     <Grid container spacing={0} className="p-4">
                         <Grid item sm={12} md={12} xl={12} className="pt-3">
                             <div className="divider-v divider-v-md" />

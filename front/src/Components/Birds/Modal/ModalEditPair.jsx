@@ -8,6 +8,7 @@ import {
     Grid,
     ListItem,
     Slide,
+    Switch,
     Table,
     TextField,
     Tooltip,
@@ -18,13 +19,16 @@ import es from "date-fns/locale/es";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ModalColor } from "../ModalColor";
 import moment from "moment";
-import { Add, Delete } from "@material-ui/icons";
+import { Add, AddPhotoAlternateOutlined, Delete } from "@material-ui/icons";
 import { parseISO } from "date-fns";
 import { ModalDeleteNewPuesta } from "./ModalDeleteNewPuesta";
 import { constants } from "../../../Constants";
+import { ModalEditPhoto } from "./ModalEditPhoto";
+import { UploadPhoto } from "../Components/UploadPhoto";
 
 export const ModalEditPair = (props) => {
     const [numberPair, setNumberPair] = useState();
+    const [image, setImage] = useState()
 
     const [anillaMale, setAnillaMale] = useState("");
     const [yearMale, setYearMale] = useState(moment().format("DD/MM/YYYY"));
@@ -75,6 +79,7 @@ export const ModalEditPair = (props) => {
         // create object to send
         const data = {
             user: props.user,
+            image,
             numberPair,
             anillaMale,
             yearMale,
@@ -115,6 +120,15 @@ export const ModalEditPair = (props) => {
     const toggle2 = () => setModal2(!modal2);
     const [deleteNewIdPuesta, setDeleteNewIdPuesta] = useState()
 
+    const [modal3, setModal3] = useState(false);
+    const toggle3 = () => setModal3(!modal3);
+
+    const [state, setState] = useState(false);
+
+    const handleChangeSwitch = (event) => {
+        setState(!state);
+
+    };
     const handleChangePuestas = (e, index) => {
         const newDoc = [...arrPuestasPareja];
         setObjPuestasPareja({id: index + Math.random().toString(36)})
@@ -127,6 +141,7 @@ export const ModalEditPair = (props) => {
                 .then((res) => res.json())
                 .then((data) => {
                     setNumberPair(data.pair.numberPair);
+                    setImage(data.pair.image)
                     setAnillaMale(data.pair.anillaMale);
                     setYearMale(data.pair.yearMale);
                     setColorMale(data.pair.colorMale);
@@ -155,12 +170,39 @@ export const ModalEditPair = (props) => {
                 <div className="p-3 font-size-xl font-weight-bold">Editar pareja</div>
                 <hr />
                     <div style={{ textAlign: "center" }}>
-                        <TextField
-                            label="Pareja número"
-                            variant="standard"
-                            value={numberPair}
-                            onChange={(e) => setNumberPair(e.target.value)}
-                        />
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                label="Nº de pareja"
+                                variant="outlined"
+                                value={numberPair}
+                                onChange={(e) => setNumberPair(e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+
+                            {image ? 
+                            <>
+                                <Button variant="contained" className="btn-primary m-2" onClick={toggle3}>
+                                    <span className="btn-wrapper--label">editar imagen</span>
+                                    <span className="btn-wrapper--icon">
+                                    <AddPhotoAlternateOutlined />
+                                </span>
+                                </Button>
+                                <ModalEditPhoto open={modal3} toggle={toggle3} setOpen={setModal3} image={image} setImage={setImage} />
+                                </>
+                                : 
+                                <>
+                                <div className="m-2 mt-4">
+                                    <Switch onChange={handleChangeSwitch} checked={state} className="switch-medium toggle-switch-success"/>
+                                    <small className="ml-4">Añadir imagen</small>
+                                </div>
+                                    {state && <UploadPhoto image={image} setImage={setImage}/>}
+                                </>
+                            }
+
+                        </Grid>
+                    </Grid>
                     </div>
                     <Grid container spacing={0} className="p-4">
                         <Grid item sm={12} md={12} xl={12} className="pt-3">
