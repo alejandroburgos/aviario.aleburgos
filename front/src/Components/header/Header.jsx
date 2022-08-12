@@ -121,7 +121,7 @@ export const Header = () => {
                     <span className="d-block d-lg-none">
                         <button
                             onClick={toggle}
-                            className={clsx("navbar-toggler hamburger hamburger--elastic", {
+                            className={clsx("navbar-toggler hamburger hamburger--elastic mr-4", {
                                 "is-active": collapse,
                             })}
                         >

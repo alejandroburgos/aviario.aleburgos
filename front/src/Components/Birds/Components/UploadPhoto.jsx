@@ -93,7 +93,7 @@ export const UploadPhoto = (props) => {
                                                         <CheckIcon className="d-50" />
                                                     </div>
                                                     <div className="font-size-xs text-success">
-                                                        We're ready to start!
+                                                        Listo para empezar
                                                     </div>
                                                 </div>
                                             )}
@@ -103,7 +103,7 @@ export const UploadPhoto = (props) => {
                                                         <CloseTwoToneIcon className="d-50" />
                                                     </div>
                                                     <div className="font-size-xs text-danger">
-                                                        These files are not images!
+                                                        Solo se pueden imagenes
                                                     </div>
                                                 </div>
                                             )}
@@ -113,7 +113,7 @@ export const UploadPhoto = (props) => {
                                                         <CloudUploadTwoTone className="d-40" />
                                                     </div>
                                                     <div className="font-size-sm">
-                                                        Drag and drop images here
+                                                        Sube foto de la pareja
                                                     </div>
                                                 </div>
                                             )}
@@ -125,17 +125,17 @@ export const UploadPhoto = (props) => {
                     </div>
                     <div className="card-footer p-3 bg-secondary">
                         <div>
-                            <div className="font-weight-bold mb-3 text-uppercase text-dark font-size-sm text-center">Uploaded Files</div>
+                            <div className="font-weight-bold mb-3 text-uppercase text-dark font-size-sm text-center">Sube aquí las imagenes</div>
                             {thumbs.length <= 0 &&
                             <div className="text-first text-center font-size-sm">
-                                Uploaded demo images previews will appear here!
+                                Aquí se verá una vista previa de la imagen
                             </div>
                             }
                             {thumbs.length > 0 &&
 
                             <div>
                                 <Alert severity="success" className="text-center mb-3">
-                                    You have uploaded <b>{thumbs.length}</b> files!
+                                    Has subido <b>{thumbs.length}</b> imagenes!
                                 </Alert>
                                 <Grid container spacing={0}>
                                     {thumbs}

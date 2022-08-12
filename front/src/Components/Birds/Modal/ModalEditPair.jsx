@@ -412,6 +412,7 @@ export const ModalEditPair = (props) => {
                                     <th scope="col">Huevos claros</th>
                                     <th scope="col">Fech. Nacimiento</th>
                                     <th scope="col">Nº de Anillas puestas a pollos</th>
+                                    <th scope="col">Nº isabelita</th>
                                     <th scope="col">Observaciones</th>
                                     <th scope="col"></th>
                                 </tr>
@@ -459,6 +460,18 @@ export const ModalEditPair = (props) => {
                                             </td>
                                             <td >
                                                 <TextField name="numAnillas" placeholder="Anillas puestas" style={{width: '8em'}} value={puesta.numAnillas} onChange={(e) => handleChangePuestas(e, i)} />
+                                            </td>
+                                            <td className="text-warning">
+                                                <TextField
+                                                    fullWidth
+                                                    id="standard-multiline-flexible"
+                                                    multiline
+                                                    placeholder="Nº isabelita"
+                                                    maxRows="4"
+                                                    name="numIsabelita"
+                                                    value={puesta.numIsabelita}
+                                                    onChange={(e) => handleChangePuestas(e, i)}
+                                            />
                                             </td>
                                             <td className="text-warning">
                                                 <TextField

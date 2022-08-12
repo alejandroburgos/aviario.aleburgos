@@ -74,7 +74,7 @@ export const Login = () => {
         setError("");
         // set token to localStorage
         localStorage.setItem("token", JSON.stringify(json));
-        navigate("/contador", { state: { user: json } });
+        navigate("/crianza-de-pajaros", { state: { user: json } });
       } else {
         setError(JSON.stringify(json.message));
       }
