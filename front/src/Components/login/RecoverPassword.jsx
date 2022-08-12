@@ -88,6 +88,7 @@ export const RecoverPassword = (props) => {
                                     <TextField fullWidth
                                                variant="outlined"
                                                id="textfield-email"
+                                               placeholder="Nombre de usuario"
                                                onChange={(e) => setUser(e.target.value)}
                                                InputProps={{
                                                    startAdornment: (

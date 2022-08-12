@@ -64,7 +64,6 @@ export const ListPair = (props) => {
         ));
     }, [search, pairs]);
 
-
     useEffect(() => {
             const fetchData = async () => {
             try {
@@ -125,6 +124,7 @@ export const ListPair = (props) => {
                         </thead>
                         <tbody>
                         {_DATA.currentData().length > 0 && _DATA.currentData().map((pairs, i) => {
+
                             return (
                                 <>
                                     <tr>
@@ -132,10 +132,10 @@ export const ListPair = (props) => {
                                             {pairs.numberPair}
                                         </td>
                                         <td className="text-center">
-                                            {pairs.arrPuestasParejas.length > 0 && moment(pairs.arrPuestasParejas[0]?.iniIncubacion).format('DD/MM/YYYY')}
+                                            {pairs.arrPuestasParejas.length > 0 && moment(pairs.arrPuestasParejas[pairs.arrPuestasParejas.length-1]?.iniIncubacion).format('DD/MM/YYYY')}
                                         </td>
                                         <td className="text-center" style={{width: "20em"}}>
-                                            {pairs.arrPuestasParejas.length > 0 && moment(pairs.arrPuestasParejas[0]?.fechNacimiento).format('DD/MM/YYYY')}
+                                            {pairs.arrPuestasParejas.length > 0 && moment(pairs.arrPuestasParejas[pairs.arrPuestasParejas.length-1]?.fechNacimiento).format('DD/MM/YYYY')}
                                         </td>
                                         <td className="text-center">
                                             {pairs.observaciones}

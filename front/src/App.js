@@ -16,6 +16,7 @@ import { Login } from "./Components/login/Login";
 import { Header } from "./Components/header/Header";
 import { CountPage } from "./Components/Contador/CountPage";
 import { Birds } from "./Components/Birds/Birds";
+import { CalendarBirds } from "./Components/Birds/Calendar/CalendarBirds";
 
 // dont appear nav if login dont have token
 export const App = () => {
@@ -34,6 +35,7 @@ export const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/contador" element={<CountPage state={userData} />} />
         <Route path="/crianza-de-pajaros" element={<Birds state={userData}/>} />
+        <Route path="/calendario" element={<CalendarBirds state={userData}/>} />
       </Routes>
     </>
   );

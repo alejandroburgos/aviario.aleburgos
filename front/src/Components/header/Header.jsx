@@ -84,17 +84,15 @@ export const Header = () => {
                                 Crianza de pájaros
                             </span>
                         </li>
-                        {/* <li>
-                            <a
-                                href="#/"
-                                onClick={(e) => e.preventDefault()}
+                        <li>
+                            <span
+                                onClick={(e) => navigate('/calendario', { state: { user: userData } })}
                                 className="rounded-pill font-size-sm text-uppercase font-weight-bold"
+                                style={{width: "20em"}}
                             >
-                                Landings
-                                <span className="opacity-5 dropdown-arrow">
-                                </span>
-                            </a>
-                        </li> */}
+                                Calendario
+                            </span>
+                        </li>
                     </ul>
                 </div>
                 <div className="header-nav-actions ml-auto ml-xl-4 flex-grow-0">
@@ -171,6 +169,17 @@ export const Header = () => {
                                     className="px-4 d-flex align-items-center text-white-50"
                                 >
                                     <span>Crianza de pájaros</span>
+                                </ListItem>
+                                <ListItem
+                                    component="a"
+                                    button
+                                    onClick={(e) => {
+                                        navigate('/calendario', { state: { user: userData } }); 
+                                        toggle()
+                                    }}
+                                    className="px-4 d-flex align-items-center text-white-50"
+                                >
+                                    <span>Calendario</span>
                                 </ListItem>
                                 <ListItem
                                     component="a"

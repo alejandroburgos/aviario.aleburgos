@@ -65,7 +65,6 @@ export const ResumeTable = (props) => {
                         </thead>
                         <tbody>
                         {props.dataMoney && props.dataMoney.map((data, i) => {
-                            console.log(data)
                             return (
                                 <>
                                     <tr key={i}>

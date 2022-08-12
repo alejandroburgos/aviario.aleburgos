@@ -24,7 +24,6 @@ export const ModalDeleteMoney = (props) => {
                     props.setWithdrawal(json)
                 }
                 props.toggle()
-                console.log("ok")
             }
         } catch (error) {
             console.log("error", error);

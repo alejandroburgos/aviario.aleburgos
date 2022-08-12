@@ -33,7 +33,7 @@ export const Login = () => {
   useEffect(() => {
     // fetch get user for params
     const getUser = async () => {
-      const response = await fetch(`${constants.urlLocal}user/${user}`, {
+      const response = await fetch(`${constants.urlLocal}user/${user.toLowerCase()}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -42,7 +42,6 @@ export const Login = () => {
       });
       try {
         const json = await response.json();
-        console.log(json);
         if (json.ok) {
           setDataUser(json);
         } else {
@@ -62,7 +61,7 @@ export const Login = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user: user,
+        user: user.toLowerCase(),
         password: password,
         token: dataUser.token,
       }),

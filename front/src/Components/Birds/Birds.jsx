@@ -5,8 +5,6 @@ import { ListPair } from "./ListPair";
 
 
 export const Birds = (props) => {
-    console.log(props)
-
   return (
     <>
         <ListPair user={props.state.user} />
