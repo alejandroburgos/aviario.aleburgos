@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Routes,
   Route,
@@ -17,6 +17,7 @@ import { Header } from "./Components/header/Header";
 import { CountPage } from "./Components/Contador/CountPage";
 import { Birds } from "./Components/Birds/Birds";
 import { CalendarBirds } from "./Components/Birds/Calendar/CalendarBirds";
+import { Updates } from "./Components/Shared/Modal/Updates";
 
 // dont appear nav if login dont have token
 export const App = () => {
@@ -25,10 +26,25 @@ export const App = () => {
   const userData = JSON.parse(token)
   const location = useLocation();
   
+  const [read_update, setRead_update] = useState(userData?.read_update)
+
+  const [modalUpdates, setModalUpdates] = useState(false);
+  const handleClickOpen = () => {
+    setModalUpdates(true);
+  };
+
+  useEffect(() => {
+    if (read_update === false) {
+      handleClickOpen();
+    }
+  }, [read_update])
+  
+
   return (
     <>
     
-      {location.state && <Header />}
+      {location.state && <Header state={userData}/>}
+      <Updates state={userData} modal={modalUpdates} setModalUpdates={setModalUpdates} setRead_update={setRead_update}/>
 
       <Routes>
         <Route path="/" element={<Login />} />

@@ -18,6 +18,7 @@ export const ModalColor = (props) => {
                 <SwatchesPicker value={props.color} onChange={props.handleChange}/>
             </div>
 
+                <div className="table-responsive-md">
                 <ListItem>
                     {props.color.length > 0 && <small>Click en el color para eliminar:</small>}
                     {props.color.length > 0 && props.color.map((color) => {
@@ -40,6 +41,7 @@ export const ModalColor = (props) => {
                         )
                     })}
                 </ListItem>
+                    </div>
             </List>
             <Divider />
             <div className="d-flex justify-content-end p-3">

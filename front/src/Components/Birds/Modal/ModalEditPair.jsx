@@ -96,7 +96,6 @@ export const ModalEditPair = (props) => {
         };
         // send data to server
         fetch(`${constants.urlLocal}editPair/${props.id}`, {
-            
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -107,9 +106,19 @@ export const ModalEditPair = (props) => {
             .then((data) => {
                 props.setPairs(data.pair);
                 props.setOpen(false)
+                props.setAlert({
+                    open: true,
+                    message: "Pareja editada correctamente",
+                    type: "success",
+                });
             }
             // if error
             ).catch((err) => {
+                props.setAlert({
+                    open: true,
+                    message: err,
+                    type: "danger",
+                });
                 console.log(err);
             }
             // if success

@@ -62,7 +62,9 @@ exports.login = async (req, res) => {
             // get user
             user: userDB.user,
             // get token
-            token: userDB.token
+            token: userDB.token,
+            // get read_update
+            read_update: userDB.read_update
             
         })
     } else {
@@ -90,7 +92,8 @@ exports.register = async (req, res) => {
     const userDB = new User({
         user,
         password: await hashPass({ password }),
-        token
+        token,
+        read_update: false
     })
 
     await userDB.save()
@@ -116,7 +119,8 @@ exports.getUser = async (req, res) => {
     return res.status(200).json({
         ok: true,
         user: userDB.user,
-        token: userDB.token
+        token: userDB.token,
+        read_update: userDB.read_update
     })
 }
 
@@ -147,3 +151,32 @@ exports.recover = async (req, res) => {
         message: 'Password changed'
     })
 }
+
+// post request to update read_update
+exports.update = async (req, res) => {
+    const { user, token } = req.body
+    const userDB = await findUser(user)
+
+    if (!userDB) {
+        return res.status(400).json({
+            ok: false,
+            message: 'User not found'
+        })
+    }
+
+    if (userDB.token == token){
+        userDB.read_update = true
+        await userDB.save()
+
+        return res.status(200).json({
+            ok: true,
+            message: 'Read_update updated',
+            read_update: userDB.read_update
+        })
+    } else {
+        return res.status(400).json({
+            ok: false,
+            message: 'Token incorrect'
+        })
+    }
+} 

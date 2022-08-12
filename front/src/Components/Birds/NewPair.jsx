@@ -28,6 +28,7 @@ import { constants } from "../../Constants";
 import { UploadPhoto } from "./Components/UploadPhoto";
 
 export const NewPair = (props) => {
+
     const [numberPair, setNumberPair] = useState('');
 
     const [anillaMale, setAnillaMale] = useState("");
@@ -116,9 +117,19 @@ export const NewPair = (props) => {
             .then((data) => {
                 props.setPairs(data.pair);
                 props.setOpen(false)
+                props.setAlert({
+                    open: true,
+                    message: "Pareja creada correctamente",
+                    classes: "success",
+                });
             }
             // if error
             ).catch((err) => {
+                props.setAlert({
+                    open: true,
+                    message: "Error al crear pareja",
+                    classes: "error",
+                });
                 console.log(err);
             }
             // if success

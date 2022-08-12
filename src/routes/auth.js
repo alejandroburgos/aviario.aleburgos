@@ -19,6 +19,9 @@ router.post('/api/recover', auth.recover)
 // get user from params and response token
 router.get('/api/user/:user', auth.getUser)
 
+// post request to update read_update
+router.post('/api/readUpdate', auth.update)
+
 // post revenue of money 
 router.post('/api/revenue', revenue.revenue)
 router.post('/api/withdrawal', withdrawal.withdrawal)

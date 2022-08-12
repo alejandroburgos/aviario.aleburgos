@@ -91,7 +91,7 @@ export const ListPair = (props) => {
                                 <Add />
                             </Button>
                         </Tooltip>
-                        <NewPair open={open} setOpen={setOpen} user={props.user} setPairs={setPairs} />
+                        <NewPair open={open} setOpen={setOpen} user={props.user} setPairs={setPairs} alert={props.alert} setAlert={props.setAlert} />
                     </div>
                 </div>
                 <div className="search-wrapper">
@@ -152,8 +152,8 @@ export const ListPair = (props) => {
                                 </>
                             )
                         })}
-                        <ModalDeletePair setPairs={setPairs} toggle={toggleModalDelete} modal={modalDelete} user={props.user} id={idForDelete} />
-                        <ModalEditPair setPairs={setPairs} open={openEdit} setOpen={setOpenEdit} user={props.user} id={idForEdit} />
+                        <ModalDeletePair setPairs={setPairs} toggle={toggleModalDelete} modal={modalDelete} user={props.user} id={idForDelete}  alert={props.alert} setAlert={props.setAlert}  />
+                        <ModalEditPair setPairs={setPairs} open={openEdit} setOpen={setOpenEdit} user={props.user} id={idForEdit}  alert={props.alert} setAlert={props.setAlert} />
                         </tbody>
                     </Table>
                 </div>

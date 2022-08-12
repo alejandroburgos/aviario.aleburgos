@@ -10,6 +10,9 @@ const UserScheme = new mongoose.Schema(
         password: {
             type: String
         },
+        read_update: {
+            type: Boolean
+        },
         token: {
             type: String
         }

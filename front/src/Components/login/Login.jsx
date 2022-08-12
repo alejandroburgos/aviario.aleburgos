@@ -17,12 +17,18 @@ import { useNavigate, useLocation } from "react-router";
 import { constants } from "../../Constants";
 import { BubbleChart, HearingOutlined, Lock, Mail, VerifiedUser } from "@material-ui/icons";
 import { RecoverPassword } from "./RecoverPassword";
+import { Alerts } from "../Shared/Alert/Alerts";
 
 export const Login = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [dataUser, setDataUser] = useState();
-  const [error, setError] = useState();
+
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    classes: "",
+  })
 
   const [modal2, setModal2] = useState(false);
   const toggle2 = () => setModal2(!modal2);
@@ -45,7 +51,7 @@ export const Login = () => {
         if (json.ok) {
           setDataUser(json);
         } else {
-          setDataUser(null);
+          setDataUser(json.message);
         }
       } catch (error) {
         console.log("error", error);
@@ -70,16 +76,15 @@ export const Login = () => {
 
     try {
       if (response.ok) {
-        setError("");
         // set token to localStorage
         localStorage.setItem("token", JSON.stringify(json));
         navigate("/crianza-de-pajaros", { state: { user: json } });
       } else {
-        setError(JSON.stringify(json.message));
+        setAlert({ open: true, message: json.message, classes: "danger" });
       }
     } catch (error) {
       console.log("error", error);
-      setError(error);
+      setAlert({ open: true, message: error, classes: "danger" });
     }
   };
 
@@ -177,6 +182,7 @@ export const Login = () => {
                           </div>
                         </div>
                       </Grid>
+                      <Alerts alert={alert} setAlert={setAlert} />
                       {/* <Grid
                         item
                         lg={6}

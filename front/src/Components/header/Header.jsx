@@ -9,8 +9,9 @@ import {useLocation, useNavigate} from "react-router-dom";
 
 import clsx from "clsx";
 import { CloseOutlined } from "@material-ui/icons";
+import { Updates } from "../Shared/Modal/Updates";
 
-export const Header = () => {
+export const Header = (props) => {
     // get current location
     const location = useLocation();
     const navigate = useNavigate();
@@ -20,7 +21,12 @@ export const Header = () => {
     useEffect(() => {
         setUserData(location.state.user);
     }, [location])
-    
+    const [read_update, setRead_update] = useState(props.state?.read_update)
+
+    const [modalUpdates, setModalUpdates] = useState(false);
+    const handleClickOpen = () => {
+      setModalUpdates(true);
+    };
     //sing out 
     const singOut = () => {
         localStorage.removeItem("token");
@@ -46,6 +52,7 @@ export const Header = () => {
     return (
         <>
             <div className="header-nav-wrapper header-nav-wrapper-lg rounded navbar-light ml-4" style={{marginBottom: "50px"}}>
+            <Updates state={userData} modal={modalUpdates} setModalUpdates={setModalUpdates} setRead_update={setRead_update}/>
                 <div className="app-nav-logo flex-grow-0 app-nav-logo--dark mr-3">
                     <a
                         href="#/"
@@ -112,7 +119,12 @@ export const Header = () => {
                             <div className="p-3">
                                 {/* <MenuItem className="pr-5 px-3 text-dark" onClick={handleClose}>Profile</MenuItem>
                                 <MenuItem className="pr-5 px-3 text-dark" onClick={handleClose}>My account</MenuItem> */}
+                                <MenuItem className="pr-5 px-3 text-black" onClick={(e) => {
+                                        setModalUpdates(!modalUpdates);
+                                        toggle()
+                                    }}>Actualizaciones</MenuItem>
                                 <MenuItem className="pr-5 px-3 text-danger" onClick={singOut}>Logout</MenuItem>
+                                
                             </div>
                         </Menu>
                     </span>
@@ -180,6 +192,17 @@ export const Header = () => {
                                     className="px-4 d-flex align-items-center text-white-50"
                                 >
                                     <span>Calendario</span>
+                                </ListItem>
+                                <ListItem
+                                    component="a"
+                                    button
+                                    onClick={(e) => {
+                                        setModalUpdates(!modalUpdates);
+                                        toggle()
+                                    }}
+                                    className="px-4 d-flex align-items-center text-white-50"
+                                >
+                                    <span>Actualizaciones</span>
                                 </ListItem>
                                 <ListItem
                                     component="a"

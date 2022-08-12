@@ -15,8 +15,18 @@ export const ModalDeletePair = (props) => {
             const data = await result.json();
             props.setPairs(data.pair);
             props.toggle();
+            props.setAlert({
+                open: true,
+                message: "Pareja eliminada correctamente",
+                classes: "success"
+            })
         } catch (error) {
             console.log(error);
+            props.setAlert({
+                open: true,
+                message: error,
+                classes: "danger"
+            })
         }
     }
 
