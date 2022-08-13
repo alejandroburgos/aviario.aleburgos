@@ -4,6 +4,7 @@ const auth = require('../controller/auth.js')
 const revenue = require('../controller/revenue.js')
 const withdrawal = require('../controller/withdrawal.js')
 const pair = require('../controller/pair.js')
+const calendar = require('../controller/calendar.js')
 
 const router = express.Router()
 
@@ -55,4 +56,8 @@ router.delete('/api/pair/:id/:user', pair.deletePair)
 // get pair from id
 router.get('/api/pairById/:id', pair.getPairById)
 
+// new calendar
+router.post('/api/newCalendar', calendar.newCalendar)
+// get all calendars from the user
+router.get('/api/getCalendar/:user', calendar.getCalendar)
 module.exports = router

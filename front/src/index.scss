@@ -26,26 +26,3 @@ $hover-sidebar-link-color: $active-sidebar-link-color;
 $active-link-color: #98d7ec;
 $tooltip-background-color: $sidebar-background-color;
 
-.rbc-button-link{
-  display: inline-block;
-  text-align: center;
-  vertical-align: middle;
-  outline: none !important;
-  cursor: pointer;
-  -webkit-user-select: none;
-  user-select: none;
-  color: #fff;
-  background-color: #3c44b1;
-  border-color: #3c44b1;
-  color: #3c44b1;
-  background: transparent;
-  border-width: 2px;
-  border-style: solid;
-  text-transform: uppercase;
-  padding: 0.10rem 0.5rem;
-  font-size: 0.82rem;
-  line-height: 1.5;
-  border-radius: 0.29rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  line-height: 2;
-}

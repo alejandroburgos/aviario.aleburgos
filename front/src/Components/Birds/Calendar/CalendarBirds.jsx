@@ -1,30 +1,69 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 
 import { Button, Card, CardContent, Grid, List, ListItem, Tooltip } from '@material-ui/core';
-import { LocalHospitalOutlined, PlusOne, PlusOneOutlined, Settings, SettingsApplications, ShowChartOutlined, TimeToLeave, VerifiedUserOutlined } from '@material-ui/icons';
+import { AddBoxOutlined, AddComment, LocalHospitalOutlined, PlusOne, PlusOneOutlined, Settings, SettingsApplications, ShowChartOutlined, TimeToLeave, VerifiedUserOutlined } from '@material-ui/icons';
 import clsx from 'clsx';
 import moment from 'moment';
 import 'moment/locale/es';
 
-export const CalendarBirds = () => {
+import 'react-big-calendar/lib/sass/styles.scss';
+import { ModalNewEvent } from './ModalNewEvent';
+import { Alerts } from '../../Shared/Alert/Alerts';
+import { constants } from '../../../Constants';
+
+export const CalendarBirds = (props) => {
+
+    const [alert, setAlert] = useState({
+        open: false,
+        message: "",
+        classes: "",
+    })
+
     const [isSidebarMenuOpen, setIsSidebarMenuOpen] = useState(false);
     const toggleSidebarMenu = () => setIsSidebarMenuOpen(!isSidebarMenuOpen);
 
     const localizer = momentLocalizer(moment);
 
+    const [modal, setmodal] = useState(false)
+    const toggle = () => setmodal(!modal)
+
+    const [events, setEvents] = useState([{}]);
+    const eventStyleGetter = (e) => {
+        return {
+            style: {
+                backgroundColor: e.color,
+                borderRadius: '0px',
+                opacity: 0.8,
+                color: 'black',
+                border: '0px',
+                display: 'block'
+            }
+        }
+    }
+    useEffect(() => {
+        const fetchData = async () => {
+        try {
+            const result = await fetch(`${constants.urlLocal}getCalendar/${props.state.user}`);
+            const data = await result.json();
+            setEvents(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    fetchData();
+    }, []);
+
+    // sort events and show today and next 7 days but not compare time
+    const eventsToday = events.filter(event => moment(event.start).isSameOrBefore(moment().add(7, 'days'), 'day') && moment(event.start).isSameOrAfter(moment(), 'day'));
+
     return (
         <>
-
             <div className="app-inner-content-layout app-inner-content-layout-fixed">
-                <div className="d-flex d-lg-none p-4 order-0 justify-content-between align-items-center">
-                    <Button onClick={toggleSidebarMenu} size="small" className="btn-primary p-0 btn-icon d-40">
-                        <Settings />
-                    </Button>
-                </div>
                 <div className={clsx("app-inner-content-layout--sidebar app-inner-content-layout--sidebar__lg bg-secondary border-right", { 'layout-sidebar-open': isSidebarMenuOpen })}>
                     <PerfectScrollbar>
+                        <Alerts alert={alert} setAlert={setAlert} />
                         <div className="px-4">
                             <List component="div" className="nav-pills nav-neutral-primary flex-column">
                                 <ListItem className="nav-header px-0 d-flex pb-2 align-items-center">
@@ -33,7 +72,7 @@ export const CalendarBirds = () => {
                                     </div>
                                     <div className="ml-auto font-size-xs">
                                         <a href="#/" onClick={e => e.preventDefault()}>
-                                            <PlusOneOutlined />
+                                            <AddBoxOutlined />
                                         </a>
                                     </div>
                                 </ListItem>
@@ -56,47 +95,6 @@ export const CalendarBirds = () => {
                             </List>
                         </div>
                         <div className="divider mt-2" />
-                        {/* <div className="p-4 bg-white">
-                            <List component="div" className="p-0 nav-pills nav-neutral-primary flex-column">
-                                <ListItem className="nav-header m-0 pt-0 px-0 d-flex pb-3 align-items-center">
-                                    <div className="text-primary font-weight-bold">
-                                        Statistics
-                                    </div>
-                                    <div className="ml-auto font-size-xs">
-                                        <Tooltip title="Refresh stats" placement="left">
-                                            <a href="#/" onClick={e => e.preventDefault()} className="text-success">
-                                                <SettingsApplications />
-                                            </a>
-
-                                        </Tooltip>
-                                    </div>
-                                </ListItem>
-                            </List>
-                            <Grid container spacing={6} className="font-size-xs">
-                                <Grid item lg={6}>
-                                    <Card className="shadow-none bg-light text-center p-3">
-                                        <div>
-                                            <VerifiedUserOutlined />
-                                        </div>
-                                        <div className="mt-2 line-height-sm">
-                                            <b className="font-size-lg">345</b>
-                                            <span className="text-black-50 d-block">friends</span>
-                                        </div>
-                                    </Card>
-                                </Grid>
-                                <Grid item lg={6}>
-                                    <Card className="shadow-none bg-light text-center p-3">
-                                        <div>
-                                            <ShowChartOutlined />
-                                        </div>
-                                        <div className="mt-2 line-height-sm">
-                                            <b className="font-size-lg">2,693</b>
-                                            <span className="text-black-50 d-block">messages</span>
-                                        </div>
-                                    </Card>
-                                </Grid>
-                            </Grid>
-                        </div> */}
                         <div className="divider" />
                         <div className="p-4">
                             <List component="div" className="nav-pills nav-neutral-primary flex-column">
@@ -106,24 +104,30 @@ export const CalendarBirds = () => {
                                     </div>
                                 </ListItem>
                             </List>
-                            <Card className="card-box mt-3 mb-4">
-                                <div className="card-indicator bg-first" />
-                                <CardContent className="px-4 py-3">
-                                    <div className="pb-3 d-flex justify-content-between">
-                                        <a href="#/" onClick={e => e.preventDefault()}>
-                                            Antibióticos para isabelitas
-                                        </a>
-                                    </div>
-                                    <div className="d-flex align-items-center justify-content-start">
-                                        <div className="badge badge-first px-3">Hoy</div>
-                                        <div className="font-size-sm text-danger px-2">
-                                            <LocalHospitalOutlined />
-                                            {moment().format('DD MMMM YYYY')}
+                           {eventsToday.map((event) => {
+                            return (
+                                <>
+                                <Card className="card-box mt-3 mb-4">
+                                    <div className="card-indicator " style={{backgroundColor: event.color}} />
+                                    <CardContent className="px-4 py-3">
+                                        <div className="pb-3 d-flex justify-content-between">
+                                            <a href="#/" onClick={e => e.preventDefault()}>
+                                                {event.title}
+                                            </a>
                                         </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                            <Card className="card-box mb-4">
+                                        <div className="d-flex align-items-center justify-content-start">
+                                            <div className="badge badge-first px-3">Hoy</div>
+                                            <div className="font-size-sm text-danger px-2">
+                                                <LocalHospitalOutlined />
+                                                {moment(event.end).format('DD MMMM YYYY')}
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                                </>
+                            )
+                           }) }
+                            {/* <Card className="card-box mb-4">
                                 <div className="card-indicator bg-success" />
                                 <CardContent className="px-4 py-3">
                                     <div className="pb-3 d-flex justify-content-between">
@@ -139,8 +143,9 @@ export const CalendarBirds = () => {
                                         </div>
                                     </div>
                                 </CardContent>
-                            </Card>
-                            <Button href="#/" onClick={e => e.preventDefault()} className="btn-pill btn-primary" fullWidth size="small">
+                            </Card> */}
+                            <ModalNewEvent modal={modal} toggle={toggle} events={events} setEvents={setEvents} user={props.state} alert={alert} setAlert={setAlert}/>
+                            <Button onClick={e => toggle()} className="btn-pill btn-primary" fullWidth size="small">
                                 Añadir evento
                             </Button>
                         </div>
@@ -149,12 +154,12 @@ export const CalendarBirds = () => {
                 <div className="app-inner-content-layout--main card-box bg-white p-0">
                     <div className="card-header rounded-0 bg-white p-4 border-bottom">
                         <div className="card-header--title">
-                            <small>Events</small>
-                            <b className="font-size-lg">Events calendar</b>
+                            <small>Eventos</small>
+                            <b className="font-size-lg">Calendario</b>
                         </div>
-                        <div className="card-header--actions">
-                            <Button href="#/" onClick={e => e.preventDefault()} size="small" className="btn-first btn-icon d-40 p-0 hover-scale-sm btn-pill">
-                                <PlusOne />
+                        <div className="d-flex d-lg-none p-2 order-0 justify-content-between align-items-center">
+                            <Button onClick={toggleSidebarMenu} size="small" className="btn-primary p-0 btn-icon d-40">
+                                <Settings />
                             </Button>
                         </div>
                     </div>
@@ -162,10 +167,11 @@ export const CalendarBirds = () => {
                         <div className="p-4">
                         <Calendar
                             localizer={localizer}
-                            // events={myEventsList}
                             startAccessor="start"
                             endAccessor="end"
                             style={{ height: 500 }}
+                            events={events}
+                            eventPropGetter={eventStyleGetter}
                             messages={{
                                 month: 'Mes',
                                 day: 'Días',
