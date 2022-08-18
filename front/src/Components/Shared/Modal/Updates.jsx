@@ -48,35 +48,17 @@ export const Updates = (props) => {
                         tabIndex={-1}
                     >
                         <List component="div" className="list-group-flush mb-2">
-                            <ListItem className="py-3 border-0">
-                                    <div className="align-box-row w-100">
-                                        <div>
-                                            <div className="font-weight-bold d-block opacity-8">General</div>
-                                            <div className="text-dark opacity-5 mt-2">
-                                                Añadido alertas cuando se añade o elimina algun elemento
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ListItem>
                                 <ListItem className="py-3 border-0">
                                     <div className="align-box-row w-100">
                                         <div>
-                                            <div className="font-weight-bold d-block opacity-8">Crianza de pájaros</div>
-                                            <div className="text-dark opacity-5 mt-2">
-                                                Se ha añadido la opción de subir una foto <br />
-                                                Se ha añadido la el campo de <i>Nº de isabelita</i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ListItem>
-                                <ListItem className="py-3 border-0">
-                                    <div className="align-box-row w-100">
-                                        <div>
-                                            <div className="font-weight-bold d-block opacity-8">Calendario <Badge className='m-1 badge badge-success'>Nuevo</Badge> </div>
+                                            <div className="font-weight-bold d-block opacity-8">Calendario <Badge className='m-1 badge badge-success'>Nuevo</Badge> <Badge className='m-1 badge badge-warning'>en desarollo</Badge></div>
                                             <div className="text-dark opacity-5 mt-2">
                                                 Añadido en el menú una nueva funcionalidad de Calendario para llevar el control de todo los tratamientos, funciona añadir 
                                                 eventos, no editarlos ni eliminarlos
-                                                <br /> <Badge className='m-1 badge badge-warning'>en desarollo</Badge>
+                                                <br /> 
+                                                <br />
+                                                <br />
+                                                Añadido nueva categoria que va enlazado con cada evento que se quiera crear
                                             </div>
                                         </div>
                                     </div>

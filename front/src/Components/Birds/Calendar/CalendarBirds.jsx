@@ -12,6 +12,7 @@ import 'react-big-calendar/lib/sass/styles.scss';
 import { ModalNewEvent } from './ModalNewEvent';
 import { Alerts } from '../../Shared/Alert/Alerts';
 import { constants } from '../../../Constants';
+import { ModalNewCategory } from './ModalNewCategory';
 
 export const CalendarBirds = (props) => {
 
@@ -29,7 +30,15 @@ export const CalendarBirds = (props) => {
     const [modal, setmodal] = useState(false)
     const toggle = () => setmodal(!modal)
 
+    const [modalCategory, setModalCategory] = useState(false)
+    const toggleCategory= () => setModalCategory(!modalCategory)
+
     const [events, setEvents] = useState([{}]);
+    const [categories, setCategories] = useState([{}]);
+    
+    const handleEventSelection = (e) => {
+        console.log(e, "Event data");
+    }
     const eventStyleGetter = (e) => {
         return {
             style: {
@@ -44,19 +53,60 @@ export const CalendarBirds = (props) => {
     }
     useEffect(() => {
         const fetchData = async () => {
+            try {
+                const result = await fetch(`${constants.urlLocal}getCalendar/${props.state.user}`);
+                const data = await result.json();
+                setEvents(data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const fetchDataCategory = async () => {
+            try {
+                const result = await fetch(`${constants.urlLocal}getCategory/${props.state.user}`);
+                const data = await result.json();
+                setCategories(data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchDataCategory();
+    } , []);
+
+    // delete category
+    const deleteCategory = async (id) => {
         try {
-            const result = await fetch(`${constants.urlLocal}getCalendar/${props.state.user}`);
+            const result = await fetch(`${constants.urlLocal}deleteCategory/${id}/${props.state.user}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
             const data = await result.json();
-            setEvents(data);
+            setCategories(data.categories);
+            setAlert({
+                open: true,
+                message: "Categoría eliminada correctamente",
+                classes: "success"
+            })
         } catch (error) {
-            console.log(error);
+            setAlert({
+                open: true,
+                message: "Error al eliminar la categoría", error,
+                classes: "danger"
+            })
         }
     }
-    fetchData();
-    }, []);
+
 
     // sort events and show today and next 7 days but not compare time
     const eventsToday = events.filter(event => moment(event.start).isSameOrBefore(moment().add(7, 'days'), 'day') && moment(event.start).isSameOrAfter(moment(), 'day'));
+
+    // add eventsToday to eventsRange 
 
     return (
         <>
@@ -68,30 +118,27 @@ export const CalendarBirds = (props) => {
                             <List component="div" className="nav-pills nav-neutral-primary flex-column">
                                 <ListItem className="nav-header px-0 d-flex pb-2 align-items-center">
                                     <div className="text-primary font-weight-bold">
-                                        Eventos
+                                        Categorías
                                     </div>
-                                    <div className="ml-auto font-size-xs">
-                                        <a href="#/" onClick={e => e.preventDefault()}>
+                                    <div className="ml-auto font-size-xs" style={{cursor: "pointer"}}>
+                                        <span onClick={toggleCategory}>
                                             <AddBoxOutlined />
-                                        </a>
+                                        </span>
+                                        <ModalNewCategory modal={modalCategory} toggle={toggleCategory} categories={categories} setCategories={setCategories} user={props.state} alert={alert} setAlert={setAlert} />
                                     </div>
                                 </ListItem>
-                                <ListItem component="a" button href="#/" onClick={e => e.preventDefault()}>
-                                    <div className="badge badge-success badge-circle-inner shadow-none mr-2">1</div>
-                                    Vitaminas
-                                </ListItem>
-                                <ListItem component="a" button href="#/" onClick={e => e.preventDefault()}>
-                                    <div className="badge badge-warning badge-circle-inner shadow-none mr-2">2</div>
-                                    Antibióticos
-                                </ListItem>
-                                <ListItem component="a" button href="#/" onClick={e => e.preventDefault()}>
-                                    <div className="badge badge-first badge-circle-inner shadow-none mr-2">3</div>
-                                    Ibuprofeno
-                                </ListItem>
-                                <ListItem component="a" button href="#/" onClick={e => e.preventDefault()}>
-                                    <div className="badge badge-danger badge-circle-inner shadow-none mr-2">4</div>
-                                    Oraldine
-                                </ListItem>
+                                {categories && categories.map((category, index) => {
+                                    return (
+                                        <>
+                                        <ListItem component="a" button 
+                                        // onClick={e => deleteCategory(category._id)}
+                                        >
+                                            <div className="badge badge-circle-inner shadow-none mr-2" style={{backgroundColor: `${category.color}`}}>1</div>
+                                            {category.title}
+                                        </ListItem>
+                                        </>
+                                    )
+                                })}
                             </List>
                         </div>
                         <div className="divider mt-2" />
@@ -104,7 +151,7 @@ export const CalendarBirds = (props) => {
                                     </div>
                                 </ListItem>
                             </List>
-                           {eventsToday.map((event) => {
+                            {eventsToday && eventsToday.map((event) => {
                             return (
                                 <>
                                 <Card className="card-box mt-3 mb-4">
@@ -119,7 +166,8 @@ export const CalendarBirds = (props) => {
                                             <div className="badge badge-first px-3">Hoy</div>
                                             <div className="font-size-sm text-danger px-2">
                                                 <LocalHospitalOutlined />
-                                                {moment(event.end).format('DD MMMM YYYY')}
+                                                {/* compare end and start and if is range */}
+                                                {moment(event.start).isSame(moment(event.end), 'day') ? moment(event.start).format('DD/MM/YYYY') : moment(event.start).format('DD/MM/YYYY') + " - " + moment(event.end).format('DD/MM/YYYY')}
                                             </div>
                                         </div>
                                     </CardContent>
@@ -144,7 +192,7 @@ export const CalendarBirds = (props) => {
                                     </div>
                                 </CardContent>
                             </Card> */}
-                            <ModalNewEvent modal={modal} toggle={toggle} events={events} setEvents={setEvents} user={props.state} alert={alert} setAlert={setAlert}/>
+                            <ModalNewEvent modal={modal} toggle={toggle} categories={categories} events={events} setEvents={setEvents} user={props.state} alert={alert} setAlert={setAlert}/>
                             <Button onClick={e => toggle()} className="btn-pill btn-primary" fullWidth size="small">
                                 Añadir evento
                             </Button>
@@ -172,6 +220,7 @@ export const CalendarBirds = (props) => {
                             style={{ height: 500 }}
                             events={events}
                             eventPropGetter={eventStyleGetter}
+                            onSelectEvent={handleEventSelection} 
                             messages={{
                                 month: 'Mes',
                                 day: 'Días',
@@ -181,6 +230,7 @@ export const CalendarBirds = (props) => {
                                 back: 'Atrás',
                                 next: 'Siguiente',
                                 noEventsInRange: 'No hay eventos en este rango.',
+                                allDay: 'Todo el día',
                             }}
                             />
                         </div>

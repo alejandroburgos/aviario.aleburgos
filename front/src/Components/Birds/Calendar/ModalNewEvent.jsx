@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Dialog, Button, DialogContent, TextField, InputAdornment, DialogActions, DialogTitle, FormControlLabel, Checkbox } from "@material-ui/core";
+import React, { useEffect, useState } from 'react'
+import { Dialog, Button, DialogContent, TextField, InputAdornment, DialogActions, DialogTitle, FormControlLabel, Checkbox, Select, MenuItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import { CalendarToday } from '@material-ui/icons';
 import { LocalizationProvider, MobileDatePicker, TimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -10,6 +10,7 @@ import { constants } from '../../../Constants';
 import moment from 'moment';
 import 'moment/locale/es';
 import es from "date-fns/locale/es";
+import { Icon } from '@mui/material';
 
 export const ModalNewEvent = (props) => {
 
@@ -17,15 +18,28 @@ export const ModalNewEvent = (props) => {
     const [start, setStart] = useState(moment().toDate());
     const [end, setEnd] = useState(moment().toDate());
     const [color, setColor] = useState("");
+
+    const [categorySelected, setCategorySelected] = useState({
+        id: "",
+        title: "",
+        color: ""
+    });
+
     const handleChangeColor= (color, event) => {
         setColor(color.hex );
-      };
-      console.log(color)
+    };
     const [checked, setChecked] = useState(true);
     const handleChecked = (checked) => {
         setChecked(checked);
     };
-    
+
+    const handleChange = (event) => {
+        setCategorySelected(event.target.value);
+        console.log(categorySelected)
+        console.log(event)
+
+    };
+
     const createEvent = async (id) => {
         try {
             const result = await fetch(`${constants.urlLocal}newCalendar`, {
@@ -40,7 +54,7 @@ export const ModalNewEvent = (props) => {
                     start: moment(start).toDate(),
                     end: moment(end).toDate(),
                     allDay:checked,
-                    color: color
+                    color: categorySelected.color
                 })
             });
             const data = await result.json();
@@ -60,6 +74,7 @@ export const ModalNewEvent = (props) => {
             })
         }
     }
+    
 
     return (
         <>
@@ -73,6 +88,7 @@ export const ModalNewEvent = (props) => {
                                     <TextField fullWidth
                                         variant="outlined"
                                         size="small"
+                                        placeholder="Título ... (Medicinas, etc)"
                                         id="textfield-Título"
                                         label="Título"
                                         onChange={(e) => setTitle(e.target.value)}
@@ -105,7 +121,7 @@ export const ModalNewEvent = (props) => {
                                     />
                                     </LocalizationProvider>
                                 </div>
-                                <div className="d-flex justify-content-between align-items-center font-size-md">
+                                {/* <div className="d-flex justify-content-between align-items-center font-size-md">
                                     <FormControlLabel
                                         control={
                                             <Checkbox
@@ -117,9 +133,33 @@ export const ModalNewEvent = (props) => {
                                         }
                                         label="Todo el dia"
                                     />
-                                </div>
+                                </div> */}
                                 <div className="justify-content-center">
-                                    <CirclePicker onChangeComplete={handleChangeColor} />
+                                    <Select
+                                        fullWidth
+                                        labelId="demo-simple-select-outlined-label"
+                                        id="demo-simple-select-outlined"
+                                        onChange={handleChange}
+                                        value={categorySelected}
+                                        label={categorySelected ? categorySelected.title : "Categoría"}
+                                    >
+                                    <MenuItem value="" disabled>
+                                        <ListItemIcon style={{minWidth: "30px"}}>
+                                            <div className="badge badge-circle-inner shadow-none mr-1" style={{backgroundColor: `#000`}}>1</div>
+                                        </ListItemIcon>
+                                        <ListItemText primary="Selecciona categoría"  />
+                                    </MenuItem>
+                                    {props.categories && props.categories.map((category) => {
+                                            return (
+                                                    <MenuItem key={category._id} value={category} style={{display: 'flex !important'}} >
+                                                        <ListItemIcon style={{minWidth: "30px"}}>
+                                                            <div className="badge badge-circle-inner shadow-none mr-1" style={{backgroundColor: `${category.color}`}}>1</div>
+                                                        </ListItemIcon>
+                                                        <ListItemText primary={category.title} />
+                                                    </MenuItem>
+                                            )
+                                    })}
+                                </Select>
                                 </div>
                                 <DialogActions className="p-4">
                                     <Button onClick={props.toggle} variant="text" className="bg-white-10 text-white mr-3 shadow-none">

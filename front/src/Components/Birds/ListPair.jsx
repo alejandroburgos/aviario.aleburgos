@@ -9,6 +9,7 @@ import { ModalDeletePair } from "./Modal/ModalDeletePair";
 import { ModalEditPair } from "./Modal/ModalEditPair";
 import Pagination from '@material-ui/lab/Pagination';
 import usePagination from "../usePagination/usePagination";
+import { Loading } from "../Loading/Loading";
 
     const ITEM_HEIGHT = 24;
     const MenuProps = {
@@ -65,6 +66,7 @@ export const ListPair = (props) => {
     }, [search, pairs]);
 
     useEffect(() => {
+            setLoading(true);
             const fetchData = async () => {
             try {
                 const result = await fetch(`${constants.urlLocal}pair/${props.user}`);
@@ -81,6 +83,7 @@ export const ListPair = (props) => {
     return (
         <>
             <Card className="card-box mb-spacing-6-x2">
+            {loading && <Loading loading={loading} />}
                 <div className="card-header">
                     <div className="card-header--title font-size-lg">
                         Lista de parejas

@@ -5,6 +5,7 @@ const revenue = require('../controller/revenue.js')
 const withdrawal = require('../controller/withdrawal.js')
 const pair = require('../controller/pair.js')
 const calendar = require('../controller/calendar.js')
+const category = require('../controller/category.js')
 
 const router = express.Router()
 
@@ -60,4 +61,12 @@ router.get('/api/pairById/:id', pair.getPairById)
 router.post('/api/newCalendar', calendar.newCalendar)
 // get all calendars from the user
 router.get('/api/getCalendar/:user', calendar.getCalendar)
+
+// create new calendar category
+router.post('/api/newCategory', category.newCategory)
+// get all categories from the user
+router.get('/api/getCategory/:user', category.getCategory)
+// delete category
+router.delete('/api/deleteCategory/:id/:user', category.deleteCategory)
+
 module.exports = router
