@@ -21,8 +21,8 @@ export const ModalNewEvent = (props) => {
 
     const [categorySelected, setCategorySelected] = useState({
         id: "",
-        title: "",
-        color: ""
+        title: "Selecciona categoria",
+        color: "#000000"
     });
 
     const handleChangeColor= (color, event) => {
@@ -35,9 +35,6 @@ export const ModalNewEvent = (props) => {
 
     const handleChange = (event) => {
         setCategorySelected(event.target.value);
-        console.log(categorySelected)
-        console.log(event)
-
     };
 
     const createEvent = async (id) => {
@@ -140,6 +137,8 @@ export const ModalNewEvent = (props) => {
                                         labelId="demo-simple-select-outlined-label"
                                         id="demo-simple-select-outlined"
                                         onChange={handleChange}
+                                        placeholder="Selecciona una categoría"
+                                        defaultValue={categorySelected}
                                         value={categorySelected}
                                         label={categorySelected ? categorySelected.title : "Categoría"}
                                     >
@@ -162,7 +161,7 @@ export const ModalNewEvent = (props) => {
                                 </Select>
                                 </div>
                                 <DialogActions className="p-4">
-                                    <Button onClick={props.toggle} variant="text" className="bg-white-10 text-white mr-3 shadow-none">
+                                    <Button onClick={props.toggle} variant="text" className="bg-white-10 text-black mr-3 shadow-none">
                                         Cancelar
                                     </Button>
                                     <Button onClick={createEvent} className="btn-success shadow-none">

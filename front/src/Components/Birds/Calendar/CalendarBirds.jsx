@@ -2,17 +2,20 @@ import React, { useState, useEffect, useCallback } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 
-import { Button, Card, CardContent, Grid, List, ListItem, Tooltip } from '@material-ui/core';
-import { AddBoxOutlined, AddComment, LocalHospitalOutlined, PlusOne, PlusOneOutlined, Settings, SettingsApplications, ShowChartOutlined, TimeToLeave, VerifiedUserOutlined } from '@material-ui/icons';
+import { Button, Card, CardContent, Grid, List, ListItem, Menu, Tooltip } from '@material-ui/core';
+import { AddBoxOutlined, AddComment, Delete, DeleteOutlined, Edit, LocalHospitalOutlined, PlusOne, PlusOneOutlined, Settings, SettingsApplications, ShowChartOutlined, TimeToLeave, VerifiedUserOutlined } from '@material-ui/icons';
 import clsx from 'clsx';
 import moment from 'moment';
 import 'moment/locale/es';
 
 import 'react-big-calendar/lib/sass/styles.scss';
 import { ModalNewEvent } from './ModalNewEvent';
+import { ModalEditEvent } from './ModalEditEvent';
 import { Alerts } from '../../Shared/Alert/Alerts';
 import { constants } from '../../../Constants';
 import { ModalNewCategory } from './ModalNewCategory';
+import { ModalDeleteCalendar } from './ModalDeleteCalendar';
+import { ModalDeleteCategory } from './ModalDeleteCategory';
 
 export const CalendarBirds = (props) => {
 
@@ -30,14 +33,38 @@ export const CalendarBirds = (props) => {
     const [modal, setmodal] = useState(false)
     const toggle = () => setmodal(!modal)
 
+    const [modalEdit, setmodalEdit] = useState(false)
+    const toggleEdit = () => setmodalEdit(!modalEdit)
+
     const [modalCategory, setModalCategory] = useState(false)
     const toggleCategory= () => setModalCategory(!modalCategory)
 
+    const [modalDelete, setModalDelete] = useState(false)
+    const toggleDelete = () => setModalDelete(!modalDelete)
+
+    const [modalDeleteCategory, setModalDeleteCategory] = useState(false)
+    const toggleDeleteCategory = () => setModalDeleteCategory(!modalDeleteCategory)
+
     const [events, setEvents] = useState([{}]);
     const [categories, setCategories] = useState([{}]);
+    const [selectedEvent, setSelectedEvent] = useState({});
+    const [selectedCategory, setSelectedCategory] = useState({});
     
+    const [anchorElMenu1, setAnchorElMenu1] = useState(null);
+    const [menu, setMenu] = useState(false)
+    const handleClickMenu1 = event => {
+        setAnchorElMenu1(event.currentTarget);
+        setMenu(!menu);
+    };
+    const handleCloseMenu1 = () => {
+        setAnchorElMenu1(null);
+        setMenu(false);
+    };
+
+
     const handleEventSelection = (e) => {
-        console.log(e, "Event data");
+        setSelectedEvent(e)
+        handleClickMenu1(e);
     }
     const eventStyleGetter = (e) => {
         return {
@@ -80,7 +107,7 @@ export const CalendarBirds = (props) => {
     // delete category
     const deleteCategory = async (id) => {
         try {
-            const result = await fetch(`${constants.urlLocal}deleteCategory/${id}/${props.state.user}`, {
+            const result = await fetch(`${constants.urlLocal}deleteCategory/${selectedCategory._id}/${props.state.user}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
@@ -88,6 +115,7 @@ export const CalendarBirds = (props) => {
             });
             const data = await result.json();
             setCategories(data.categories);
+            toggleDeleteCategory();
             setAlert({
                 open: true,
                 message: "Categoría eliminada correctamente",
@@ -104,7 +132,7 @@ export const CalendarBirds = (props) => {
 
 
     // sort events and show today and next 7 days but not compare time
-    const eventsToday = events.filter(event => moment(event.start).isSameOrBefore(moment().add(7, 'days'), 'day') && moment(event.start).isSameOrAfter(moment(), 'day'));
+    const eventsToday = events && events.filter(event => moment(event.start).isSameOrBefore(moment().add(7, 'days'), 'day') && moment(event.start).isSameOrAfter(moment(), 'day'));
 
     // add eventsToday to eventsRange 
 
@@ -126,6 +154,8 @@ export const CalendarBirds = (props) => {
                                         </span>
                                         <ModalNewCategory modal={modalCategory} toggle={toggleCategory} categories={categories} setCategories={setCategories} user={props.state} alert={alert} setAlert={setAlert} />
                                     </div>
+                                    <ModalDeleteCategory modal={modalDeleteCategory} toggle={toggleDeleteCategory} selectedCategory={selectedCategory} deleteCategory={deleteCategory} />
+
                                 </ListItem>
                                 {categories && categories.map((category, index) => {
                                     return (
@@ -135,6 +165,14 @@ export const CalendarBirds = (props) => {
                                         >
                                             <div className="badge badge-circle-inner shadow-none mr-2" style={{backgroundColor: `${category.color}`}}>1</div>
                                             {category.title}
+                                            <div className="ml-auto font-size-xs" style={{cursor: "pointer"}}>
+                                                <span onClick={() => {
+                                                    toggleDeleteCategory();
+                                                    setSelectedCategory(category);
+                                                } }>
+                                                    <DeleteOutlined />
+                                                </span>
+                                            </div>
                                         </ListItem>
                                         </>
                                     )
@@ -213,27 +251,76 @@ export const CalendarBirds = (props) => {
                     </div>
                     <PerfectScrollbar>
                         <div className="p-4">
-                        <Calendar
-                            localizer={localizer}
-                            startAccessor="start"
-                            endAccessor="end"
-                            style={{ height: 500 }}
-                            events={events}
-                            eventPropGetter={eventStyleGetter}
-                            onSelectEvent={handleEventSelection} 
-                            messages={{
-                                month: 'Mes',
-                                day: 'Días',
-                                today: 'Hoy',
-                                week: 'Semana',
-                                previous: "Atras",
-                                back: 'Atrás',
-                                next: 'Siguiente',
-                                noEventsInRange: 'No hay eventos en este rango.',
-                                allDay: 'Todo el día',
-                            }}
+                            <Calendar
+                                localizer={localizer}
+                                startAccessor="start"
+                                endAccessor="end"
+                                style={{ height: 500 }}
+                                events={events}
+                                eventPropGetter={eventStyleGetter}
+                                onSelectEvent={handleEventSelection} 
+                                messages={{
+                                    month: 'Mes',
+                                    day: 'Días',
+                                    today: 'Hoy',
+                                    week: 'Semana',
+                                    previous: "Atras",
+                                    back: 'Atrás',
+                                    next: 'Siguiente',
+                                    noEventsInRange: 'No hay eventos en este rango.',
+                                    allDay: 'Todo el día',
+                                    date: 'Fecha',
+                                    time: 'Hora',
+                                    event: 'Evento',
+                                }}
                             />
+                           <div className="m-2">
+                                <Menu
+                                    anchorEl={anchorElMenu1}
+                                    keepMounted
+                                    open={menu}
+                                    onClose={handleCloseMenu1} classes={{ list: 'p-0' }}
+                                    getContentAnchorEl={null}
+                                    anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                    }}
+                                    transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                    }}>
+                                <div className="dropdown-menu-xl p-0">
+                                    <div className="grid-menu grid-menu-2col">
+                                        <Grid container spacing={0}>
+                                            <Grid item sm={6}>
+                                                <div className="p-3">
+                                                    <Button variant="text" className="btn-outline-warning border-0 w-100 d-block" onClick={toggleEdit} >
+                                                        <span className="font-size-xxl d-block">
+                                                            <Edit />
+                                                        </span>
+                                                        <span>Editar</span>
+                                                    </Button>
+                                                <ModalEditEvent selectedEvent={selectedEvent} handleCloseMenu1={handleCloseMenu1} modal={modalEdit} toggle={toggleEdit} categories={categories} events={events} setEvents={setEvents} user={props.state} alert={alert} setAlert={setAlert} />
+                                                </div>
+                                            </Grid>
+                                            <Grid item sm={6}>
+                                                <div className="p-3">
+                                                    <Button variant="text" className="btn-outline-danger border-0 w-100 d-block" onClick={toggleDelete}  >
+                                                        <span className="font-size-xxl d-block">
+                                                            <Delete />
+                                                        </span>
+                                                        <span>Eliminar</span>
+                                                    </Button>
+                                                    <ModalDeleteCalendar setEvents={setEvents} handleCloseMenu1={handleCloseMenu1} selectedEvent={selectedEvent} toggle={toggleDelete} modal={modalDelete} user={props.state} alert={alert} setAlert={setAlert}  />
+                                                </div>
+                                            </Grid>
+                                        </Grid>
+                                    </div>
+                                </div>
+                                </Menu>
+                            </div>
                         </div>
+                        
                     </PerfectScrollbar>
                 </div>
 

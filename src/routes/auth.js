@@ -61,6 +61,11 @@ router.get('/api/pairById/:id', pair.getPairById)
 router.post('/api/newCalendar', calendar.newCalendar)
 // get all calendars from the user
 router.get('/api/getCalendar/:user', calendar.getCalendar)
+// edit calendar
+router.put('/api/editCalendar/:id', calendar.editCalendar)
+// delete calendar
+router.delete('/api/deleteCalendar/:id/:user', calendar.deleteCalendar)
+
 
 // create new calendar category
 router.post('/api/newCategory', category.newCategory)

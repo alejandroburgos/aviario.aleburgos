@@ -53,8 +53,7 @@ export const Updates = (props) => {
                                         <div>
                                             <div className="font-weight-bold d-block opacity-8">Calendario <Badge className='m-1 badge badge-success'>Nuevo</Badge> <Badge className='m-1 badge badge-warning'>en desarollo</Badge></div>
                                             <div className="text-dark opacity-5 mt-2">
-                                                Añadido en el menú una nueva funcionalidad de Calendario para llevar el control de todo los tratamientos, funciona añadir 
-                                                eventos, no editarlos ni eliminarlos
+                                                Añadido en el menú una nueva funcionalidad de Calendario para llevar el control de todo los tratamientos. Gestion de los eventos y de las categorías
                                                 <br /> 
                                                 <br />
                                                 <br />
