@@ -51,6 +51,8 @@ export const ModalEditPair = (props) => {
     )
     const [arrPuestasPareja, setArrPuestasPareja] = useState([{
         id: Math.random().toString(36),
+        numberPair: numberPair,
+        color: "#" + Math.floor(Math.random() * 16777215).toString(16),
     }])
 
     const handleChangeMaleColor = (color) => {

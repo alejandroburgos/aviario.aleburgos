@@ -18,30 +18,42 @@ export const ModalCalendarBirth = (props) => {
     const localizer = momentLocalizer(moment);
     const [events, setEvents] = useState([]);
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const result = await fetch(`${constants.urlLocal}birth/${props.user}`);
+    //             const data = await result.json();
+    //             data.forEach(element => {
+    //                 return setEvents(events => [...events, {
+    //                     title: 'illo',
+    //                     start: moment(element.iniIncubacion),
+    //                     end: moment(element.fechNacimiento),
+    //                 }])
+    //             });
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     }
+    //     fetchData();
+    // }, []);
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result = await fetch(`${constants.urlLocal}birth/${props.user}`);
-                const data = await result.json();
-                data.length > 0 && data.forEach(element => {
-                    setEvents(events => [...events, {
-                        title: 'Nacimiento de la pareja ' + props.pairs.map(pair => pair.numberPair),
-                        start: new Date(element.iniIncubacion),
-                        end: new Date(element.fechNacimiento),
-                        allDay: true,
-                        // random color
-                        color: '#' + Math.floor(Math.random() * 16777215).toString(16)
-                    }])
-                });
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        fetchData();
+        setEvents([])
+        props.pairs && props.pairs.forEach(element => {
+            element.arrPuestasParejas && element.arrPuestasParejas.forEach(element2 => {
+                
+                return setEvents(events => [...events, {
+                    title: 'Nac. Pareja '+ element.numberPair,
+                    start: moment(element2.iniIncubacion),
+                    end: moment(element2.fechNacimiento),
+                    allDay: true,
+                    color: element2.color, 
+
+                }])
+            });
+        });
     }, [props.pairs]);
-
-    console.log(events)
-
+    
     const handleEventSelection = (e) => {
         console.log(e)
     }

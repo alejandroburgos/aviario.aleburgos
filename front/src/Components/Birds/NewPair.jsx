@@ -49,6 +49,8 @@ export const NewPair = (props) => {
     // random id
     const [objPuestasPareja, setObjPuestasPareja] = useState({
         id: Math.random().toString(36),
+        numberPair: numberPair,
+        color: "#" + Math.floor(Math.random() * 16777215).toString(16),
     })
     
     const [arrPuestasPareja, setArrPuestasPareja] = useState([objPuestasPareja])

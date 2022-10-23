@@ -20,10 +20,6 @@ if (port == null || port == "") {
     port = 3001;
 }
 
-app.use("/", (req, res) => {
-    res.send("Api Aviario");
-});
-
 // for parsing json
 app.use(
     bodyParser.json({

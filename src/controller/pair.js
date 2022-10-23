@@ -105,22 +105,21 @@ exports.editPair = async (req, res) => {
     }
 }
 
-// get pair by user and filter by arrPuestasParejas
+// get fechNacimiento and iniIncubacion from arrPuestasParejas by user
 exports.getArrPuestasParejas = async (req, res) => {
     const { user } = req.params
     try {
         const pair = await model.find({ user })
-        let arrPuestasParejas = []
-        pair.forEach(element => {
-            arrPuestasParejas.push(element.arrPuestasParejas)
-        });
-        let arrPuestasParejasMap = arrPuestasParejas.map(item => item).flat()
-        let events = {
-            start: arrPuestasParejasMap.map(item => item.iniIncubacion),
-            end: arrPuestasParejasMap.map(item => item.fechNacimiento),
-        }
-
-        res.json(events)
+        const arrPuestasParejas = pair.map((pair, i) => pair.arrPuestasParejas[i])
+        // change name of objects of arrPuestasParejas
+        const arrPuestasParejas2 = arrPuestasParejas.map((arrPuestasParejas, i) => {
+            return {
+                start: arrPuestasParejas.iniIncubacion,
+                end: arrPuestasParejas.fechNacimiento,
+                allDay: true
+            }
+        })
+        res.json(arrPuestasParejas2)
     } catch (error) {
         res.status(500).json({ message: error })
     }
