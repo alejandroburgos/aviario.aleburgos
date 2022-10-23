@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, FormControl, Input, InputAdornment, InputLabel, LinearProgress, MenuItem, Select, Table, TextField, Tooltip } from "@material-ui/core";
-import { Add, Close, Delete, DeleteSharp, Edit, PlusOneOutlined, SearchSharp, SearchTwoTone } from "@material-ui/icons";
+import { Add, CalendarToday, CalendarViewDay, Close, Delete, DeleteSharp, Edit, PlusOneOutlined, SearchSharp, SearchTwoTone } from "@material-ui/icons";
 import { NewPair } from "./NewPair";
 import { constants } from "../../Constants";
 import moment from "moment";
@@ -10,6 +10,7 @@ import { ModalEditPair } from "./Modal/ModalEditPair";
 import Pagination from '@material-ui/lab/Pagination';
 import usePagination from "../usePagination/usePagination";
 import { Loading } from "../Loading/Loading";
+import { ModalCalendarBirth } from "./Modal/ModalCalendarBirth";
 
     const ITEM_HEIGHT = 24;
     const MenuProps = {
@@ -25,6 +26,12 @@ export const ListPair = (props) => {
 
     const [open, setOpen] = React.useState(false);
     const [openEdit, setOpenEdit] = React.useState(false);
+    const [openCalendar, setOpenCalendar] = useState(false)
+
+    const handleClickOpenCalendar = () => {
+        setOpenCalendar(true);
+    };
+
     const [idForEdit, setIdForEdit] = useState()
     const handleClickOpen = () => {
         setOpen(true);
@@ -97,22 +104,32 @@ export const ListPair = (props) => {
                         <NewPair open={open} setOpen={setOpen} user={props.user} setPairs={setPairs} alert={props.alert} setAlert={props.setAlert} />
                     </div>
                 </div>
-                <div className="search-wrapper">
-                    <TextField
-                        className="mt-3 ml-4"
-                        variant="outlined"
-                        placeholder="Nº de parejas ..."
-                        size="small"
-                        id="input-search"
-                        onChange={(e) => setSearch(e.target.value)}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchTwoTone />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
+                <div className="d-flex card-header">
+                    <div className="search-wrapper card-header--title">
+                        <TextField
+                            className="mt-3 ml-4"
+                            variant="outlined"
+                            placeholder="Nº de parejas ..."
+                            size="small"
+                            id="input-search"
+                            onChange={(e) => setSearch(e.target.value)}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchTwoTone />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </div>
+                    <div className="card-header--actions">
+                        <Tooltip title="Ver calendario">
+                            <Button size="small" className="btn-link px-1" onClick={handleClickOpenCalendar}>
+                                <CalendarToday />
+                            </Button>
+                        </Tooltip>
+                        <ModalCalendarBirth open={openCalendar} setOpen={setOpenCalendar} pairs={pairs} user={props.user} />
+                    </div>
                 </div>
                 <div className="table-responsive-md p-4" >
                     <Table className="table table-hover text-nowrap mb-0 ">

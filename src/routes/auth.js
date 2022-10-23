@@ -56,6 +56,8 @@ router.put('/api/editPair/:id', pair.editPair)
 router.delete('/api/pair/:id/:user', pair.deletePair)
 // get pair from id
 router.get('/api/pairById/:id', pair.getPairById)
+// get iniIncubacion and finIncubacion
+router.get('/api/birth/:user', pair.getArrPuestasParejas)
 
 // new calendar
 router.post('/api/newCalendar', calendar.newCalendar)

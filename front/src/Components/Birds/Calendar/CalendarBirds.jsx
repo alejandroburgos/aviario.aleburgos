@@ -274,7 +274,7 @@ export const CalendarBirds = (props) => {
                                     event: 'Evento',
                                 }}
                             />
-                           <div className="m-2">
+                            <div className="m-2">
                                 <Menu
                                     anchorEl={anchorElMenu1}
                                     keepMounted
@@ -282,12 +282,12 @@ export const CalendarBirds = (props) => {
                                     onClose={handleCloseMenu1} classes={{ list: 'p-0' }}
                                     getContentAnchorEl={null}
                                     anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'center',
+                                        vertical: 'bottom',
+                                        horizontal: 'center',
                                     }}
                                     transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
+                                        vertical: 'top',
+                                        horizontal: 'center',
                                     }}>
                                 <div className="dropdown-menu-xl p-0">
                                     <div className="grid-menu grid-menu-2col">

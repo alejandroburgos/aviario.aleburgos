@@ -104,3 +104,24 @@ exports.editPair = async (req, res) => {
         res.status(500).json({ message: error })
     }
 }
+
+// get pair by user and filter by arrPuestasParejas
+exports.getArrPuestasParejas = async (req, res) => {
+    const { user } = req.params
+    try {
+        const pair = await model.find({ user })
+        let arrPuestasParejas = []
+        pair.forEach(element => {
+            arrPuestasParejas.push(element.arrPuestasParejas)
+        });
+        let arrPuestasParejasMap = arrPuestasParejas.map(item => item).flat()
+        let events = {
+            start: arrPuestasParejasMap.map(item => item.iniIncubacion),
+            end: arrPuestasParejasMap.map(item => item.fechNacimiento),
+        }
+
+        res.json(events)
+    } catch (error) {
+        res.status(500).json({ message: error })
+    }
+}
