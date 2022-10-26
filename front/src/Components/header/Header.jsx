@@ -48,7 +48,7 @@ export const Header = (props) => {
 
     const [collapse, setCollapse] = useState(false);
     const toggle = () => setCollapse(!collapse);
-
+    console.log(userData)
     return (
         <>
             <div className="header-nav-wrapper header-nav-wrapper-lg rounded navbar-light ml-4" style={{marginBottom: "50px"}}>
@@ -75,14 +75,22 @@ export const Header = (props) => {
                 </div>
                 <div className="header-nav-menu flex-grow-0 ml-auto d-none d-lg-block">
                     <ul className="d-flex justify-content-center">
-                        <li>
+                        {userData?.user === 'sawer' && <li>
                             <span className="font-size-sm text-uppercase font-weight-bold rounded-pill"
                                 onClick={(e) => navigate('/contador', { state: { user: userData } })}
                                 style={{width: "20em"}}
                             >
                                 Contador de Pasta
                             </span>
-                        </li>
+                        </li>}
+                        {userData?.user === 'sawer' && <li>
+                            <span className="font-size-sm text-uppercase font-weight-bold rounded-pill"
+                                onClick={(e) => navigate('/contador-golf', { state: { user: userData } })}
+                                style={{width: "20em"}}
+                            >
+                                Golf
+                            </span>
+                        </li>}
                         <li>
                             <span className="font-size-sm text-uppercase font-weight-bold rounded-pill"
                                 onClick={(e) => navigate('/crianza-de-pajaros', { state: { user: userData } })}
@@ -160,7 +168,7 @@ export const Header = (props) => {
                                 component="div"
                                 className="nav-pills nav-transparent nav-lg flex-column p-3"
                             >
-                                <ListItem
+                                {userData?.user === 'sawer' && <ListItem
                                     component="a"
                                     button
                                     onClick={(e) => {
@@ -170,7 +178,18 @@ export const Header = (props) => {
                                     className="px-4 d-flex align-items-center text-white-50"
                                 >
                                     <span>Contador de pasta</span>
-                                </ListItem>
+                                </ListItem>}
+                                {userData?.user === 'sawer' && <ListItem
+                                    component="a"
+                                    button
+                                    onClick={(e) => {
+                                        navigate('/contador-golf', { state: { user: userData } }); 
+                                        toggle()
+                                    }}
+                                    className="px-4 d-flex align-items-center text-white-50"
+                                >
+                                    <span>Golf</span>
+                                </ListItem>}
                                 <ListItem
                                     component="a"
                                     button

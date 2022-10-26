@@ -15,6 +15,7 @@ import { Home } from "./Components/Home.jsx";
 import { Login } from "./Components/login/Login";
 import { Header } from "./Components/header/Header";
 import { CountPage } from "./Components/Contador/CountPage";
+import { CountGolf } from "./Components/Contador copy/CountPage";
 import { Birds } from "./Components/Birds/Birds";
 import { CalendarBirds } from "./Components/Birds/Calendar/CalendarBirds";
 import { Updates } from "./Components/Shared/Modal/Updates";
@@ -50,6 +51,7 @@ export const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/contador" element={<CountPage state={userData} />} />
+        <Route path="/contador-golf" element={<CountGolf state={userData} />} />
         <Route path="/crianza-de-pajaros" element={<Birds state={userData}/>} />
         <Route path="/calendario" element={<CalendarBirds state={userData}/>} />
       </Routes>

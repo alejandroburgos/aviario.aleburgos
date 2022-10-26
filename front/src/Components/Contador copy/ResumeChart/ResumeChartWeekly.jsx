@@ -1,0 +1,224 @@
+import React, { useState, useEffect } from 'react'
+import Chart from 'react-apexcharts';
+import { styled } from '@mui/material/styles';
+
+import { Grid, TextField, Button, Menu, CardContent } from "@material-ui/core";
+import moment from 'moment';
+import { constants } from '../../../Constants';
+
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+
+import { PickersDay } from '@mui/x-date-pickers/PickersDay';
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import { parseISO } from 'date-fns';
+import endOfWeek from 'date-fns/endOfWeek';
+import isSameDay from 'date-fns/isSameDay';
+import isWithinInterval from 'date-fns/isWithinInterval';
+import startOfWeek from 'date-fns/startOfWeek';
+import { ArrowRightAltOutlined, CalendarTodayOutlined, DateRange, DateRangeOutlined } from '@material-ui/icons';
+
+const CustomPickersDay = styled(PickersDay, {
+    shouldForwardProp: (prop) =>
+      prop !== 'dayIsBetween' && prop !== 'isFirstDay' && prop !== 'isLastDay',
+  })(({ theme, dayIsBetween, isFirstDay, isLastDay }) => ({
+    ...(dayIsBetween && {
+      borderRadius: 0,
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.common.white,
+      '&:hover, &:focus': {
+        backgroundColor: theme.palette.primary.dark,
+      },
+    }),
+    ...(isFirstDay && {
+      borderTopLeftRadius: '50%',
+      borderBottomLeftRadius: '50%',
+    }),
+    ...(isLastDay && {
+      borderTopRightRadius: '50%',
+      borderBottomRightRadius: '50%',
+    }),
+  }));
+
+export const ResumeChartWeekly = (props) => {
+
+    // get localStorage
+    const token = localStorage.getItem("token");
+    const userData = JSON.parse(token)
+
+    const [value, setValue] = React.useState(new Date());
+
+    const start = startOfWeek(value);
+    const end = endOfWeek(value);
+
+    const [anchorElMenu1, setAnchorElMenu1] = useState(null);
+    const handleClickMenu1 = event => {setAnchorElMenu1(event.currentTarget);};
+    const handleCloseMenu1 = () => {setAnchorElMenu1(null);};
+
+    useEffect(() => {
+        const url = `${constants.urlLocal}withdrawalWeekly/${userData.user}/${moment(start).format('MM-DD-YYYY')}&&${moment(end).format('MM-DD-YYYY')}`;
+        props.setLoading(true);
+        const fetchData = async () => {
+            try {
+                const response = await fetch(url);
+                const json = await response.json();
+                props.setArrChartWithdrawal(json);
+                props.setLoading(false);
+            } catch (error) {
+                props.setLoading(true);
+            }
+        };
+        fetchData();
+    }, [value, props.withdrawal]);
+
+    useEffect(() => {
+        const url = `${constants.urlLocal}revenueWeekly/${userData.user}/${moment(start).format('MM-DD-YYYY')}&&${moment(end).format('MM-DD-YYYY')}`;
+        props.setLoading(true);
+        const fetchData = async () => {
+            try {
+                const response = await fetch(url);
+                const json = await response.json();
+                props.setArrChartRevenue(json);
+                props.setLoading(false);
+            } catch (error) {
+                props.setLoading(true);
+            }
+        };
+        fetchData();
+    }, [value, props.revenue]);
+
+
+    const renderWeekPickerDay = (date, selectedDates, pickersDayProps) => {
+      if (!value) {
+        return <PickersDay {...pickersDayProps} />;
+      }
+  
+      const dayIsBetween = isWithinInterval(date, { start, end });
+      const isFirstDay = isSameDay(date, start);
+      const isLastDay = isSameDay(date, end);
+  
+      return (
+        <CustomPickersDay
+          {...pickersDayProps}
+          disableMargin
+          dayIsBetween={dayIsBetween}
+          isFirstDay={isFirstDay}
+          isLastDay={isLastDay}
+
+        />
+      );
+    };
+  
+
+    const chartDashboardMonitoring3AOptions = {
+        chart: {
+            toolbar: {
+                show: false
+            },
+            sparkline: {
+                enabled: false
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            show: true,
+            width: 2,
+            colors: ['transparent']
+        },
+        labels: props.arrChartWithdrawal.range,
+        fill: {
+            opacity: 0.85,
+            colors: ['#fa71cd', '#0f2027']
+        },
+        colors: ['#fa71cd', '#0f2027'],
+        legend: {
+            show: false
+        },
+        grid: {
+            strokeDashArray: '5',
+            borderColor: 'rgba(125, 138, 156, 0.3)'
+        },
+        xaxis: {
+            crosshairs: {
+                width: 1
+            }
+        },
+        yaxis: {
+            min: 0
+        }
+    }
+    
+    const chartDashboardMonitoring3AData = [
+        {
+            name: 'Ingresos',
+            data: props.arrChartWithdrawal && props.arrChartWithdrawal?.data
+        },
+        {
+            name: 'Retiradas',
+            data: props.arrChartRevenue && props.arrChartRevenue?.data
+        }
+    ]
+
+    // concat 
+    return (
+        <>
+            <div >
+                <Grid container spacing={0}>
+                    <Grid item sm={12} md={12} xl={12}>
+                        <div className="font-weight-bold font-size-lg mt-4 mb-2 text-black">
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <Button className="m-2" onClick={handleClickMenu1} style={{borderBottom: '1px solid #898887'}}>
+                                {moment(start).format('DD-MM-YYYY')} <ArrowRightAltOutlined /> {moment(end).format('DD-MM-YYYY')}
+                                <CalendarTodayOutlined className="ml-2" style={{fontSize: '20', color:"#898887"}}/>
+                            </Button>
+                            <Menu
+                                anchorEl={anchorElMenu1}
+                                keepMounted
+                                open={Boolean(anchorElMenu1)}
+                                onClose={handleCloseMenu1} classes={{ list: 'p-0' }}
+                                getContentAnchorEl={null}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}>
+                            <div className="dropdown-menu-xl p-0">
+                                <CardContent className="p-0">
+                                    <StaticDatePicker
+                                        displayStaticWrapperAs="desktop"
+                                        label="Week picker"
+                                        value={value}
+                                        onChange={(newValue) => {
+                                            setValue(newValue);
+                                        }}
+                                        minDate={parseISO(moment().subtract(3, 'year').format('YYYY-MM-DD'))}
+                                        maxDate={parseISO(moment().format('YYYY-MM-DD'))}
+                                        renderDay={renderWeekPickerDay}
+                                        renderInput={(params) => <TextField {...params} helperText={null} />}
+                                        inputFormat="'Week of' MMM d"
+                                    />    
+                                    <div className="divider mt-4"/>
+                                    <div className="text-center py-4">
+                                        <Button size="small" className="btn-primary" onClick={handleCloseMenu1}>
+                                            <span className="btn-wrapper--label">
+                                                Cerrar
+                                            </span>
+                                        </Button>
+                                    </div>
+                                </CardContent>
+                            </div>
+                            </Menu>               
+                            </LocalizationProvider>
+                        </div>
+                        <Chart options={chartDashboardMonitoring3AOptions} series={chartDashboardMonitoring3AData} type="bar" height={218} />
+                    </Grid>
+                </Grid>
+            </div>
+        </>
+    )
+}
