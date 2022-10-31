@@ -6,8 +6,21 @@ const withdrawal = require('../controller/withdrawal.js')
 const pair = require('../controller/pair.js')
 const calendar = require('../controller/calendar.js')
 const category = require('../controller/category.js')
-
+const pgaVictories = require('../controller/pgaVictories.js')
 const router = express.Router()
+
+// ********************************************* GOLF **********************************************
+router.post('/api-golf/addVictory', pgaVictories.addVictories)
+
+// get all victories
+router.get('/api-golf/getVictories', pgaVictories.getVictories)
+
+// delete victory
+router.delete('/api-golf/deleteVictory/:id', pgaVictories.deleteVictory)
+
+// get all victories by player of starDate and endDate
+router.get('/api-golf/getVictoriesByWeek/:player/:startDate&&:endDate', pgaVictories.getVictoriesByWeek)
+// ********************************************* GOLF **********************************************
 
 // crear ruta login
 router.post('/api/login', auth.login)
