@@ -52,6 +52,8 @@ export const Login = () => {
           setDataUser(json);
         } else {
           setDataUser(json.message);
+          // detele localStorage
+          localStorage.removeItem("token");
         }
       } catch (error) {
         console.log("error", error);

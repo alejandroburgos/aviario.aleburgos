@@ -10,6 +10,9 @@ const pgaVictories = require('../controller/pgaVictories.js')
 const router = express.Router()
 
 // ********************************************* GOLF **********************************************
+// create player 
+// router.post('/api-golf/createPlayer', pgaVictories.createPlayer)
+
 router.post('/api-golf/addVictory', pgaVictories.addVictories)
 
 // get all victories
@@ -19,7 +22,7 @@ router.get('/api-golf/getVictories', pgaVictories.getVictories)
 router.delete('/api-golf/deleteVictory/:id', pgaVictories.deleteVictory)
 
 // get all victories by player of starDate and endDate
-router.get('/api-golf/getVictoriesByWeek/:player/:startDate&&:endDate', pgaVictories.getVictoriesByWeek)
+router.get('/api-golf/getVictoriesByWeek/:startDate&&:endDate', pgaVictories.getVictoriesByWeek)
 // ********************************************* GOLF **********************************************
 
 // crear ruta login
