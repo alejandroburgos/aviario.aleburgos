@@ -126,15 +126,15 @@ exports.getDailyReport = async (req, res) => {
     // sum of money of each day of month and check year
     const data = days.map(day => {
         const sum = revenue.reduce((acc, cur) => {
-            if (moment(cur.date).format('DD') === day && moment(cur.date).format('MM') === month && moment(cur.date).format('YYYY') === year) {
+            if (moment(cur.date).format('DD') === day && moment(cur.date).format('MM') === month && 
+                moment(cur.date).format('YYYY') === year) {
                 return acc + cur.money
             }
             return acc
         }
         , 0)
         return sum
-    }
-    )
+    })
 
     return res.status(200).json({
         ok: true,
