@@ -23,6 +23,11 @@ router.delete('/api-golf/deleteVictory/:id', pgaVictories.deleteVictory)
 
 // get all victories by player of starDate and endDate
 router.get('/api-golf/getVictoriesByWeek/:startDate&&:endDate', pgaVictories.getVictoriesByWeek)
+
+// get monthly report
+router.get('/api-golf/getMonthlyReport/:date', pgaVictories.getMonthlyReport)
+
+
 // ********************************************* GOLF **********************************************
 
 // crear ruta login
