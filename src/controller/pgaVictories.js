@@ -86,9 +86,14 @@ exports.getVictoriesByWeek = async (req, res) => {
             const index = weeklyReport.findIndex(player => player.name === victory.player)
             // get index of date in range
             const indexDate = range.findIndex(date => date === moment(victory.date).format('DD/MM/YYYY'))
-            // add victory to weeklyReport
-            weeklyReport[index].data[indexDate] = victory.victory
-
+            // sum victories
+            weeklyReport[index].data[indexDate] += victory.victory
+            // add 0 to days without victory
+            for (let i = 0; i < range.length; i++) {
+                if (!weeklyReport[index].data[i]) {
+                    weeklyReport[index].data[i] = 0
+                }
+            }
         }
     }
 
@@ -138,7 +143,7 @@ exports.getMonthlyReport = async (req, res) => {
             // get index of date in range
             const indexDate = days.findIndex(date => date === moment(victory.date).format('DD'))
             // add victory to weeklyReport
-            monthlyReport[index].data[indexDate] = victory.victory
+            monthlyReport[index].data[indexDate] += victory.victory
 
             // add 0 to days without victory
             for (let i = 0; i < days.length; i++) {
