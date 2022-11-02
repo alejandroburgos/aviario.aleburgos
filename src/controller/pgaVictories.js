@@ -45,7 +45,6 @@ exports.getVictoriesByWeek = async (req, res) => {
 
     const victories = await model.find()
 
-
     // get range of start and end date
     var enumerateDaysBetweenDates = function(startDate, endDate) {
         var now = startDate, dates = [];
@@ -75,7 +74,9 @@ exports.getVictoriesByWeek = async (req, res) => {
                 name: victory.player,
                 data: [
                     0, 0, 0, 0, 0, 0, 0
-                ]
+                ],
+                victories: {},
+                sum: 0
             })
         }
 
@@ -88,13 +89,32 @@ exports.getVictoriesByWeek = async (req, res) => {
             const indexDate = range.findIndex(date => date === moment(victory.date).format('DD/MM/YYYY'))
             // sum victories
             weeklyReport[index].data[indexDate] += victory.victory
+
             // add 0 to days without victory
             for (let i = 0; i < range.length; i++) {
                 if (!weeklyReport[index].data[i]) {
                     weeklyReport[index].data[i] = 0
                 }
             }
+            if (weeklyReport[index].name === victory.player) {
+                if (weeklyReport[index].victories[indexDate]) {
+                    weeklyReport[index].victories[indexDate - 1].push(victory)
+                } else {
+                    weeklyReport[index].victories[indexDate - 1] = [victory]
+                }
+            } 
+
+
+            // sum all victories
+            weeklyReport[index].sum = weeklyReport[index].data.reduce((a, b) => a + b, 0)
+        
+
+            // const sum = weeklyReport[index].data.reduce((a, b) => a + b, 0);
+            // weeklyReport[index].sum = sum
+
         }
+
+
     }
 
     return res.status(200).json({
@@ -131,7 +151,8 @@ exports.getMonthlyReport = async (req, res) => {
         if (!playerExist) {
             monthlyReport.push({
                 name: victory.player,
-                data: []
+                data: [],
+                victories: {}
             })
         }
 
@@ -142,18 +163,24 @@ exports.getMonthlyReport = async (req, res) => {
             const index = monthlyReport.findIndex(player => player.name === victory.player)
             // get index of date in range
             const indexDate = days.findIndex(date => date === moment(victory.date).format('DD'))
-            // add victory to weeklyReport
-            monthlyReport[index].data[indexDate] += victory.victory
 
+
+            // sum all victories
+            if (monthlyReport[index].data[indexDate]) {
+                monthlyReport[index].data[indexDate] += victory.victory
+                monthlyReport[index].victories[indexDate] = victories
+
+            } else {
+                monthlyReport[index].data[indexDate] = victory.victory
+            }
+        
             // add 0 to days without victory
             for (let i = 0; i < days.length; i++) {
                 if (!monthlyReport[index].data[i]) {
                     monthlyReport[index].data[i] = 0
                 }
             }
-
         }
-
     }
 
     return res.status(200).json({
