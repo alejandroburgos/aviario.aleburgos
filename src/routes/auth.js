@@ -27,6 +27,9 @@ router.get('/api-golf/getVictoriesByWeek/:startDate&&:endDate', pgaVictories.get
 // get monthly report
 router.get('/api-golf/getMonthlyReport/:date', pgaVictories.getMonthlyReport)
 
+// get victories by player and start and end date
+router.get('/api-golf/getVictoriesByPlayer/:player/:startDate&&:endDate', pgaVictories.getVictoriesByPlayer)
+
 
 // ********************************************* GOLF **********************************************
 

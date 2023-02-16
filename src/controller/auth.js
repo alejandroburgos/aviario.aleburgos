@@ -43,36 +43,29 @@ exports.login = async (req, res) => {
     if (!userDB) {
         return res.status(400).json({
             ok: false,
-            message: 'User not found'
+            message: 'No existe el usuario'
         })
     }
+
+    console.log(user, password)
 
     const passwordOk = await bcrypt.compare(password, userDB.password)
 
     if (!passwordOk) {
         return res.status(400).json({
             ok: false,
-            message: 'Password incorrect'
+            message: 'Contraseña incorrecta'
+        })
+    } else {
+        return res.status(200).json({
+            ok: true,
+            user: userDB.user,
         })
     }
 
-    if (userDB.token == req.body.token){
-        res.json({
-            ok: true,
-            // get user
-            user: userDB.user,
-            // get token
-            token: userDB.token,
-            // get read_update
-            read_update: userDB.read_update
-            
-        })
-    } else {
-        res.status(400).json({
-            ok: false,
-            message: 'Token incorrect'
-        })
-    }
+
+
+    
 
 }
 
@@ -85,7 +78,7 @@ exports.register = async (req, res) => {
             message: 'User already exists'
         })
     }
-    
+    console.log(user, password, req.body)
     const token = generateToken(user)
 
     // save user with password and token in database

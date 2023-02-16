@@ -20,6 +20,8 @@ if (port == null || port == "") {
     port = 3001;
 }
 
+console.log(port)
+
 // for parsing json
 app.use(
     bodyParser.json({

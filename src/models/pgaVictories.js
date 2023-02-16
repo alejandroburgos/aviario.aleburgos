@@ -13,7 +13,7 @@ const UserScheme = new mongoose.Schema(
             type: String
         },
         date: {
-            type: String
+            type: Date
         },
         course: {
             type: String
