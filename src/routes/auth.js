@@ -7,6 +7,7 @@ const pair = require('../controller/pair.js')
 const calendar = require('../controller/calendar.js')
 const category = require('../controller/category.js')
 const pgaVictories = require('../controller/pgaVictories.js')
+const holiday = require('../controller/holiday.js')
 const router = express.Router()
 
 // ********************************************* GOLF **********************************************
@@ -99,5 +100,10 @@ router.post('/api/newCategory', category.newCategory)
 router.get('/api/getCategory/:user', category.getCategory)
 // delete category
 router.delete('/api/deleteCategory/:id/:user', category.deleteCategory)
+
+// new holiday
+router.post('/api/book', holiday.newHoliday)
+// get all holidays
+router.get('/api/books', holiday.getHolidays)
 
 module.exports = router
