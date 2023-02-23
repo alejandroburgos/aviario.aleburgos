@@ -16,10 +16,10 @@ exports.newHoliday = async (req, res) => {
         precio
     })
     try {
-
         // check if the holiday exists
         const holidays = await model.find()
         const holidayExists = holidays.find(holiday => holiday.localizador === localizador)
+        
         if (holidayExists) {
             return res.status(400).json({
                 message: `El localizador ${localizador} ya existe`

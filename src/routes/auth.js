@@ -102,8 +102,8 @@ router.get('/api/getCategory/:user', category.getCategory)
 router.delete('/api/deleteCategory/:id/:user', category.deleteCategory)
 
 // new holiday
-router.post('/api/book', holiday.newHoliday)
+router.post('/api/book/:user', holiday.newHoliday)
 // get all holidays
-router.get('/api/books', holiday.getHolidays)
+router.get('/api/books/:user', holiday.getHolidays)
 
 module.exports = router
