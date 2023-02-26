@@ -105,5 +105,7 @@ router.delete('/api/deleteCategory/:id/:user', category.deleteCategory)
 router.post('/api/book/:user', holiday.newHoliday)
 // get all holidays
 router.get('/api/books/:user', holiday.getHolidays)
+// get month and array string of prices
+router.get('/api/month/:user', holiday.getMonth)
 
 module.exports = router

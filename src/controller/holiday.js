@@ -47,3 +47,27 @@ exports.getHolidays = async (req, res) => {
         res.status(500).json({ message: error })
     }
 }
+// get all months and check if there are holidays and sum of prices of holidays
+exports.getMonth = async (req, res) => {
+    try {
+        const holidays = await model.find()
+        const month = []
+        for (let i = 0; i < 12; i++) {
+            const monthHolidays = holidays.filter(holiday => {
+                const month = new Date(holiday.fecha_entrada).getMonth()
+                return month === i
+            })
+            const monthPrice = monthHolidays.reduce((acc, holiday) => {
+                return acc + holiday.precio
+            }, 0)
+            month.push({
+                month: i + 1,
+                monthHolidays: monthHolidays.length,
+                monthPrice
+            })
+        }
+        res.json(month)
+    } catch (error) {
+        res.status(500).json({ message: error })
+    }
+}
