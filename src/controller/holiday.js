@@ -63,10 +63,13 @@ exports.getMonth = async (req, res) => {
             month.push({
                 month: i + 1,
                 monthHolidays: monthHolidays.length,
-                monthPrice
+                monthPrice,
             })
         }
-        res.json(month)
+        res.json({
+            month,
+            ok: true
+        })
     } catch (error) {
         res.status(500).json({ message: error })
     }
