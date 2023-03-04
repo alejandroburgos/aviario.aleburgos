@@ -1,5 +1,6 @@
 const model = require('../models/holidays.js')
 var moment = require('moment');  
+var nodemailer = require('nodemailer');
 
 // create new holiday
 exports.newHoliday = async (req, res) => {
@@ -155,6 +156,41 @@ exports.getDays = async (req, res) => {
         res.json({
             days,
             ok: true
+        })
+    } catch (error) {
+        res.status(500).json({ message: error })
+    }
+}
+
+// send email to user
+exports.sendEmail = async (req, res) => {
+        try {
+        const { email, subject, message, html } = req.body
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            host: 'smtp.gmail.com ',
+            port: 465,
+            auth: {
+                user: 'aleburgosmoreno@gmail.com',
+                pass: 'qmrqkelaxazsqiqi'
+            }
+        })
+        const mailOptions = {
+            from: 'aleburgosmoreno@gmail.com',
+            to: email,
+            subject: subject,
+            text: message,
+            html: html
+        }
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                res.status(500).json({ message: error })
+            } else {
+                res.json({
+                    message: 'Email enviado',
+                    ok: true
+                })
+            }
         })
     } catch (error) {
         res.status(500).json({ message: error })

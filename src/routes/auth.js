@@ -116,6 +116,8 @@ router.put('/api/book/:id', holiday.editBook)
 router.delete('/api/book/:id', holiday.deleteHoliday)
 // get all days between fecha_entrada and fecha_salida
 router.get('/api/range/:user/', holiday.getDays)
+// send email to user
+router.post('/api/sendEmail', holiday.sendEmail)
 
 
 
