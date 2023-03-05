@@ -8,6 +8,7 @@ const calendar = require('../controller/calendar.js')
 const category = require('../controller/category.js')
 const pgaVictories = require('../controller/pgaVictories.js')
 const holiday = require('../controller/holiday.js')
+const properties = require('../controller/properties.js')
 const router = express.Router()
 
 // ********************************************* GOLF **********************************************
@@ -118,6 +119,12 @@ router.delete('/api/book/:id', holiday.deleteHoliday)
 router.get('/api/range/:user/', holiday.getDays)
 // send email to user
 router.post('/api/sendEmail', holiday.sendEmail)
+// create property
+router.post('/api/property/:user', properties.newProperty)
+// get all properties
+router.get('/api/property/:user', properties.getProperties)
+// delete property
+router.delete('/api/property/:id/:user', properties.deleteProperty)
 
 
 

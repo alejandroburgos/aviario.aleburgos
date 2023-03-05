@@ -147,7 +147,6 @@ exports.getDays = async (req, res) => {
         const days = []
         holidays.forEach(holiday => {
                 const daysBetween = getDates(holiday.fecha_entrada, holiday.fecha_salida)
-                console.log(daysBetween)
                 daysBetween.forEach(day => {
                     days.push(day)
                 })
@@ -196,3 +195,4 @@ exports.sendEmail = async (req, res) => {
         res.status(500).json({ message: error })
     }
 }
+

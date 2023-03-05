@@ -47,8 +47,6 @@ exports.login = async (req, res) => {
         })
     }
 
-    console.log(user, password)
-
     const passwordOk = await bcrypt.compare(password, userDB.password)
 
     if (!passwordOk) {
@@ -78,7 +76,6 @@ exports.register = async (req, res) => {
             message: 'User already exists'
         })
     }
-    console.log(user, password, req.body)
     const token = generateToken(user)
 
     // save user with password and token in database
